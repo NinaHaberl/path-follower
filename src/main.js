@@ -2,25 +2,26 @@
 /**
  * Software Sauna Code Challenge: Follow a path of characters & collect letters
  *
- * NOTE: We assume that we read all maps from left to right, from top to bottom
  */
 exports.__esModule = true;
-//import map from "../maps/validBasicExample";
+var types_1 = require("../src/types");
+var validBasicExample_1 = require("../maps/validBasicExample");
 //import map from "../maps/invalidMissingStartCharacter";
 //import map from "../maps/invalidMultipleStartsA";
 //import map from "../maps/invalidMultipleStartsB";
 //import map from "../maps/invalidMissingEndCharacter";
-var invalidMissingStartAndStop_1 = require("../maps/invalidMissingStartAndStop");
-function checkForStartStopAndInvalidCharacters(map) {
+//import map from "../maps/invalidMissingStartAndStop";
+function findStartingCharacterAndValidateOtherCharacters(map) {
     var startCharacter = false;
     var stopCharacter = false;
-    var mapValidated = false;
+    var startPosition = undefined;
     for (var row = 0; row < map.length; row++) {
         for (var column = 0; column < map[row].length; column++) {
             switch (map[row][column]) {
                 case "@":
                     if (startCharacter === false) {
                         startCharacter = true;
+                        startPosition = { row: row, column: column };
                     }
                     else {
                         throw new Error("Invalid map - Multiple starts: map contains more than one '@' character");
@@ -41,46 +42,135 @@ function checkForStartStopAndInvalidCharacters(map) {
             }
         }
     }
-    if (startCharacter === false && stopCharacter === false) {
-        throw new Error("Invalid map - There is no start nor stop character!");
-    }
-    else if (startCharacter === true && stopCharacter === false) {
-        throw new Error("Invalid map - There is no stop character!");
-    }
-    else if (startCharacter === false && stopCharacter === true) {
-        throw new Error("Invalid map - There is no start character!");
+    if (startPosition !== undefined) {
+        return startPosition;
     }
     else {
-        mapValidated = true;
+        errorInvalidStartOrStopCharacter(startCharacter, stopCharacter);
     }
-    return { validMap: mapValidated };
 }
-var mapValidation = checkForStartStopAndInvalidCharacters(invalidMissingStartAndStop_1["default"]);
-if (mapValidation) {
-    for (var _i = 0, map_1 = invalidMissingStartAndStop_1["default"]; _i < map_1.length; _i++) {
-        var row = map_1[_i];
+function errorInvalidStartOrStopCharacter(start, stop) {
+    if (start === false && stop === false) {
+        throw new Error("Invalid map - There is no start nor stop character!");
+    }
+    else if (start === true && stop === false) {
+        throw new Error("Invalid map - There is no stop character!");
+    }
+    else if (start === false && stop === true) {
+        throw new Error("Invalid map - There is no start character!");
+    }
+}
+function setNewPosition(row, column, direction) {
+    var newPosition;
+    switch (direction) {
+        case 1: // direction.Up
+            row = row - 1;
+            break;
+        case 2: // direction.Down
+            row = row + 1;
+            break;
+        case 3: // direction.Left
+            column = column - 1;
+            break;
+        case 4: // direction.Right
+            column = column + 1;
+            break;
+        default:
+            break;
+    }
+    newPosition = { row: row, column: column };
+    return newPosition;
+}
+function collectLettersAndFollowPath(map, startPosition) {
+    var collectedLetters = [];
+    var pathAsCharacters = ["@"];
+    var row = startPosition.row, column = startPosition.column;
+    var direction = types_1.Direction.Start;
+    var endOfPath = null;
+    var cellLeft = "";
+    var cellRight = "";
+    var cellAbove = "";
+    var cellBellow = "";
+    var newPosition = { row: row, column: column };
+    while (endOfPath !== "x") {
+        if (row === 0 && column === 0) {
+            cellRight = map[row][column + 1];
+            cellBellow = map[row + 1][column];
+            if (cellRight === " " && cellBellow === " ") {
+                throw new Error("Invalid map - Broken path after start character");
+            }
+            else if (/[A-Z]|-|\+|x/.test(cellRight) && /[A-Z]|-|\+|x/.test(cellBellow)) {
+                throw new Error("Invalid map - Multiple directions after start character");
+            }
+            else if (cellRight === " " && /[A-Z]|-|\+|x/.test(cellBellow)) {
+                direction = types_1.Direction.Down;
+                pathAsCharacters.push(cellBellow);
+                if (cellBellow === "x") {
+                    endOfPath = "x";
+                }
+                newPosition = setNewPosition(row, column, direction);
+            }
+            else if (/[A-Z]|-|\+|x/.test(cellRight) && cellBellow === " ") {
+                direction = types_1.Direction.Right;
+                pathAsCharacters.push(cellRight);
+                if (cellRight === "x") {
+                    endOfPath = "x";
+                }
+                newPosition = setNewPosition(row, column, direction);
+            }
+            console.log("nova pozicija je [" + newPosition.row + "][" + newPosition.column + "]");
+            endOfPath = "x";
+        }
+        else if (row === 0 && column > 0) {
+        }
+        else if (row > 0 && column === 0) {
+            console.log("možemo ići gore, dolje i desno");
+        }
+        else if (row > 0 && column > 0) {
+            console.log("možemo ići gore, dolje, desno i lijevo");
+        }
+    }
+    return { letters: collectedLetters.join(""), path: pathAsCharacters.join("") };
+}
+var startPosition = findStartingCharacterAndValidateOtherCharacters(validBasicExample_1["default"]);
+if (startPosition !== undefined) {
+    var output = collectLettersAndFollowPath(validBasicExample_1["default"], startPosition);
+    console.log("Collected letters: " + output.letters);
+    console.log("Path as characters: " + output.path);
+}
+/*if(startPosition) {
+    for (const row of map) {
         console.log(row.join(''));
     }
-}
-else {
+
+} else {
     throw new Error("Oops, something went totally wrong...");
 }
-function findStartingCharacter(map) {
-    var startingCharacterRow = -1;
-    var startingCharacterColumn = -1;
-    for (var row = 0; row < map.length; row++) {
-        for (var column = 0; column < map[row].length; column++) {
-            if (map[row][column] === "@") {
-                if (startingCharacterRow !== -1 || startingCharacterColumn !== -1) {
+
+
+function findStartingCharacter(map: MapOfCharacters[][]): { column: number; row: number } | null | Error {
+
+    let startingCharacterRow = -1;
+    let startingCharacterColumn = -1;
+
+    for(let row = 0; row < map.length; row++) {
+        for(let column = 0; column < map[row].length; column++) {
+            if(map[row][column] === "@") {
+
+                if(startingCharacterRow !== -1 || startingCharacterColumn !== -1) {
                     throw new Error("Invalid map - Multiple starts: map contains more than one '@' character");
                 }
+
                 startingCharacterRow = row;
                 startingCharacterColumn = column;
+
             }
         }
     }
-    if (startingCharacterRow === -1 || startingCharacterColumn === -1) {
+
+    if(startingCharacterRow === -1 || startingCharacterColumn === -1) {
         throw new Error("Invalid map - Missing start character: map doesn't contain starting '@' character");
     }
-    return { row: startingCharacterRow, column: startingCharacterColumn };
-}
+
+    return {row: startingCharacterRow, column: startingCharacterColumn};
+}*/

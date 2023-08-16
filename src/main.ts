@@ -1,27 +1,21 @@
 /**
  * Software Sauna Code Challenge: Follow a path of characters & collect letters
  *
- * NOTE: We assume that we read all maps from left to right, from top to bottom
  */
 
-import {MapOfCharacters} from "../src/types";
-//import map from "../maps/validBasicExample";
+import {Direction, MapOfCharacters, Position} from "../src/types";
+import map from "../maps/validBasicExample";
 //import map from "../maps/invalidMissingStartCharacter";
 //import map from "../maps/invalidMultipleStartsA";
 //import map from "../maps/invalidMultipleStartsB";
 //import map from "../maps/invalidMissingEndCharacter";
-import map from "../maps/invalidMissingStartAndStop";
+//import map from "../maps/invalidMissingStartAndStop";
 
-type Position = {
-    row: number;
-    column: number;
-};
-
-function checkAllowedCharacters(map: MapOfCharacters[][]): { validMap: boolean } | Error {
+function findStartingCharacterAndValidateOtherCharacters(map: MapOfCharacters[][]): Position | undefined {
 
     let startCharacter= false;
     let stopCharacter = false;
-    let mapValidated = false;
+    let startPosition: Position | undefined = undefined;
 
     for(let row = 0; row < map.length; row++) {
         for (let column = 0; column < map[row].length; column++) {
@@ -29,6 +23,7 @@ function checkAllowedCharacters(map: MapOfCharacters[][]): { validMap: boolean }
                 case "@":
                     if (startCharacter === false) {
                         startCharacter = true;
+                        startPosition = {row, column};
                     } else {
                         throw new Error("Invalid map - Multiple starts: map contains more than one '@' character");
                     }
@@ -49,25 +44,122 @@ function checkAllowedCharacters(map: MapOfCharacters[][]): { validMap: boolean }
         }
     }
 
-    if(startCharacter === false && stopCharacter === false) {
-        throw new Error("Invalid map - There is no start nor stop character!");
-
-    } else if(startCharacter === true && stopCharacter === false) {
-        throw new Error("Invalid map - There is no stop character!");
-
-    } else if(startCharacter === false && stopCharacter === true) {
-        throw new Error("Invalid map - There is no start character!");
+    if(startPosition !== undefined) {
+        return startPosition;
 
     } else {
-        mapValidated = true;
+        errorInvalidStartOrStopCharacter(startCharacter, stopCharacter);
     }
-
-    return { validMap: mapValidated };
 }
 
-let mapValid = checkAllowedCharacters(map);
+function errorInvalidStartOrStopCharacter(start: boolean, stop: boolean): void | Error {
+    if(start === false && stop === false) {
+        throw new Error("Invalid map - There is no start nor stop character!");
 
-if(mapValid) {
+    } else if(start === true && stop === false) {
+        throw new Error("Invalid map - There is no stop character!");
+
+    } else if(start === false && stop === true) {
+        throw new Error("Invalid map - There is no start character!");
+    }
+}
+
+function setNewPosition(row, column, direction): Position {
+
+    let newPosition: Position;
+
+    switch (direction) {
+        case 1: // direction.Up
+            row = row - 1;
+            break;
+        case 2: // direction.Down
+            row = row + 1;
+            break;
+        case 3: // direction.Left
+            column = column - 1;
+            break;
+        case 4: // direction.Right
+            column = column + 1;
+            break;
+        default:
+            break;
+    }
+
+    newPosition = {row, column};
+    return newPosition;
+}
+
+function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosition: Position): { letters: string, path: string } {
+
+    let collectedLetters: string[] = [];
+    let pathAsCharacters: string[] = ["@"];
+    let { row, column } = startPosition;
+    let direction: Direction = Direction.Start;
+    let endOfPath: MapOfCharacters | null = null;
+
+    let cellLeft = "";
+    let cellRight = "";
+    let cellAbove = "";
+    let cellBellow = "";
+    let newPosition: Position = { row, column };
+
+    while(endOfPath !== "x") {
+
+        if(row === 0 && column === 0) {
+            cellRight = map[row][column + 1];
+            cellBellow = map[row + 1][column];
+
+            if(cellRight === " " && cellBellow === " ") {
+                throw new Error("Invalid map - Broken path after start character");
+
+            } else if(/[A-Z]|-|\+|x/.test(cellRight) && /[A-Z]|-|\+|x/.test(cellBellow)) {
+                throw new Error("Invalid map - Multiple directions after start character");
+
+            } else if(cellRight === " " && /[A-Z]|-|\+|x/.test(cellBellow)) {
+                direction = Direction.Down;
+
+                pathAsCharacters.push(cellBellow);
+                if(cellBellow === "x") {
+                    endOfPath = "x";
+                }
+                newPosition = setNewPosition(row, column, direction);
+
+            } else if(/[A-Z]|-|\+|x/.test(cellRight) && cellBellow === " ") {
+                direction = Direction.Right;
+                pathAsCharacters.push(cellRight);
+                if(cellRight === "x") {
+                    endOfPath = "x";
+                }
+                newPosition = setNewPosition(row, column, direction);
+            }
+            console.log(`nova pozicija je [${newPosition.row}][${newPosition.column}]`);
+            endOfPath = "x";
+
+        } else if(row === 0 && column > 0) {
+
+
+        } else if(row > 0 && column === 0) {
+            console.log("možemo ići gore, dolje i desno");
+
+        } else if(row > 0 && column > 0) {
+            console.log("možemo ići gore, dolje, desno i lijevo");
+        }
+    }
+
+
+    return { letters: collectedLetters.join(""), path: pathAsCharacters.join("") };
+}
+
+const startPosition = findStartingCharacterAndValidateOtherCharacters(map);
+
+if(startPosition !== undefined) {
+    let output = collectLettersAndFollowPath(map, startPosition);
+    console.log(`Collected letters: ${output.letters}`);
+    console.log(`Path as characters: ${output.path}`);
+}
+
+
+/*if(startPosition) {
     for (const row of map) {
         console.log(row.join(''));
     }
@@ -102,5 +194,5 @@ function findStartingCharacter(map: MapOfCharacters[][]): { column: number; row:
     }
 
     return {row: startingCharacterRow, column: startingCharacterColumn};
-}
+}*/
 
