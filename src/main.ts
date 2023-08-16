@@ -1,15 +1,51 @@
-// type MapOfCharacters = "@" | "-" | "+" | "|" | "x" | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z";
-type MapOfCharacters = "@" | "-" | "+" | "|" | "x" | string;
+/**
+ * Software Sauna Code Challenge: Follow a path of characters & collect letters
+ *
+ * NOTE: We assume that we read all maps from left to right, from top to bottom
+ */
 
-const map: MapOfCharacters[][] = [
-    ["@", "-", "-", "-", "A", "-", "-", "-", "+",],
-    [" ", " ", " ", " ", " ", " ", " ", " ", "|",],
-    ["x", "-", "B", "-", "+", " ", " ", " ", "C",],
-    [" ", " ", " ", " ", "|", " ", " ", " ", "|",],
-    [" ", " ", " ", " ", "+", "-", "-", "-", "+",],
-];
+import {MapOfCharacters} from "../src/types";
+import map from "../maps/validBasicExample";
+//import map from "../maps/invalidMissingStartCharacter";
 
-// Ispisivanje mape
-for (const row of map) {
-    console.log(row.join(''));
+function findStartingCharacter(map: MapOfCharacters[][]): { column: number; row: number } | null | Error {
+
+    let startingCharacterRow = -1;
+    let startingCharacterColumn = -1;
+
+    for(let row = 0; row < map.length; row++) {
+        for(let column = 0; column < map[row].length; column++) {
+            if(map[row][column] === "@") {
+
+                if(startingCharacterRow !== -1 || startingCharacterColumn !== -1) {
+                    throw new Error("Invalid map - Multiple starts: map contains more than one '@' character");
+                }
+
+                startingCharacterRow = row;
+                startingCharacterColumn = column;
+
+            }
+        }
+    }
+
+    if(startingCharacterRow === -1 || startingCharacterColumn === -1) {
+        throw new Error("Invalid map - Missing start character: map doesn't contain starting '@' character");
+    }
+
+    return {row: startingCharacterRow, column: startingCharacterColumn};
 }
+
+let startingPoint= findStartingCharacter(map);
+
+if(startingPoint) {
+    console.log(`Starting point position is on [${startingPoint.row}][${startingPoint.column}]`);
+    // Print the map
+    for (const row of map) {
+        console.log(row.join(''));
+    }
+
+} else {
+    throw new Error("Oops, something went totally wrong...");
+}
+
+

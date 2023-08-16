@@ -1,0 +1,1 @@
+export type MapOfCharacters = "@" | "-" | "+" | "|" | "x" | string;
