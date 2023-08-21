@@ -14,5 +14,10 @@ exports.basicExample = [
  * Valid minimum map: Contains only start and stop character.
  */
 exports.minimumMap = [
-    ["@", "x"]
+    [" ", " ", " ", " ", " ", " "],
+    [" ", " ", "@", "x", " ", " "],
+    [" ", " ", " ", " ", " ", " "]
+];
+exports.miniMinimumMap = [
+    ["@", "x"],
 ];

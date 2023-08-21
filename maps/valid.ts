@@ -15,5 +15,10 @@ export const basicExample: MapOfCharacters[][] = [
  * Valid minimum map: Contains only start and stop character.
  */
 export const minimumMap: MapOfCharacters[][] = [
-    ["@", "x"]
+    [" ", " ", " ", " ", " ", " "],
+    [" ", " ", "@", "x", " ", " "],
+    [" ", " ", " ", " ", " ", " "]
+];
+export const miniMinimumMap: MapOfCharacters[][] = [
+    ["@", "x"],
 ];
