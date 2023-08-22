@@ -1,34 +1,60 @@
-"use strict";
-exports.__esModule = true;
+import {MapOfCharacters} from "../types";
+
+/**
+ * Valid map: A basic example
+ */
+export const basicExample: MapOfCharacters[][] = [
+    ["@", "-", "-", "-", "-", "-", "A", "-", "-", "-", "+", " "],
+    [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "|", " "],
+    [" ", " ", "x", "-", "B", "-", "+", " ", " ", " ", "C", " "],
+    [" ", " ", " ", " ", " ", " ", "|", " ", " ", " ", "|", " "],
+    [" ", " ", " ", " ", " ", " ", "+", "-", "-", "-", "+", " "]
+];
+
+/**
+ * Valid minimum map: Contains only start and stop character.
+ */
+export const minimumMap: MapOfCharacters[][] = [
+    [" ", " ", " ", " ", " ", " "],
+    [" ", " ", "@", "x", " ", " "],
+    [" ", " ", " ", " ", " ", " "]
+];
+export const miniMinimumMap: MapOfCharacters[][] = [
+    ["@", "x"],
+];
+
 /**
  * Invalid maps:
  * 1. Multiple starts
  */
-exports.multipleStartA = [
+export const multipleStartA: MapOfCharacters[][] = [
     [" ", " ", " ", "@", "-", "-", "A", "@", "-", "-", "+", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "|", " "],
     [" ", " ", "x", "-", "B", "-", "+", " ", " ", " ", "C", " "],
     [" ", " ", " ", " ", " ", " ", "|", " ", " ", " ", "|", " "],
     [" ", " ", " ", " ", " ", " ", "+", "-", "-", "-", "+", " "]
 ];
-exports.multipleStartB = [
+
+export const multipleStartB: MapOfCharacters[][] = [
     [" ", " ", " ", "@", "-", "-", "A", "-", "-", "-", "+", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "|", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "C", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "x", " "],
     [" ", " ", " ", " ", " ", "@", "-", "B", "-", "-", "+", " "]
 ];
-exports.multipleStartC = [
+
+export const multipleStartC: MapOfCharacters[][] = [
     [" ", " ", " ", "@", "-", "-", "A", "-", "-", "x", " ", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
     [" ", " ", "x", "-", "B", "-", "+", " ", " ", " ", " ", " "],
     [" ", " ", " ", " ", " ", " ", "|", " ", " ", " ", "x", " "],
     [" ", " ", " ", " ", " ", " ", "@", " ", " ", " ", " ", " "]
 ];
+
 /**
  * Invalid maps:
  * 2. Multiple starting paths
  */
-exports.forkInPathAfterStart = [
+export const forkInPathAfterStart: MapOfCharacters[][] = [
     [" ", "x", "-", "@", "-", "-", "A", "-", "-", " ", " ", " "]
 ];

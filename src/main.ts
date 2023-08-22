@@ -4,10 +4,7 @@
  */
 
 import {Direction, MapOfCharacters, Position} from "../src/types";
-import * as invalid from "../maps/invalid";
-import * as valid from "../maps/valid";
-import {forkInPathAfterStart, multipleStartingPath} from "../maps/invalid";
-import {basicExample} from "../maps/valid";
+import * as maps from "./map/examples";
 
 export function validateMapAndFindStartingPosition(map: MapOfCharacters[][]): Position | undefined {
 
@@ -191,7 +188,7 @@ function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosition: Po
     return { letters: collectedLetters.join(""), path: pathAsCharacters.join("") };
 }
 
-const map = valid.basicExample;
+const map = maps.basicExample;
 const startPosition = validateMapAndFindStartingPosition(map);
 
 if(startPosition !== undefined) {

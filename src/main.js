@@ -5,7 +5,7 @@
  */
 exports.__esModule = true;
 var types_1 = require("../src/types");
-var valid = require("../maps/valid");
+var maps = require("./map/examples");
 function validateMapAndFindStartingPosition(map) {
     var startCharacter = false;
     var stopCharacter = false;
@@ -160,7 +160,7 @@ function collectLettersAndFollowPath(map, startPosition) {
     }
     return { letters: collectedLetters.join(""), path: pathAsCharacters.join("") };
 }
-var map = valid.basicExample;
+var map = maps.basicExample;
 var startPosition = validateMapAndFindStartingPosition(map);
 if (startPosition !== undefined) {
     var output = collectLettersAndFollowPath(map, startPosition);

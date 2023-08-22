@@ -8,4 +8,3 @@ var Direction;
     Direction["Left"] = "Left";
     Direction["Right"] = "Right";
 })(Direction = exports.Direction || (exports.Direction = {}));
-;
