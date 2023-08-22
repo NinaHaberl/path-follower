@@ -2,9 +2,9 @@
 exports.__esModule = true;
 var Direction;
 (function (Direction) {
-    Direction["Start"] = "Start";
-    Direction["Up"] = "Up";
-    Direction["Down"] = "Down";
-    Direction["Left"] = "Left";
-    Direction["Right"] = "Right";
+    Direction[Direction["Right"] = 0] = "Right";
+    Direction[Direction["Down"] = 1] = "Down";
+    Direction[Direction["Left"] = 2] = "Left";
+    Direction[Direction["Up"] = 3] = "Up";
+    Direction[Direction["Start"] = 4] = "Start";
 })(Direction = exports.Direction || (exports.Direction = {}));

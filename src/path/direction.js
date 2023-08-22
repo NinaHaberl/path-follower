@@ -15,32 +15,26 @@ function setPathDirection(direction, right, down, left, up) {
     }
 }
 exports.setPathDirection = setPathDirection;
-function startMoving(surroundingCells) {
+function startMoving(right, down, left, up) {
     var pathDirection;
-    var right = surroundingCells[0], down = surroundingCells[1], left = surroundingCells[2], up = surroundingCells[3];
-    var cellValues = [right, down, left, up];
-    var cellNames = new Map([
-        [0, 'Right'],
-        [1, 'Down'],
-        [2, 'Left'],
-        [3, 'Up'],
-    ]);
-    var definedValues = [];
-    cellValues.forEach(function (value, index) {
-        if (typeof value !== " ") {
-            definedValues.push({ value: value, index: index });
+    var surroundingCells = [right, down, left, up];
+    var definedCell = [];
+    surroundingCells.forEach(function (value, index) {
+        if (/[A-Z]|-|\||\+/.test(value)) {
+            console.log(value);
+            console.log(index);
+            definedCell.push({ value: value, index: index });
         }
     });
-    console.log("jesmo li došli ovdje?");
-    if (definedValues.length === 1) {
-        var definedValue = definedValues[0];
-        var valueName = cellNames[definedValue.index];
-        console.log("Definirana vrijednost: " + definedValue.value + ", Indeks: " + definedValue.index + ", Ime: " + valueName);
-        pathDirection = eval("Direction." + valueName);
+    if (definedCell.length === 0) {
+        throw new Error("Invalid map: Broken path after @ character");
+    }
+    else if (definedCell.length === 1) {
+        console.log("Next position: " + definedCell[0].value + "; direction: " + definedCell[0].index);
+        pathDirection = definedCell[0].index;
     }
     else {
-        console.log("nekaj ne valja");
-        console.log(definedValues.length);
+        console.log(definedCell.length);
     }
     return pathDirection;
 }

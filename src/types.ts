@@ -6,9 +6,10 @@ export type Position = {
 };
 
 export enum Direction {
-    Start = "Start",
-    Up = "Up",
-    Down = "Down",
-    Left = "Left",
-    Right = "Right"
+    Right,
+    Down,
+    Left,
+    Up,
+    Start,
+
 }

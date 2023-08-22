@@ -15,31 +15,38 @@ function collectLettersAndFollowPath(map, startPosition) {
     var cellBellow = "";
     var newPosition = { row: row, column: column };
     while (endOfPath !== "x") {
-        var surroundingCells = direction_1.getSurroundingCells(map, row, column);
-        var cellLeft_1 = surroundingCells[0], cellRight_1 = surroundingCells[1], cellAbove_1 = surroundingCells[2], cellBelow = surroundingCells[3];
+        var _a = direction_1.getSurroundingCells(map, row, column), right = _a[0], down = _a[1], left = _a[2], up = _a[3];
+        //[right, down, left, up] = surroundingCells;
         if (pathDirection === types_1.Direction.Start) {
-            pathDirection = direction_1.startMoving(surroundingCells);
+            console.log("Desno je " + right);
+            endOfPath = "x";
+            pathDirection = direction_1.startMoving(right, down, left, up);
+            console.log("Jel sada znamo u kojem smjeru idemo?" + pathDirection);
+            console.log("a što ako ovako ispišem smijer? " + types_1.Direction.Right);
             /* ovdje želim znati u kojem smo smjeru krenuli (u funkciji startMoving ću bacati errore ako imamo fork ili broken path */
-            if (cellRight_1 === "x") {
+            if (cellRight === "x") {
                 endOfPath = "x";
-                pathAsCharacters.push(cellRight_1);
+                pathAsCharacters.push(cellRight);
             }
         }
         else {
             switch (pathDirection) {
-                case "Right":
+                case types_1.Direction.Right:
                     console.log("idemo desno");
                     endOfPath = "x";
                     break;
-                case "Down":
+                case types_1.Direction.Down:
                     console.log("idemo dole");
                     break;
-                case "Left":
+                case types_1.Direction.Left:
                     console.log("idemo dole");
                     break;
-                case "Up":
+                case types_1.Direction.Up:
                     console.log("idemo dole");
                     break;
+                default:
+                    console.log("stop");
+                    endOfPath = "x";
             }
         }
     }

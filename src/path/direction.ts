@@ -17,34 +17,28 @@ export function setPathDirection(direction: Direction, right, down, left, up): D
     }
 }
 
-export function startMoving(surroundingCells): Direction | Error {
-    let pathDirection;
-    const [right, down, left, up] = surroundingCells;
-    const cellValues = [right, down, left, up];
-    const cellNames = new Map([
-        [0, 'Right'],
-        [1, 'Down'],
-        [2, 'Left'],
-        [3, 'Up'],
-    ]);
-    const definedValues= [];
+export function startMoving(right, down, left, up): number | Error {
+    let pathDirection: Direction;
+    const surroundingCells: MapOfCharacters[] = [right, down, left, up];
+    let definedCell: Array<{ value: string; index: number; }> = [];
 
-    cellValues.forEach((value, index) => {
-        if(typeof value !== " ") {
-            definedValues.push({value, index});
+    surroundingCells.forEach((value, index) => {
+        if(/[A-Z]|-|\||\+/.test(value)) {
+            console.log(value);
+            console.log(index);
+            definedCell.push({value, index});
         }
     });
 
-    console.log("jesmo li došli ovdje?");
-    if(definedValues.length === 1) {
-        const definedValue = definedValues[0];
-        const valueName = cellNames[definedValue.index];
-        console.log(`Definirana vrijednost: ${definedValue.value}, Indeks: ${definedValue.index}, Ime: ${valueName}`);
-        pathDirection = eval(`Direction.${valueName}`);
+    if(definedCell.length === 0) {
+        throw new Error("Invalid map: Broken path after @ character");
+
+    } else if(definedCell.length === 1) {
+        console.log(`Next position: ${definedCell[0].value}; direction: ${definedCell[0].index}`);
+        pathDirection = definedCell[0].index;
 
     } else {
-        console.log("nekaj ne valja");
-        console.log(definedValues.length);
+        console.log(definedCell.length);
     }
 
     return pathDirection;

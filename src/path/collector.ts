@@ -19,11 +19,16 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
 
     while(endOfPath !== "x") {
 
-        let surroundingCells= getSurroundingCells(map, row, column);
-        let [cellLeft, cellRight, cellAbove, cellBelow] = surroundingCells;
+        let [right, down, left, up] = getSurroundingCells(map, row, column);
+        //[right, down, left, up] = surroundingCells;
 
         if (pathDirection === Direction.Start) {
-            pathDirection = startMoving(surroundingCells);
+            console.log(`Desno je ${right}`);
+            endOfPath = "x";
+            pathDirection = startMoving(right, down, left, up);
+
+            console.log("Jel sada znamo u kojem smjeru idemo?" + pathDirection);
+            console.log("a što ako ovako ispišem smijer? " + Direction.Right);
 
             /* ovdje želim znati u kojem smo smjeru krenuli (u funkciji startMoving ću bacati errore ako imamo fork ili broken path */
 
@@ -33,19 +38,22 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
             }
         } else {
             switch (pathDirection) {
-                case "Right":
+                case Direction.Right:
                     console.log("idemo desno");
                     endOfPath = "x";
                     break;
-                case "Down":
+                case Direction.Down:
                     console.log("idemo dole");
                     break;
-                case "Left":
+                case Direction.Left:
                     console.log("idemo dole");
                     break;
-                case "Up":
+                case Direction.Up:
                     console.log("idemo dole");
                     break;
+                default:
+                    console.log("stop");
+                    endOfPath = "x";
             }
         }
     }
