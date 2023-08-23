@@ -43,6 +43,7 @@ function checkSurroundingCells(map, row, column) {
     var right, down, left, up;
     /**
      * Check map index: if index is out of bounds - return undefined
+     * TODO: refactor [reduce code]
      */
     if (!(column >= (map[row].length - 1))) {
         right = setNextCellValue(map, row, column, 0, 1);
@@ -61,22 +62,23 @@ function checkSurroundingCells(map, row, column) {
 }
 exports.checkSurroundingCells = checkSurroundingCells;
 function getNextCellValue(pathDirection, map, row, column) {
-    var cellValue = "";
+    var rowOffset = 0;
+    var colOffset = 0;
     switch (pathDirection) {
         case types_1.Direction.Right:
-            cellValue = setNextCellValue(map, row, column, 0, 1);
+            colOffset = 1;
             break;
         case types_1.Direction.Down:
-            cellValue = setNextCellValue(map, row, column, 1, 0);
+            rowOffset = 1;
             break;
         case types_1.Direction.Left:
-            cellValue = setNextCellValue(map, row, column, 0, -1);
+            colOffset = -1;
             break;
         case types_1.Direction.Up:
-            cellValue = setNextCellValue(map, row, column, -1, 0);
+            rowOffset = -1;
             break;
     }
-    return cellValue;
+    return setNextCellValue(map, row, column, rowOffset, colOffset);
 }
 exports.getNextCellValue = getNextCellValue;
 function setNextCellValue(map, row, column, rowOffset, colOffset) {

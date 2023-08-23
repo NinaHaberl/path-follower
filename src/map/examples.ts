@@ -17,7 +17,7 @@ export const basicExample: MapOfCharacters[][] = [
  */
 export const minimumMap: MapOfCharacters[][] = [
     [" ", " ", " ", " ", " ", " "],
-    [" ", " ", "@", "x", " ", " "],
+    [" ", " ", "@", "-", "x", " "],
     [" ", " ", " ", " ", " ", " "]
 ];
 export const miniMinimumMap: MapOfCharacters[][] = [

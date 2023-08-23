@@ -1,5 +1,5 @@
 import {Direction, MapOfCharacters, Position} from "../types";
-import {checkSurroundingCells, getNextCellValue, startMoving} from "./direction";
+import {checkSurroundingCells, getNextCellValue, setNewPosition, setPathDirection} from "./direction";
 
 export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosition: Position): { letters: string, path: string } {
 
@@ -7,7 +7,8 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
     let pathAsCharacters: string[] = ["@"];
 
     let { row, column } = startPosition;
-    let nextPosition: MapOfCharacters;
+    let nextPosition: Position;
+    let nextCharacter: MapOfCharacters;
 
     let pathDirection: Direction | Error = Direction.Start;
     let endOfPath: MapOfCharacters | null = null;
@@ -19,33 +20,15 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
 
             // pathDirection === ENUM (0 = right; 1 = down ...)
             // Direction.Right === 0 (0 = right)
-            pathDirection = startMoving(right, down, left, up);
-            nextPosition = getNextCellValue(pathDirection, map, row, column);
+            pathDirection = setPathDirection(right, down, left, up);
 
-            if(nextPosition === "x") {
-                endOfPath = "x";
-                pathAsCharacters.push(nextPosition);
-            }
+        }
+        nextCharacter = getNextCellValue(pathDirection, map, row, column);
+        nextPosition = setNewPosition(pathDirection, row, column);
+        pathAsCharacters.push(nextCharacter);
 
-        } else {
-            switch (pathDirection) {
-                case Direction.Right:
-                    console.log("idemo desno");
-                    endOfPath = "x";
-                    break;
-                case Direction.Down:
-                    console.log("idemo dole");
-                    break;
-                case Direction.Left:
-                    console.log("idemo dole");
-                    break;
-                case Direction.Up:
-                    console.log("idemo dole");
-                    break;
-                default:
-                    console.log("stop");
-                    endOfPath = "x";
-            }
+        if(nextCharacter === "x") {
+            endOfPath = "x";
         }
     }
 

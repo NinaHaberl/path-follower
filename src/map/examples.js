@@ -16,7 +16,7 @@ exports.basicExample = [
  */
 exports.minimumMap = [
     [" ", " ", " ", " ", " ", " "],
-    [" ", " ", "@", "x", " ", " "],
+    [" ", " ", "@", "-", "x", " "],
     [" ", " ", " ", " ", " ", " "]
 ];
 exports.miniMinimumMap = [

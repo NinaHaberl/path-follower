@@ -16,30 +16,13 @@ function collectLettersAndFollowPath(map, startPosition) {
             // Direction.Right === 0 (0 = right)
             pathDirection = direction_1.startMoving(right, down, left, up);
             nextPosition = direction_1.getNextCellValue(pathDirection, map, row, column);
-            if (nextPosition === "x") {
-                endOfPath = "x";
-                pathAsCharacters.push(nextPosition);
-            }
         }
         else {
-            switch (pathDirection) {
-                case types_1.Direction.Right:
-                    console.log("idemo desno");
-                    endOfPath = "x";
-                    break;
-                case types_1.Direction.Down:
-                    console.log("idemo dole");
-                    break;
-                case types_1.Direction.Left:
-                    console.log("idemo dole");
-                    break;
-                case types_1.Direction.Up:
-                    console.log("idemo dole");
-                    break;
-                default:
-                    console.log("stop");
-                    endOfPath = "x";
-            }
+            nextPosition = direction_1.getNextCellValue(pathDirection, map, row, column);
+        }
+        pathAsCharacters.push(nextPosition);
+        if (nextPosition === "x") {
+            endOfPath = "x";
         }
     }
     return { letters: collectedLetters.join(""), path: pathAsCharacters.join("") };

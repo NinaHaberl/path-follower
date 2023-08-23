@@ -1,23 +1,26 @@
 import {Direction, MapOfCharacters, Position} from "../types";
 
-export function setPathDirection(direction: Direction, right, down, left, up): Direction | Error {
+export function setNewPosition(direction, row, column): Position {
 
-    let horizontalDirection = false;
-    let verticalDirection = false;
-
-    if (direction === Direction.Start) {
-        if(/[A-Z]|-|\+|x/.test(left)) {
-            if(horizontalDirection === true) {
-                throw new Error("Invalid map - Fork in path");
-
-            } else {
-
-            }
-        }
+    switch (direction) {
+        case Direction.Right:
+            column = column + 1;
+            break;
+        case Direction.Down:
+            row = row + 1;
+            break;
+        case Direction.Left:
+            column = column - 1;
+            break;
+        case Direction.Up:
+            row = row - 1;
+            break;
     }
+
+    return {row, column};
 }
 
-export function startMoving(right, down, left, up): number | Error {
+export function setPathDirection(right, down, left, up): number | Error {
     let pathDirection: Direction;
     const surroundingCells: MapOfCharacters[] = [right, down, left, up];
     let definedCell: Array<{ value: string; index: number; }> = [];
@@ -51,6 +54,7 @@ export function checkSurroundingCells(map: MapOfCharacters[][], row: number, col
 
     /**
      * Check map index: if index is out of bounds - return undefined
+     * TODO: refactor [reduce code]
      */
     if(!(column >= (map[row].length - 1))) {
         right = setNextCellValue(map, row, column, 0, 1);;
@@ -73,23 +77,25 @@ export function checkSurroundingCells(map: MapOfCharacters[][], row: number, col
 
 export function getNextCellValue(pathDirection, map, row, column): MapOfCharacters {
 
-    let cellValue: MapOfCharacters = "";
+    let rowOffset: number = 0;
+    let colOffset: number = 0;
+
     switch (pathDirection) {
         case Direction.Right:
-            cellValue = setNextCellValue(map, row, column, 0, 1);
+            colOffset = 1;
             break;
         case Direction.Down:
-            cellValue = setNextCellValue(map, row, column, 1, 0);
+            rowOffset = 1;
             break;
         case Direction.Left:
-            cellValue = setNextCellValue(map, row, column, 0, -1);
+            colOffset = -1;
             break;
         case Direction.Up:
-            cellValue = setNextCellValue(map, row, column, -1, 0);
+            rowOffset = -1
             break;
     }
 
-    return cellValue;
+    return setNextCellValue(map, row, column, rowOffset, colOffset);
 }
 
 function setNextCellValue(map: MapOfCharacters[][], row: number, column: number, rowOffset: number, colOffset: number): MapOfCharacters {
