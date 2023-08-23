@@ -70,6 +70,10 @@ function setPathDirection(map, row, column, direction) {
     return direction;
 }
 exports.setPathDirection = setPathDirection;
+function makeTurn(map, row, column, direction) {
+    return types_1.Direction.Down;
+}
+exports.makeTurn = makeTurn;
 function checkSurroundingCells(map, row, column) {
     var right, down, left, up;
     /**
@@ -92,7 +96,7 @@ function checkSurroundingCells(map, row, column) {
     return [right, down, left, up];
 }
 exports.checkSurroundingCells = checkSurroundingCells;
-function getNextCellValue(pathDirection, map, row, column) {
+function getCellValue(pathDirection, map, row, column) {
     var rowOffset = 0;
     var colOffset = 0;
     switch (pathDirection) {
@@ -111,7 +115,11 @@ function getNextCellValue(pathDirection, map, row, column) {
     }
     return setNextCellValue(map, row, column, rowOffset, colOffset);
 }
-exports.getNextCellValue = getNextCellValue;
+exports.getCellValue = getCellValue;
 function setNextCellValue(map, row, column, rowOffset, colOffset) {
     return map[row + rowOffset][column + colOffset];
 }
+function getCurrentCellValue(map, row, column) {
+    return map[row][column];
+}
+exports.getCurrentCellValue = getCurrentCellValue;

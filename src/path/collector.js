@@ -13,33 +13,39 @@ function collectLettersAndFollowPath(map, startPosition) {
     var row = startPosition === null || startPosition === void 0 ? void 0 : startPosition.row;
     var column = startPosition === null || startPosition === void 0 ? void 0 : startPosition.column;
     var oldPosition, nextPosition;
-    var nextCharacter;
+    var currentCharacter;
     while (endOfPath !== "x") {
+        console.log("Po\u010Detna pozicija startnog znaka je " + row + ", " + column);
         oldPosition = { row: row, column: column };
         if (pathDirection === types_1.Direction.Start) {
             pathDirection = direction_1.setPathDirection(map, row, column, pathDirection);
         }
-        nextCharacter = direction_1.getNextCellValue(pathDirection, map, row, column);
         nextPosition = direction_1.setNewPosition(pathDirection, oldPosition);
         row = nextPosition.row;
         column = nextPosition.column;
-        pathAsCharacters.push(nextCharacter);
-        if (/[A-Z]/.test(nextCharacter)) {
+        currentCharacter = direction_1.getCurrentCellValue(map, row, column);
+        console.log("Kre\u0107emo se u stranu " + pathDirection + ", trenutna pozicija nam je na [" + row + "][" + column + "]");
+        console.log("I na toj poziciji nam je znak " + currentCharacter + "\n\n");
+        pathAsCharacters.push(currentCharacter);
+        if (/[A-Z]/.test(currentCharacter)) {
             // TODO: reduce code
-            if (letterLocations.size !== 0 || !letterLocations.has(nextCharacter)) {
-                letterLocations.set(nextCharacter, [row, column]);
-                collectedLetters.push(nextCharacter);
+            if (letterLocations.size !== 0 || !letterLocations.has(currentCharacter)) {
+                letterLocations.set(currentCharacter, [row, column]);
+                collectedLetters.push(currentCharacter);
             }
             else {
-                var storedLocation = letterLocations.get(nextCharacter);
+                var storedLocation = letterLocations.get(currentCharacter);
                 var locationCheck = [row, column];
                 if (!letterLocationExists(storedLocation, locationCheck)) {
-                    letterLocations.set(nextCharacter, [row, column]);
-                    collectedLetters.push(nextCharacter);
+                    letterLocations.set(currentCharacter, [row, column]);
+                    collectedLetters.push(currentCharacter);
                 }
             }
         }
-        if (nextCharacter === "x") {
+        if (/\+/.test(currentCharacter)) {
+            pathDirection = direction_1.makeTurn(map, row, column, pathDirection);
+        }
+        if (currentCharacter === "x") {
             endOfPath = "x";
         }
     }

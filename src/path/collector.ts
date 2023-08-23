@@ -1,5 +1,5 @@
 import {Direction, MapOfCharacters, Position} from "../types";
-import {getNextCellValue, setNewPosition, setPathDirection} from "./direction";
+import {getCurrentCellValue, setNewPosition, setPathDirection, makeTurn} from "./direction";
 
 export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosition: Position | undefined): {
     letters: string;
@@ -18,7 +18,7 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
     let row = startPosition?.row;
     let column = startPosition?.column;
     let oldPosition, nextPosition: Position;
-    let nextCharacter: MapOfCharacters;
+    let currentCharacter: MapOfCharacters;
 
     while(endOfPath !== "x") {
 
@@ -27,30 +27,35 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
             pathDirection = setPathDirection(map, row, column, pathDirection);
         }
 
-        nextCharacter = getNextCellValue(pathDirection, map, row, column);
         nextPosition = setNewPosition(pathDirection, oldPosition);
         row = nextPosition.row;
         column = nextPosition.column;
 
-        pathAsCharacters.push(nextCharacter);
+        currentCharacter = getCurrentCellValue(map, row, column);
 
-        if(/[A-Z]/.test(nextCharacter)) {
+        pathAsCharacters.push(currentCharacter);
+
+        if(/[A-Z]/.test(currentCharacter)) {
             // TODO: reduce code
-            if(letterLocations.size !== 0 || !letterLocations.has(nextCharacter)) {
-                letterLocations.set(nextCharacter, [row, column]);
-                collectedLetters.push(nextCharacter);
+            if(letterLocations.size !== 0 || !letterLocations.has(currentCharacter)) {
+                letterLocations.set(currentCharacter, [row, column]);
+                collectedLetters.push(currentCharacter);
             } else {
-                let storedLocation = letterLocations.get(nextCharacter);
+                let storedLocation = letterLocations.get(currentCharacter);
                 let locationCheck = [row, column];
 
                 if(!letterLocationExists(storedLocation, locationCheck)) {
-                    letterLocations.set(nextCharacter, [row, column]);
-                    collectedLetters.push(nextCharacter);
+                    letterLocations.set(currentCharacter, [row, column]);
+                    collectedLetters.push(currentCharacter);
                 }
             }
         }
 
-        if(nextCharacter === "x") {
+        if(/\+/.test(currentCharacter)) {
+            pathDirection = makeTurn(map, row, column, pathDirection);
+        }
+
+        if(currentCharacter === "x") {
             endOfPath = "x";
         }
     }

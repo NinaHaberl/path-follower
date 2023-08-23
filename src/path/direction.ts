@@ -41,40 +41,28 @@ export function setPathDirection(map: MapOfCharacters[][], row: number, column: 
             direction = cellsWithCharacters[0].direction;
 
         } else {
-            if(direction === Direction.Start) {
-                /* TODO: think about edge cases of valid maps, for example
+            /* TODO: think about edge cases of valid maps, for example
 
-                 `
-                    ++
-                    @x
-                 `,
-                 `
-                    +--A
-                    |@-+
-                    |
-                    x
-                 `
-                  */
-
-                throw new Error("Invalid map: Multiple starting paths");
-
-            } else {
-                if(direction === Direction.Right || direction === Direction.Left) {
-                    if(!/[A-Z]|\||\+|x/.test(right)) {
-                        throw new Error('Invalid map: Broken path - illegal character');
-                    }
-                }
-                if(direction === Direction.Up || direction === Direction.Down) {
-                    if(!/[A-Z]|\+|\|x/.test(up)) {
-                        throw new Error('Invalid map: Broken path - illegal character');
-                    }
-                }
-
-            }
+            `
+              ++
+              @x
+            `,
+            `
+               +--A
+                 |@-+
+                 |
+                 x
+             `
+             */
+            throw new Error("Invalid map: Multiple starting paths");
         }
     }
 
     return direction;
+}
+
+export function makeTurn(map: MapOfCharacters[][], row: number, column: number, direction: number): Direction {
+    return Direction.Down;
 }
 
 
@@ -105,29 +93,12 @@ export function checkSurroundingCells(map: MapOfCharacters[][], row: number, col
     return [right, down, left, up];
 }
 
-export function getNextCellValue(pathDirection: Direction, map: MapOfCharacters[][], row: number, column: number): MapOfCharacters {
-
-    let rowOffset: number = 0;
-    let colOffset: number = 0;
-
-    switch (pathDirection) {
-        case Direction.Right:
-            colOffset = 1;
-            break;
-        case Direction.Down:
-            rowOffset = 1;
-            break;
-        case Direction.Left:
-            colOffset = -1;
-            break;
-        case Direction.Up:
-            rowOffset = -1
-            break;
-    }
-
-    return setNextCellValue(map, row, column, rowOffset, colOffset);
-}
-
 function setNextCellValue(map: MapOfCharacters[][], row: number, column: number, rowOffset: number, colOffset: number): MapOfCharacters {
     return map[row + rowOffset][column + colOffset];
 }
+
+export function getCurrentCellValue(map: MapOfCharacters[][], row: number, column: number): MapOfCharacters {
+    return map[row][column];
+}
+
+
