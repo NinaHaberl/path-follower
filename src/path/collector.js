@@ -6,27 +6,19 @@ function collectLettersAndFollowPath(map, startPosition) {
     var collectedLetters = [];
     var pathAsCharacters = ["@"];
     var row = startPosition.row, column = startPosition.column;
+    var nextPosition;
     var pathDirection = types_1.Direction.Start;
     var endOfPath = null;
-    var currentCell = "";
-    var cellLeft = "";
-    var cellRight = "";
-    var cellAbove = "";
-    var cellBellow = "";
-    var newPosition = { row: row, column: column };
     while (endOfPath !== "x") {
-        var _a = direction_1.getSurroundingCells(map, row, column), right = _a[0], down = _a[1], left = _a[2], up = _a[3];
-        //[right, down, left, up] = surroundingCells;
+        var _a = direction_1.checkSurroundingCells(map, row, column), right = _a[0], down = _a[1], left = _a[2], up = _a[3];
         if (pathDirection === types_1.Direction.Start) {
-            console.log("Desno je " + right);
-            endOfPath = "x";
+            // pathDirection === ENUM (0 = right; 1 = down ...)
+            // Direction.Right === 0 (0 = right)
             pathDirection = direction_1.startMoving(right, down, left, up);
-            console.log("Jel sada znamo u kojem smjeru idemo?" + pathDirection);
-            console.log("a što ako ovako ispišem smijer? " + types_1.Direction.Right);
-            /* ovdje želim znati u kojem smo smjeru krenuli (u funkciji startMoving ću bacati errore ako imamo fork ili broken path */
-            if (cellRight === "x") {
+            nextPosition = direction_1.getNextCellValue(pathDirection, map, row, column);
+            if (nextPosition === "x") {
                 endOfPath = "x";
-                pathAsCharacters.push(cellRight);
+                pathAsCharacters.push(nextPosition);
             }
         }
         else {

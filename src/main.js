@@ -7,7 +7,7 @@ exports.__esModule = true;
 var maps = require("./map/examples");
 var validate_1 = require("./map/validate");
 var collector_1 = require("./path/collector");
-var map = maps.basicExample;
+var map = maps.minimumMap;
 var startPosition = validate_1.validateMapAndFindStartingPosition(map);
 if (startPosition !== undefined) {
     var output = collector_1.collectLettersAndFollowPath(map, startPosition);
