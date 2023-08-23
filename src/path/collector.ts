@@ -7,10 +7,11 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
     let pathAsCharacters: string[] = ["@"];
 
     let { row, column } = startPosition;
+    let oldPosition: Position;
     let nextPosition: Position;
     let nextCharacter: MapOfCharacters;
 
-    let pathDirection: Direction | Error = Direction.Start;
+    let pathDirection: Direction = Direction.Start;
     let endOfPath: MapOfCharacters | null = null;
 
     while(endOfPath !== "x") {
@@ -24,7 +25,10 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
 
         }
         nextCharacter = getNextCellValue(pathDirection, map, row, column);
-        nextPosition = setNewPosition(pathDirection, row, column);
+        oldPosition = { row, column };
+        nextPosition = setNewPosition(pathDirection, oldPosition);
+        row = nextPosition.row;
+        column = nextPosition.column;
         pathAsCharacters.push(nextCharacter);
 
         if(nextCharacter === "x") {

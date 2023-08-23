@@ -1,26 +1,26 @@
 import {Direction, MapOfCharacters, Position} from "../types";
 
-export function setNewPosition(direction, row, column): Position {
+export function setNewPosition(direction: Direction, position: Position): Position {
 
     switch (direction) {
         case Direction.Right:
-            column = column + 1;
+            position.column = position.column + 1;
             break;
         case Direction.Down:
-            row = row + 1;
+            position.row = position.row + 1;
             break;
         case Direction.Left:
-            column = column - 1;
+            position.column = position.column - 1;
             break;
         case Direction.Up:
-            row = row - 1;
+            position.row = position.row - 1;
             break;
     }
 
-    return {row, column};
+    return position;
 }
 
-export function setPathDirection(right, down, left, up): number | Error {
+export function setPathDirection(right, down, left, up): number {
     let pathDirection: Direction;
     const surroundingCells: MapOfCharacters[] = [right, down, left, up];
     let definedCell: Array<{ value: string; index: number; }> = [];
@@ -37,7 +37,6 @@ export function setPathDirection(right, down, left, up): number | Error {
         throw new Error("Invalid map: Broken path after @ character");
 
     } else if(definedCell.length === 1) {
-        console.log(`Next position: ${definedCell[0].value}; direction: ${definedCell[0].index}`);
         pathDirection = definedCell[0].index;
 
     } else {

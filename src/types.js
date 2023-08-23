@@ -1,5 +1,6 @@
 "use strict";
 exports.__esModule = true;
+;
 var Direction;
 (function (Direction) {
     Direction[Direction["Right"] = 0] = "Right";

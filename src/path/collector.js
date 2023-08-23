@@ -6,7 +6,9 @@ function collectLettersAndFollowPath(map, startPosition) {
     var collectedLetters = [];
     var pathAsCharacters = ["@"];
     var row = startPosition.row, column = startPosition.column;
+    var oldPosition;
     var nextPosition;
+    var nextCharacter;
     var pathDirection = types_1.Direction.Start;
     var endOfPath = null;
     while (endOfPath !== "x") {
@@ -14,14 +16,15 @@ function collectLettersAndFollowPath(map, startPosition) {
         if (pathDirection === types_1.Direction.Start) {
             // pathDirection === ENUM (0 = right; 1 = down ...)
             // Direction.Right === 0 (0 = right)
-            pathDirection = direction_1.startMoving(right, down, left, up);
-            nextPosition = direction_1.getNextCellValue(pathDirection, map, row, column);
+            pathDirection = direction_1.setPathDirection(right, down, left, up);
         }
-        else {
-            nextPosition = direction_1.getNextCellValue(pathDirection, map, row, column);
-        }
-        pathAsCharacters.push(nextPosition);
-        if (nextPosition === "x") {
+        nextCharacter = direction_1.getNextCellValue(pathDirection, map, row, column);
+        oldPosition = { row: row, column: column };
+        nextPosition = direction_1.setNewPosition(pathDirection, oldPosition);
+        row = nextPosition.row;
+        column = nextPosition.column;
+        pathAsCharacters.push(nextCharacter);
+        if (nextCharacter === "x") {
             endOfPath = "x";
         }
     }

@@ -1,6 +1,6 @@
 export type MapOfCharacters = "@" | "-" | "+" | "|" | "x" | string;
 
-export type Position = {
+export interface Position {
     row: number;
     column: number;
 };

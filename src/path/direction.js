@@ -1,21 +1,25 @@
 "use strict";
 exports.__esModule = true;
 var types_1 = require("../types");
-function setPathDirection(direction, right, down, left, up) {
-    var horizontalDirection = false;
-    var verticalDirection = false;
-    if (direction === types_1.Direction.Start) {
-        if (/[A-Z]|-|\+|x/.test(left)) {
-            if (horizontalDirection === true) {
-                throw new Error("Invalid map - Fork in path");
-            }
-            else {
-            }
-        }
+function setNewPosition(direction, position) {
+    switch (direction) {
+        case types_1.Direction.Right:
+            position.column = position.column + 1;
+            break;
+        case types_1.Direction.Down:
+            position.row = position.row + 1;
+            break;
+        case types_1.Direction.Left:
+            position.column = position.column - 1;
+            break;
+        case types_1.Direction.Up:
+            position.row = position.row - 1;
+            break;
     }
+    return position;
 }
-exports.setPathDirection = setPathDirection;
-function startMoving(right, down, left, up) {
+exports.setNewPosition = setNewPosition;
+function setPathDirection(right, down, left, up) {
     var pathDirection;
     var surroundingCells = [right, down, left, up];
     var definedCell = [];
@@ -30,7 +34,6 @@ function startMoving(right, down, left, up) {
         throw new Error("Invalid map: Broken path after @ character");
     }
     else if (definedCell.length === 1) {
-        console.log("Next position: " + definedCell[0].value + "; direction: " + definedCell[0].index);
         pathDirection = definedCell[0].index;
     }
     else {
@@ -38,7 +41,7 @@ function startMoving(right, down, left, up) {
     }
     return pathDirection;
 }
-exports.startMoving = startMoving;
+exports.setPathDirection = setPathDirection;
 function checkSurroundingCells(map, row, column) {
     var right, down, left, up;
     /**
