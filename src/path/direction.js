@@ -45,16 +45,17 @@ function checkSurroundingCells(map, row, column) {
      * Check map index: if index is out of bounds - return undefined
      */
     if (!(column >= (map[row].length - 1))) {
-        right = goRight(map, row, column);
+        right = setNextCellValue(map, row, column, 0, 1);
+        ;
     }
     if (!(row >= (map.length - 1))) {
-        down = goDown(map, row, column);
+        down = setNextCellValue(map, row, column, 1, 0);
     }
     if (column !== 0) {
-        left = goLeft(map, row, column);
+        left = setNextCellValue(map, row, column, 0, -1);
     }
     if (row !== 0) {
-        up = goUp(map, row, column);
+        up = setNextCellValue(map, row, column, -1, 0);
     }
     return [right, down, left, up];
 }
@@ -63,30 +64,21 @@ function getNextCellValue(pathDirection, map, row, column) {
     var cellValue = "";
     switch (pathDirection) {
         case types_1.Direction.Right:
-            cellValue = goRight(map, row, column);
+            cellValue = setNextCellValue(map, row, column, 0, 1);
             break;
         case types_1.Direction.Down:
-            cellValue = goDown(map, row, column);
+            cellValue = setNextCellValue(map, row, column, 1, 0);
             break;
         case types_1.Direction.Left:
-            cellValue = goLeft(map, row, column);
+            cellValue = setNextCellValue(map, row, column, 0, -1);
             break;
         case types_1.Direction.Up:
-            cellValue = goUp(map, row, column);
+            cellValue = setNextCellValue(map, row, column, -1, 0);
             break;
     }
     return cellValue;
 }
 exports.getNextCellValue = getNextCellValue;
-function goUp(map, row, column) {
-    return map[row - 1][column];
-}
-function goDown(map, row, column) {
-    return map[row + 1][column];
-}
-function goLeft(map, row, column) {
-    return map[row][column - 1];
-}
-function goRight(map, row, column) {
-    return map[row][column + 1];
+function setNextCellValue(map, row, column, rowOffset, colOffset) {
+    return map[row + rowOffset][column + colOffset];
 }

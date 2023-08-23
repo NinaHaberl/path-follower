@@ -1,4 +1,4 @@
-import {Direction, MapOfCharacters} from "../types";
+import {Direction, MapOfCharacters, Position} from "../types";
 
 export function setPathDirection(direction: Direction, right, down, left, up): Direction | Error {
 
@@ -53,19 +53,19 @@ export function checkSurroundingCells(map: MapOfCharacters[][], row: number, col
      * Check map index: if index is out of bounds - return undefined
      */
     if(!(column >= (map[row].length - 1))) {
-        right = goRight(map, row, column);
+        right = setNextCellValue(map, row, column, 0, 1);;
     }
 
     if(!(row >= (map.length - 1))) {
-        down = goDown(map, row, column);
+        down = setNextCellValue(map, row, column, 1, 0);
     }
 
     if(column !== 0) {
-        left = goLeft(map, row, column);
+        left = setNextCellValue(map, row, column, 0, -1);
     }
 
     if(row !== 0) {
-        up = goUp(map, row, column);
+        up = setNextCellValue(map, row, column, -1, 0);
     }
 
     return [right, down, left, up];
@@ -76,31 +76,22 @@ export function getNextCellValue(pathDirection, map, row, column): MapOfCharacte
     let cellValue: MapOfCharacters = "";
     switch (pathDirection) {
         case Direction.Right:
-            cellValue = goRight(map, row, column);
+            cellValue = setNextCellValue(map, row, column, 0, 1);
             break;
         case Direction.Down:
-            cellValue = goDown(map, row, column);
+            cellValue = setNextCellValue(map, row, column, 1, 0);
             break;
         case Direction.Left:
-            cellValue = goLeft(map, row, column);
+            cellValue = setNextCellValue(map, row, column, 0, -1);
             break;
         case Direction.Up:
-            cellValue = goUp(map, row, column);
+            cellValue = setNextCellValue(map, row, column, -1, 0);
             break;
     }
 
     return cellValue;
 }
 
-function goUp(map: MapOfCharacters[][], row: number, column: number): MapOfCharacters {
-    return map[row - 1][column];
-}
-function goDown(map: MapOfCharacters[][], row: number, column: number): MapOfCharacters {
-    return map[row + 1][column];
-}
-function goLeft(map: MapOfCharacters[][], row: number, column: number): MapOfCharacters {
-    return map[row][column - 1];
-}
-function goRight(map: MapOfCharacters[][], row: number, column: number): MapOfCharacters {
-    return map[row][column + 1];
+function setNextCellValue(map: MapOfCharacters[][], row: number, column: number, rowOffset: number, colOffset: number): MapOfCharacters {
+    return map[row + rowOffset][column + colOffset];
 }
