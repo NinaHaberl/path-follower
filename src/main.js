@@ -9,8 +9,6 @@ var validate_1 = require("./map/validate");
 var collector_1 = require("./path/collector");
 var map = maps.minimumMap;
 var startPosition = validate_1.validateMapAndFindStartingPosition(map);
-if (startPosition !== undefined) {
-    var output = collector_1.collectLettersAndFollowPath(map, startPosition);
-    console.log("Collected letters: " + output.letters);
-    console.log("Path as characters: " + output.path);
-}
+var output = collector_1.collectLettersAndFollowPath(map, startPosition);
+console.log("Collected letters: " + output.letters);
+console.log("Path as characters: " + output.path);

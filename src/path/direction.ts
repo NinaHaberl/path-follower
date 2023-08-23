@@ -20,30 +20,61 @@ export function setNewPosition(direction: Direction, position: Position): Positi
     return position;
 }
 
-export function setPathDirection(right, down, left, up): number {
-    let pathDirection: Direction;
-    const surroundingCells: MapOfCharacters[] = [right, down, left, up];
-    let definedCell: Array<{ value: string; index: number; }> = [];
+export function setPathDirection(map: MapOfCharacters[][], row: number, column: number, direction: number): number {
 
-    surroundingCells.forEach((value, index) => {
-        if(/[A-Z]|-|\||\+|x/.test(value)) {
-            console.log(value);
-            console.log(index);
-            definedCell.push({value, index});
+    let [right, down, left, up] = checkSurroundingCells(map, row, column);
+    const surroundingCells: MapOfCharacters[] = [right, down, left, up];
+    let cellsWithCharacters: Array<{ character: string; direction: number; }> = [];
+
+    // collect the characters from all surrounding cells
+    surroundingCells.forEach((character, direction) => {
+        if(/[A-Z]|-|\||\+|x/.test(character)) {
+            cellsWithCharacters.push({character, direction});
         }
     });
 
-    if(definedCell.length === 0) {
-        throw new Error("Invalid map: Broken path after @ character");
-
-    } else if(definedCell.length === 1) {
-        pathDirection = definedCell[0].index;
+    if(cellsWithCharacters.length === 0) {
+        throw new Error("Invalid map: Broken path");
 
     } else {
-        console.log(definedCell.length);
+        if(cellsWithCharacters.length === 1) {
+            direction = cellsWithCharacters[0].direction;
+
+        } else {
+            if(direction === Direction.Start) {
+                /* TODO: think about edge cases of valid maps, for example
+
+                 `
+                    ++
+                    @x
+                 `,
+                 `
+                    +--A
+                    |@-+
+                    |
+                    x
+                 `
+                  */
+
+                throw new Error("Invalid map: Multiple starting paths");
+
+            } else {
+                if(direction === Direction.Right || direction === Direction.Left) {
+                    if(!/[A-Z]|\||\+|x/.test(right)) {
+                        throw new Error('Invalid map: Broken path - illegal character');
+                    }
+                }
+                if(direction === Direction.Up || direction === Direction.Down) {
+                    if(!/[A-Z]|\+|\|x/.test(up)) {
+                        throw new Error('Invalid map: Broken path - illegal character');
+                    }
+                }
+
+            }
+        }
     }
 
-    return pathDirection;
+    return direction;
 }
 
 
@@ -74,7 +105,7 @@ export function checkSurroundingCells(map: MapOfCharacters[][], row: number, col
     return [right, down, left, up];
 }
 
-export function getNextCellValue(pathDirection, map, row, column): MapOfCharacters {
+export function getNextCellValue(pathDirection: Direction, map: MapOfCharacters[][], row: number, column: number): MapOfCharacters {
 
     let rowOffset: number = 0;
     let colOffset: number = 0;

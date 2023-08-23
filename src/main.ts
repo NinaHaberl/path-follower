@@ -10,8 +10,6 @@ import {collectLettersAndFollowPath} from "./path/collector";
 const map = maps.minimumMap;
 const startPosition = validateMapAndFindStartingPosition(map);
 
-if(startPosition !== undefined) {
-    let output = collectLettersAndFollowPath(map, startPosition);
-    console.log(`Collected letters: ${output.letters}`);
-    console.log(`Path as characters: ${output.path}`);
-}
+let output = collectLettersAndFollowPath(map, startPosition);
+console.log(`Collected letters: ${output.letters}`);
+console.log(`Path as characters: ${output.path}`);
