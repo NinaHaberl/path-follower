@@ -15,7 +15,6 @@ function collectLettersAndFollowPath(map, startPosition) {
     var oldPosition, nextPosition;
     var currentCharacter;
     while (endOfPath !== "x") {
-        console.log("Po\u010Detna pozicija startnog znaka je " + row + ", " + column);
         oldPosition = { row: row, column: column };
         if (pathDirection === types_1.Direction.Start) {
             pathDirection = direction_1.setPathDirection(map, row, column, pathDirection);
@@ -24,8 +23,6 @@ function collectLettersAndFollowPath(map, startPosition) {
         row = nextPosition.row;
         column = nextPosition.column;
         currentCharacter = direction_1.getCurrentCellValue(map, row, column);
-        console.log("Kre\u0107emo se u stranu " + pathDirection + ", trenutna pozicija nam je na [" + row + "][" + column + "]");
-        console.log("I na toj poziciji nam je znak " + currentCharacter + "\n\n");
         pathAsCharacters.push(currentCharacter);
         if (/[A-Z]/.test(currentCharacter)) {
             // TODO: reduce code
