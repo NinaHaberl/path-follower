@@ -10,23 +10,15 @@ function collectLettersAndFollowPath(map, startPosition) {
     // initialization of path direction and positions
     var pathDirection = types_1.Direction.Start;
     var endOfPath = null;
-    var surroundingCells;
+    var cellsWithCharacters = [];
     var row = startPosition === null || startPosition === void 0 ? void 0 : startPosition.row;
     var column = startPosition === null || startPosition === void 0 ? void 0 : startPosition.column;
     var oldPosition, nextPosition;
     var currentCharacter;
-    var _loop_1 = function () {
+    while (endOfPath !== "x") {
         console.log("trenutna pozicija je: [" + row + "][" + column + "]: trenutni znak je: " + map[row][column]);
         oldPosition = { row: row, column: column };
-        var _a = direction_1.checkSurroundingCells(map, row, column), right = _a[0], down = _a[1], left = _a[2], up = _a[3];
-        var surroundingCells_1 = [right, down, left, up];
-        var cellsWithCharacters = [];
-        // throw out empty cells
-        surroundingCells_1.forEach(function (character, direction) {
-            if (/[A-Z]|-|\||\+|x/.test(character)) {
-                cellsWithCharacters.push({ character: character, direction: direction });
-            }
-        });
+        cellsWithCharacters = getCellsWithCharacters(map, row, column);
         if (pathDirection === types_1.Direction.Start) {
             pathDirection = direction_1.setPathDirection(cellsWithCharacters);
         }
@@ -51,18 +43,34 @@ function collectLettersAndFollowPath(map, startPosition) {
             }
         }
         if (/\+/.test(currentCharacter)) {
-            pathDirection = direction_1.makeTurn(map, row, column, pathDirection);
+            // check surrounding cells before making turn
+            cellsWithCharacters = getCellsWithCharacters(map, row, column);
+            if (pathDirection === types_1.Direction.Right, types_1.Direction.Left) {
+                pathDirection = direction_1.makeVerticalTurn(cellsWithCharacters, pathDirection);
+            }
+            else {
+                pathDirection = direction_1.makeHorizontalTurn(cellsWithCharacters, pathDirection);
+            }
         }
         if (currentCharacter === "x") {
             endOfPath = "x";
         }
-    };
-    while (endOfPath !== "x") {
-        _loop_1();
     }
     return { letters: collectedLetters.join(""), path: pathAsCharacters.join("") };
 }
 exports.collectLettersAndFollowPath = collectLettersAndFollowPath;
 function letterLocationExists(stored, collected) {
     return JSON.stringify(stored) === JSON.stringify(collected);
+}
+function getCellsWithCharacters(map, row, column) {
+    var _a = direction_1.checkSurroundingCells(map, row, column), right = _a[0], down = _a[1], left = _a[2], up = _a[3];
+    var surroundingCells = [right, down, left, up];
+    var cells = [];
+    // throw out empty cells
+    surroundingCells.forEach(function (character, direction) {
+        if (/[A-Z]|-|\||\+|x/.test(character)) {
+            cells.push({ character: character, direction: direction });
+        }
+    });
+    return cells;
 }

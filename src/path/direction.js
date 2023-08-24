@@ -48,6 +48,14 @@ function setNewPosition(direction, position) {
     return position;
 }
 exports.setNewPosition = setNewPosition;
+function makeVerticalTurn(surroundingCharacters, currentDirection) {
+    console.log(surroundingCharacters);
+    return types_1.Direction.Down;
+}
+exports.makeVerticalTurn = makeVerticalTurn;
+function makeHorizontalTurn(surroundingCharacters, currentDirection) {
+}
+exports.makeHorizontalTurn = makeHorizontalTurn;
 function makeTurn(map, row, column, currentDirection) {
     var _a;
     // TODO: reduce code

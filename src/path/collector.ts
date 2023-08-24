@@ -1,6 +1,7 @@
 import {Direction, MapOfCharacters, Position} from "../types";
-import {getCurrentCellValue, setNewPosition, setPathDirection, makeTurn, checkSurroundingCells} from "./direction";
-import * as constants from "constants";
+import {checkSurroundingCells, getCurrentCellValue,
+    makeHorizontalTurn, makeVerticalTurn,
+    setNewPosition, setPathDirection} from "./direction";
 
 export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosition: Position | undefined): {
     letters: string;
@@ -15,7 +16,7 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
     // initialization of path direction and positions
     let pathDirection: Direction = Direction.Start;
     let endOfPath: MapOfCharacters | null = null;
-    let surroundingCells: MapOfCharacters[];
+    let cellsWithCharacters: Array<{ character: string; direction: number; }> = [];
 
     let row = startPosition?.row;
     let column = startPosition?.column;
@@ -28,16 +29,7 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
 
         oldPosition = { row, column };
 
-        const [right, down, left, up] = checkSurroundingCells(map, row, column);
-        const surroundingCells: MapOfCharacters[] = [right, down, left, up];
-        let cellsWithCharacters: Array<{ character: string; direction: number; }> = [];
-
-        // throw out empty cells
-        surroundingCells.forEach((character, direction) => {
-            if(/[A-Z]|-|\||\+|x/.test(character)) {
-                cellsWithCharacters.push({character, direction});
-            }
-        });
+        cellsWithCharacters = getCellsWithCharacters(map, row, column);
 
         if(pathDirection === Direction.Start) {
             pathDirection = setPathDirection(cellsWithCharacters);
@@ -68,7 +60,15 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
         }
 
         if(/\+/.test(currentCharacter)) {
-            pathDirection = makeTurn(map, row, column, pathDirection);
+            // check surrounding cells before making turn
+            cellsWithCharacters = getCellsWithCharacters(map, row, column);
+
+            if(pathDirection === Direction.Right, Direction.Left) {
+                pathDirection = makeVerticalTurn(cellsWithCharacters, pathDirection);
+
+             } else {
+                pathDirection = makeHorizontalTurn(cellsWithCharacters, pathDirection);
+            }
         }
 
         if(currentCharacter === "x") {
@@ -81,4 +81,20 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
 
 function letterLocationExists(stored, collected) {
     return JSON.stringify(stored) === JSON.stringify(collected);
+}
+
+function getCellsWithCharacters(map: MapOfCharacters[][], row: number, column: number): Array<{ character: string; direction: number; }> {
+
+    const [right, down, left, up] = checkSurroundingCells(map, row, column);
+    const surroundingCells: MapOfCharacters[] = [right, down, left, up];
+    let cells: Array<{ character: string; direction: number; }> = [];
+
+    // throw out empty cells
+    surroundingCells.forEach((character, direction) => {
+        if(/[A-Z]|-|\||\+|x/.test(character)) {
+            cells.push({character, direction});
+        }
+    });
+
+    return cells;
 }

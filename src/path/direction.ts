@@ -52,6 +52,14 @@ export function setNewPosition(direction: Direction, position: Position): Positi
     return position;
 }
 
+export function makeVerticalTurn(surroundingCharacters: Array<{ character: string; direction: number; }>, currentDirection: number): Direction {
+    console.log(surroundingCharacters);
+    return Direction.Down;
+}
+
+export function makeHorizontalTurn(surroundingCharacters: Array<{ character: string; direction: number; }>, currentDirection: number): Direction {
+
+}
 export function makeTurn(map: MapOfCharacters[][], row: number, column: number, currentDirection: number): Direction {
 
     // TODO: reduce code
