@@ -1,16 +1,8 @@
 "use strict";
 exports.__esModule = true;
 var types_1 = require("../types");
-function setPathDirection(map, row, column, direction) {
-    var _a = checkSurroundingCells(map, row, column), right = _a[0], down = _a[1], left = _a[2], up = _a[3];
-    var surroundingCells = [right, down, left, up];
-    var cellsWithCharacters = [];
-    // collect the characters from all surrounding cells
-    surroundingCells.forEach(function (character, direction) {
-        if (/[A-Z]|-|\||\+|x/.test(character)) {
-            cellsWithCharacters.push({ character: character, direction: direction });
-        }
-    });
+function setPathDirection(cellsWithCharacters) {
+    var direction;
     if (cellsWithCharacters.length === 0) {
         throw new Error("Invalid map: Broken path");
     }
@@ -26,7 +18,7 @@ function setPathDirection(map, row, column, direction) {
               @x
             `,
             `
-               +--A
+                 +--A
                  |@-+
                  |
                  x
@@ -79,18 +71,12 @@ function makeTurn(map, row, column, currentDirection) {
         var direction = _a.direction;
         return direction !== directionToRemove;
     });
-    for (var x = 0; x < cellsWithCharacters.length; x++) {
-        console.log("" + cellsWithCharacters[x].character);
-        console.log("" + cellsWithCharacters[x].direction);
-    }
     if (cellsWithCharacters.length === 0) {
         throw new Error("Invalid map: Broken path");
     }
     else {
         if (cellsWithCharacters.length === 1) {
             // TODO: check for fake turn
-            console.log("\u0160to se nalazi desno? " + right);
-            console.log("idem u smijeru " + types_1.Direction.Right);
             if (/[A-Z]|-|\+|x/.test(right)) {
                 throw new Error("Invalid map: Fake turn");
             }
@@ -99,23 +85,6 @@ function makeTurn(map, row, column, currentDirection) {
             }
         }
         else {
-            var invalidDirections = [];
-            switch (currentDirection) {
-                case types_1.Direction.Left:
-                case types_1.Direction.Right:
-                    invalidDirections = [down, up];
-                    break;
-                case types_1.Direction.Down:
-                case types_1.Direction.Up:
-                    invalidDirections = [right, left];
-                    break;
-            }
-            if (invalidDirections.every(function (direction) { return /[A-Z]||\+|x/.test(direction); })) {
-                throw new Error("Invalid map: Fork in path");
-            }
-            else {
-                currentDirection = cellsWithCharacters[0].direction;
-            }
         }
     }
     return currentDirection;

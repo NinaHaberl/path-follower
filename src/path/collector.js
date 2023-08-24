@@ -10,14 +10,25 @@ function collectLettersAndFollowPath(map, startPosition) {
     // initialization of path direction and positions
     var pathDirection = types_1.Direction.Start;
     var endOfPath = null;
+    var surroundingCells;
     var row = startPosition === null || startPosition === void 0 ? void 0 : startPosition.row;
     var column = startPosition === null || startPosition === void 0 ? void 0 : startPosition.column;
     var oldPosition, nextPosition;
     var currentCharacter;
-    while (endOfPath !== "x") {
+    var _loop_1 = function () {
+        console.log("trenutna pozicija je: [" + row + "][" + column + "]: trenutni znak je: " + map[row][column]);
         oldPosition = { row: row, column: column };
+        var _a = direction_1.checkSurroundingCells(map, row, column), right = _a[0], down = _a[1], left = _a[2], up = _a[3];
+        var surroundingCells_1 = [right, down, left, up];
+        var cellsWithCharacters = [];
+        // throw out empty cells
+        surroundingCells_1.forEach(function (character, direction) {
+            if (/[A-Z]|-|\||\+|x/.test(character)) {
+                cellsWithCharacters.push({ character: character, direction: direction });
+            }
+        });
         if (pathDirection === types_1.Direction.Start) {
-            pathDirection = direction_1.setPathDirection(map, row, column, pathDirection);
+            pathDirection = direction_1.setPathDirection(cellsWithCharacters);
         }
         nextPosition = direction_1.setNewPosition(pathDirection, oldPosition);
         row = nextPosition.row;
@@ -45,6 +56,9 @@ function collectLettersAndFollowPath(map, startPosition) {
         if (currentCharacter === "x") {
             endOfPath = "x";
         }
+    };
+    while (endOfPath !== "x") {
+        _loop_1();
     }
     return { letters: collectedLetters.join(""), path: pathAsCharacters.join("") };
 }

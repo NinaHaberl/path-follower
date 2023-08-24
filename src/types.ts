@@ -11,5 +11,4 @@ export enum Direction {
     Left,
     Up,
     Start,
-
 }

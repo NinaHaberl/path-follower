@@ -1,5 +1,6 @@
 import {Direction, MapOfCharacters, Position} from "../types";
-import {getCurrentCellValue, setNewPosition, setPathDirection, makeTurn} from "./direction";
+import {getCurrentCellValue, setNewPosition, setPathDirection, makeTurn, checkSurroundingCells} from "./direction";
+import * as constants from "constants";
 
 export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosition: Position | undefined): {
     letters: string;
@@ -14,6 +15,7 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
     // initialization of path direction and positions
     let pathDirection: Direction = Direction.Start;
     let endOfPath: MapOfCharacters | null = null;
+    let surroundingCells: MapOfCharacters[];
 
     let row = startPosition?.row;
     let column = startPosition?.column;
@@ -22,9 +24,23 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
 
     while(endOfPath !== "x") {
 
+        console.log(`trenutna pozicija je: [${row}][${column}]: trenutni znak je: ${map[row][column]}`);
+
         oldPosition = { row, column };
+
+        const [right, down, left, up] = checkSurroundingCells(map, row, column);
+        const surroundingCells: MapOfCharacters[] = [right, down, left, up];
+        let cellsWithCharacters: Array<{ character: string; direction: number; }> = [];
+
+        // throw out empty cells
+        surroundingCells.forEach((character, direction) => {
+            if(/[A-Z]|-|\||\+|x/.test(character)) {
+                cellsWithCharacters.push({character, direction});
+            }
+        });
+
         if(pathDirection === Direction.Start) {
-            pathDirection = setPathDirection(map, row, column, pathDirection);
+            pathDirection = setPathDirection(cellsWithCharacters);
         }
 
         nextPosition = setNewPosition(pathDirection, oldPosition);

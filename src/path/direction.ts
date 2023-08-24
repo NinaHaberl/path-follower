@@ -1,17 +1,8 @@
 import {Direction, MapOfCharacters, Position} from "../types";
 
-export function setPathDirection(map: MapOfCharacters[][], row: number, column: number, direction: number): number {
+export function setPathDirection(cellsWithCharacters: Array<{ character: string; direction: number; }>): number {
 
-    let [right, down, left, up] = checkSurroundingCells(map, row, column);
-    const surroundingCells: MapOfCharacters[] = [right, down, left, up];
-    let cellsWithCharacters: Array<{ character: string; direction: number; }> = [];
-
-    // collect the characters from all surrounding cells
-    surroundingCells.forEach((character, direction) => {
-        if(/[A-Z]|-|\||\+|x/.test(character)) {
-            cellsWithCharacters.push({character, direction});
-        }
-    });
+    let direction: number;
 
     if(cellsWithCharacters.length === 0) {
         throw new Error("Invalid map: Broken path");
@@ -28,7 +19,7 @@ export function setPathDirection(map: MapOfCharacters[][], row: number, column: 
               @x
             `,
             `
-               +--A
+                 +--A
                  |@-+
                  |
                  x
@@ -84,21 +75,12 @@ export function makeTurn(map: MapOfCharacters[][], row: number, column: number, 
     const directionToRemove = directionToIndex[currentDirection];
     cellsWithCharacters = cellsWithCharacters.filter(({ direction }) => direction !== directionToRemove);
 
-
-    for(let x = 0; x < cellsWithCharacters.length; x++) {
-        console.log(`${cellsWithCharacters[x].character}`);
-        console.log(`${cellsWithCharacters[x].direction}`);
-    }
-
     if(cellsWithCharacters.length === 0) {
         throw new Error("Invalid map: Broken path");
 
     } else {
         if(cellsWithCharacters.length === 1) {
             // TODO: check for fake turn
-            console.log(`Što se nalazi desno? ${right}`);
-            console.log(`idem u smijeru ${Direction.Right}`);
-
             if(/[A-Z]|-|\+|x/.test(right)) {
                 throw new Error("Invalid map: Fake turn");
             } else {
@@ -106,24 +88,7 @@ export function makeTurn(map: MapOfCharacters[][], row: number, column: number, 
             }
 
         } else {
-            let invalidDirections = [];
 
-            switch (currentDirection) {
-                case Direction.Left:
-                case Direction.Right:
-                    invalidDirections = [down, up];
-                    break;
-                case Direction.Down:
-                case Direction.Up:
-                    invalidDirections = [right, left];
-                    break;
-            }
-
-            if (invalidDirections.every(direction => /[A-Z]||\+|x/.test(direction))) {
-                throw new Error("Invalid map: Fork in path");
-            } else {
-                currentDirection = cellsWithCharacters[0].direction;
-            }
         }
     }
 
