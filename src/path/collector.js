@@ -15,12 +15,20 @@ function collectLettersAndFollowPath(map, startPosition) {
     var column = startPosition === null || startPosition === void 0 ? void 0 : startPosition.column;
     var oldPosition, nextPosition;
     var currentCharacter;
-    while (endOfPath !== "x") {
-        console.log("trenutna pozicija je: [" + row + "][" + column + "]: trenutni znak je: " + map[row][column]);
+    var _loop_1 = function () {
+        var _a;
         oldPosition = { row: row, column: column };
-        cellsWithCharacters = getCellsWithCharacters(map, row, column);
+        var _b = direction_1.checkSurroundingCells(map, row, column), right = _b[0], down = _b[1], left = _b[2], up = _b[3];
+        var surroundingCells = [right, down, left, up];
+        var cellsWithCharacters_1 = [];
+        // throw out empty cells
+        surroundingCells.forEach(function (character, direction) {
+            if (/[A-Z]|-|\||\+|x/.test(character)) {
+                cellsWithCharacters_1.push({ character: character, direction: direction });
+            }
+        });
         if (pathDirection === types_1.Direction.Start) {
-            pathDirection = direction_1.setPathDirection(cellsWithCharacters);
+            pathDirection = direction_1.setPathDirection(cellsWithCharacters_1);
         }
         nextPosition = direction_1.setNewPosition(pathDirection, oldPosition);
         row = nextPosition.row;
@@ -42,19 +50,49 @@ function collectLettersAndFollowPath(map, startPosition) {
                 }
             }
         }
-        if (/\+/.test(currentCharacter)) {
-            // check surrounding cells before making turn
-            cellsWithCharacters = getCellsWithCharacters(map, row, column);
-            if (pathDirection === types_1.Direction.Right, types_1.Direction.Left) {
-                pathDirection = direction_1.makeVerticalTurn(cellsWithCharacters, pathDirection);
+        // TODO: reduce code :P
+        if (currentCharacter === "+") {
+            _a = direction_1.checkSurroundingCells(map, row, column), right = _a[0], down = _a[1], left = _a[2], up = _a[3];
+            surroundingCells = [right, down, left, up];
+            if ((pathDirection === types_1.Direction.Right && /[A-Z]|-|\+|x/.test(right)) ||
+                (pathDirection === types_1.Direction.Left && /[A-Z]|-|\+|x/.test(left)) ||
+                (pathDirection === types_1.Direction.Down && /[A-Z]|\||\+|x/.test(down)) ||
+                (pathDirection === types_1.Direction.Up && /[A-Z]|\||\+|x/.test(up))) {
+                throw new Error("Invalid map: Fake turn");
             }
-            else {
-                pathDirection = direction_1.makeHorizontalTurn(cellsWithCharacters, pathDirection);
+            if (pathDirection === types_1.Direction.Right || pathDirection === types_1.Direction.Left) {
+                if (/[A-Z]|\||\+|x/.test(up) && /[A-Z]|\||\+|x/.test(down)) {
+                    throw new Error("Invalid map: Fork in path");
+                }
+                else {
+                    if ((up === " " || up === undefined) && /[A-Z]|\||\+|x/.test(down)) {
+                        pathDirection = types_1.Direction.Down;
+                    }
+                    else {
+                        pathDirection = types_1.Direction.Up;
+                    }
+                }
+            }
+            else if (pathDirection === types_1.Direction.Up || pathDirection === types_1.Direction.Down) {
+                if (/[A-Z]|-|\+|x/.test(right) && /[A-Z]|-|\+|x/.test(left)) {
+                    throw new Error("Invalid map: Fork in path");
+                }
+                else {
+                    if ((right === " " || right === undefined) && /[A-Z]|-|\+|x/.test(left)) {
+                        pathDirection = types_1.Direction.Left;
+                    }
+                    else {
+                        pathDirection = types_1.Direction.Right;
+                    }
+                }
             }
         }
         if (currentCharacter === "x") {
             endOfPath = "x";
         }
+    };
+    while (endOfPath !== "x") {
+        _loop_1();
     }
     return { letters: collectedLetters.join(""), path: pathAsCharacters.join("") };
 }

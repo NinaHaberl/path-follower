@@ -51,59 +51,6 @@ export function setNewPosition(direction: Direction, position: Position): Positi
 
     return position;
 }
-
-export function makeVerticalTurn(surroundingCharacters: Array<{ character: string; direction: number; }>, currentDirection: number): Direction {
-    console.log(surroundingCharacters);
-    return Direction.Down;
-}
-
-export function makeHorizontalTurn(surroundingCharacters: Array<{ character: string; direction: number; }>, currentDirection: number): Direction {
-
-}
-export function makeTurn(map: MapOfCharacters[][], row: number, column: number, currentDirection: number): Direction {
-
-    // TODO: reduce code
-    let [right, down, left, up] = checkSurroundingCells(map, row, column);
-    const surroundingCells: MapOfCharacters[] = [right, down, left, up];
-    let cellsWithCharacters: Array<{ character: string; direction: number; }> = [];
-    surroundingCells.forEach((character, direction) => {
-        if(/[A-Z]|-|\||\+|x/.test(character)) {
-            cellsWithCharacters.push({character, direction});
-        }
-    });
-
-    /* instead of switch/case */
-    const directionToIndex = {
-        [Direction.Right]: 2,
-        [Direction.Down]: 3,
-        [Direction.Left]: 0,
-        [Direction.Up]: 1,
-    };
-
-    const directionToRemove = directionToIndex[currentDirection];
-    cellsWithCharacters = cellsWithCharacters.filter(({ direction }) => direction !== directionToRemove);
-
-    if(cellsWithCharacters.length === 0) {
-        throw new Error("Invalid map: Broken path");
-
-    } else {
-        if(cellsWithCharacters.length === 1) {
-            // TODO: check for fake turn
-            if(/[A-Z]|-|\+|x/.test(right)) {
-                throw new Error("Invalid map: Fake turn");
-            } else {
-                currentDirection = cellsWithCharacters[0].direction;
-            }
-
-        } else {
-
-        }
-    }
-
-    return currentDirection;
-}
-
-
 export function checkSurroundingCells(map: MapOfCharacters[][], row: number, column: number): [MapOfCharacters | undefined, MapOfCharacters | undefined, MapOfCharacters | undefined, MapOfCharacters | undefined] {
 
     let right:string | undefined, down:string | undefined, left:string | undefined, up:string | undefined;
@@ -113,7 +60,7 @@ export function checkSurroundingCells(map: MapOfCharacters[][], row: number, col
      * TODO: refactor [reduce code]
      */
     if(!(column >= (map[row].length - 1))) {
-        right = setNextCellValue(map, row, column, 0, 1);;
+        right = setNextCellValue(map, row, column, 0, 1);
     }
 
     if(!(row >= (map.length - 1))) {
