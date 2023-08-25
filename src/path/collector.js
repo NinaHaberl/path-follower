@@ -16,9 +16,9 @@ function collectLettersAndFollowPath(map, startPosition) {
     var oldPosition, nextPosition;
     var currentCharacter;
     var _loop_1 = function () {
-        var _a;
+        var _a, _b;
         oldPosition = { row: row, column: column };
-        var _b = direction_1.checkSurroundingCells(map, row, column), right = _b[0], down = _b[1], left = _b[2], up = _b[3];
+        var _c = direction_1.checkSurroundingCells(map, row, column), right = _c[0], down = _c[1], left = _c[2], up = _c[3];
         var surroundingCells = [right, down, left, up];
         var cellsWithCharacters_1 = [];
         // throw out empty cells
@@ -37,8 +37,6 @@ function collectLettersAndFollowPath(map, startPosition) {
         pathAsCharacters.push(currentCharacter);
         if (/[A-Z]/.test(currentCharacter)) {
             // TODO: reduce code;
-            //  BUG - 'Do not collect a letter from the same location twice' not working
-            console.log("Trenutni znak koji smo pro\u010Ditali je " + currentCharacter + ", na adresi [" + row + "][" + column + "]");
             if (letterLocations.size !== 0 && !letterLocations.has(currentCharacter)) {
                 letterLocations.set(currentCharacter, [row, column]);
                 collectedLetters.push(currentCharacter);
@@ -51,10 +49,19 @@ function collectLettersAndFollowPath(map, startPosition) {
                     collectedLetters.push(currentCharacter);
                 }
             }
+            //checking if the letter is on the turn
+            _a = direction_1.checkSurroundingCells(map, row, column), right = _a[0], down = _a[1], left = _a[2], up = _a[3];
+            surroundingCells = [right, down, left, up];
+            if ((pathDirection === types_1.Direction.Right && (right === " " || right === undefined)) ||
+                (pathDirection === types_1.Direction.Left && (right === " " || right === undefined)) ||
+                (pathDirection === types_1.Direction.Down && (right === " " || right === undefined)) ||
+                (pathDirection === types_1.Direction.Up && (right === " " || right === undefined))) {
+                pathDirection = direction_1.makeTurn(right, down, left, up, pathDirection);
+            }
         }
         // TODO: reduce code :P
         if (currentCharacter === "+") {
-            _a = direction_1.checkSurroundingCells(map, row, column), right = _a[0], down = _a[1], left = _a[2], up = _a[3];
+            _b = direction_1.checkSurroundingCells(map, row, column), right = _b[0], down = _b[1], left = _b[2], up = _b[3];
             surroundingCells = [right, down, left, up];
             if ((pathDirection === types_1.Direction.Right && /[A-Z]|-|\+|x/.test(right)) ||
                 (pathDirection === types_1.Direction.Left && /[A-Z]|-|\+|x/.test(left)) ||
@@ -62,32 +69,7 @@ function collectLettersAndFollowPath(map, startPosition) {
                 (pathDirection === types_1.Direction.Up && /[A-Z]|\||\+|x/.test(up))) {
                 throw new Error("Invalid map: Fake turn");
             }
-            if (pathDirection === types_1.Direction.Right || pathDirection === types_1.Direction.Left) {
-                if (/[A-Z]|\||\+|x/.test(up) && /[A-Z]|\||\+|x/.test(down)) {
-                    throw new Error("Invalid map: Fork in path");
-                }
-                else {
-                    if ((up === " " || up === undefined) && /[A-Z]|\||\+|x/.test(down)) {
-                        pathDirection = types_1.Direction.Down;
-                    }
-                    else {
-                        pathDirection = types_1.Direction.Up;
-                    }
-                }
-            }
-            else if (pathDirection === types_1.Direction.Up || pathDirection === types_1.Direction.Down) {
-                if (/[A-Z]|-|\+|x/.test(right) && /[A-Z]|-|\+|x/.test(left)) {
-                    throw new Error("Invalid map: Fork in path");
-                }
-                else {
-                    if ((right === " " || right === undefined) && /[A-Z]|-|\+|x/.test(left)) {
-                        pathDirection = types_1.Direction.Left;
-                    }
-                    else {
-                        pathDirection = types_1.Direction.Right;
-                    }
-                }
-            }
+            pathDirection = direction_1.makeTurn(right, down, left, up, pathDirection);
         }
         if (currentCharacter === "x") {
             endOfPath = "x";

@@ -86,4 +86,33 @@ export function getCurrentCellValue(map: MapOfCharacters[][], row: number, colum
     return map[row][column];
 }
 
+export function makeTurn(right: MapOfCharacters, down: MapOfCharacters, left: MapOfCharacters, up: MapOfCharacters, directin: Direction): Direction | Error {
+    if(directin === Direction.Right || directin === Direction.Left) {
+
+        if (/[A-Z]|\||\+|x/.test(up) && /[A-Z]|\||\+|x/.test(down)) {
+            throw new Error("Invalid map: Fork in path");
+
+        } else {
+            if ((up === " " || up === undefined) && /[A-Z]|\||\+|x/.test(down)) {
+                directin = Direction.Down;
+
+            } else {
+                directin = Direction.Up;
+            }
+        }
+
+    } else if (directin === Direction.Up || directin === Direction.Down) {
+        if (/[A-Z]|-|\+|x/.test(right) && /[A-Z]|-|\+|x/.test(left)) {
+            throw new Error("Invalid map: Fork in path");
+        } else {
+            if ((right === " " || right === undefined) && /[A-Z]|-|\+|x/.test(left)) {
+                directin = Direction.Left;
+            } else {
+                directin = Direction.Right;
+            }
+        }
+    }
+    return directin;
+}
+
 

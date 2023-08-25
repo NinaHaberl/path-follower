@@ -1,5 +1,5 @@
 import {Direction, MapOfCharacters, Position} from "../types";
-import {checkSurroundingCells, getCurrentCellValue, setNewPosition, setPathDirection} from "./direction";
+import {checkSurroundingCells, getCurrentCellValue, makeTurn, setNewPosition, setPathDirection} from "./direction";
 
 export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosition: Position | undefined): {
     letters: string;
@@ -61,6 +61,17 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
                     collectedLetters.push(currentCharacter);
                 }
             }
+            //checking if the letter is on the turn
+            [right, down, left, up] = checkSurroundingCells(map, row, column);
+            surroundingCells = [right, down, left, up];
+
+            if((pathDirection === Direction.Right && (right === " " || right === undefined)) ||
+                (pathDirection === Direction.Left && (right === " " || right === undefined)) ||
+                (pathDirection === Direction.Down && (right === " " || right === undefined)) ||
+                (pathDirection === Direction.Up && (right === " " || right === undefined))) {
+
+                pathDirection = makeTurn(right, down, left, up, pathDirection);
+            }
         }
 
         // TODO: reduce code :P
@@ -75,31 +86,7 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
                 throw new Error("Invalid map: Fake turn");
             }
 
-            if(pathDirection === Direction.Right || pathDirection === Direction.Left) {
-
-                if (/[A-Z]|\||\+|x/.test(up) && /[A-Z]|\||\+|x/.test(down)) {
-                    throw new Error("Invalid map: Fork in path");
-
-                } else {
-                    if ((up === " " || up === undefined) && /[A-Z]|\||\+|x/.test(down)) {
-                        pathDirection = Direction.Down;
-
-                    } else {
-                        pathDirection = Direction.Up;
-                    }
-                }
-
-            } else if (pathDirection === Direction.Up || pathDirection === Direction.Down) {
-                if (/[A-Z]|-|\+|x/.test(right) && /[A-Z]|-|\+|x/.test(left)) {
-                    throw new Error("Invalid map: Fork in path");
-                } else {
-                    if ((right === " " || right === undefined) && /[A-Z]|-|\+|x/.test(left)) {
-                        pathDirection = Direction.Left;
-                    } else {
-                        pathDirection = Direction.Right;
-                    }
-                }
-            }
+            pathDirection = makeTurn(right, down, left, up, pathDirection);
         }
 
         if(currentCharacter === "x") {
