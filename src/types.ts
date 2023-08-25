@@ -1,8 +1,8 @@
 export type MapOfCharacters = "@" | "-" | "+" | "|" | "x" | string;
 
 export interface Position {
-    row: number;
-    column: number;
+    row: number | undefined;
+    column: number | undefined;
 };
 
 export enum Direction {

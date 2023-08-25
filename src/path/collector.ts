@@ -7,25 +7,24 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
 } {
 
     // initialization of output fields
-    const letterLocations = new Map();
     let collectedLetters: string[] = [];
     let pathAsCharacters: string[] = ["@"];
+    const letterLocations: Map<string, [number, number]> = new Map();
 
     // initialization of path direction and positions
     let pathDirection: Direction = Direction.Start;
     let endOfPath: MapOfCharacters | null = null;
-    let cellsWithCharacters: Array<{ character: string; direction: number; }> = [];
 
     let row = startPosition?.row;
     let column = startPosition?.column;
-    let oldPosition, nextPosition: Position;
+    let position, nextPosition: Position;
     let currentCharacter: MapOfCharacters;
 
     while(endOfPath !== "x") {
 
-        oldPosition = { row, column };
-
-        let [right, down, left, up] = checkSurroundingCells(map, row, column);
+        // initialize current position and surrounding cells;
+        position = { row, column };
+        let [right, down, left, up]: MapOfCharacters | undefined = checkSurroundingCells(map, row, column);
         let surroundingCells: MapOfCharacters[] = [right, down, left, up];
         let cellsWithCharacters: Array<{ character: string; direction: number; }> = [];
 
@@ -40,7 +39,8 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
             pathDirection = setPathDirection(cellsWithCharacters);
         }
 
-        nextPosition = setNewPosition(pathDirection, oldPosition);
+        // set next position and surrounding cells;
+        nextPosition = setNewPosition(pathDirection, position);
         row = nextPosition.row;
         column = nextPosition.column;
 
@@ -53,20 +53,14 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
             throw new Error("Invalid map: Broken path");
         }
 
+        // validate path rules
         if(/[A-Z]/.test(currentCharacter)) {
-            // TODO: reduce code;
-            if(letterLocations.size !== 0 && !letterLocations.has(currentCharacter)) {
-                letterLocations.set(currentCharacter, [row, column]);
-                collectedLetters.push(currentCharacter);
-            } else {
-                let storedLocation = letterLocations.get(currentCharacter);
-                let locationCheck = [row, column];
 
-                if(!letterLocationExists(storedLocation, locationCheck)) {
-                    letterLocations.set(currentCharacter, [row, column]);
-                    collectedLetters.push(currentCharacter);
-                }
+            if(updateLetterLocation(letterLocations, currentCharacter, row, column, collectedLetters)) {
+                collectedLetters.push(currentCharacter);
             }
+
+            // TODO: reduce code;
             //checking if the letter is on the turn
             if((pathDirection === Direction.Right && (right === " " || right === undefined)) ||
                 (pathDirection === Direction.Left && (left === " " || left === undefined)) ||
@@ -96,7 +90,22 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
 
     return { letters: collectedLetters.join(""), path: pathAsCharacters.join("") };
 }
+function updateLetterLocation(
+    letterLocations: Map<string, [number?, number?]>,
+    currentCharacter: string,
+    row: number,
+    column: number
+): boolean {
+    const storedLocation = letterLocations.get(currentCharacter);
+    const currentLocation = [row, column];
+    let storageUpdate = false;
 
-function letterLocationExists(stored, collected) {
-    return JSON.stringify(stored) === JSON.stringify(collected);
+    if (!storedLocation || !letterLocationExists(storedLocation, currentLocation)) {
+        letterLocations.set(currentCharacter, currentLocation);
+        storageUpdate = true;
+    }
+    return storageUpdate;
+}
+function letterLocationExists(stored, current) {
+    return JSON.stringify(stored) === JSON.stringify(current);
 }
