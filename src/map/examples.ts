@@ -51,16 +51,6 @@ export const lettersOnTurnsVerB: MapOfCharacters[][] = [
     [" ", " ", " ", "|", " ", " ", " ", "|"],
     [" ", " ", " ", "O", "-", "-", "-", "O"]
 ];
-export const lettersOnTurnsWithIntersection: MapOfCharacters[][] = [
-    ["@", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
-    ["|", " ", "+", "-", "E", "-", "-", "+", " ", " ", " ", " ", " "],
-    ["A", " ", "|", " ", " ", " ", " ", "|", " ", " ", " ", " ", " "],
-    ["B", "-", "C", "-", "D", "-", "-", "+", " ", " ", "+", "-", "+"],
-    [" ", " ", "|", " ", " ", " ", " ", " ", " ", " ", "|", " ", "|"],
-    [" ", " ", "|", " ", " ", " ", " ", " ", "x", "-", "|", "-", "+"],
-    [" ", " ", "F", "-", "-", "-", "G", "-", "-", "-", "+", " ", " "]
-];
-
 
 /**
  * Valid map: Do not collect a letter from the same location twice
@@ -75,17 +65,39 @@ export const goonies: MapOfCharacters[][] = [
     [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "|"],
     [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "x"],
 ];
+export const lettersOnTurnsWithIntersection: MapOfCharacters[][] = [
+    ["@", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
+    ["|", " ", "+", "-", "E", "-", "-", "+", " ", " ", " ", " ", " "],
+    ["A", " ", "|", " ", " ", " ", " ", "|", " ", " ", " ", " ", " "],
+    ["B", "-", "C", "-", "D", "-", "-", "+", " ", " ", "+", "-", "+"],
+    [" ", " ", "|", " ", " ", " ", " ", " ", " ", " ", "|", " ", "|"],
+    [" ", " ", "|", " ", " ", " ", " ", " ", "x", "-", "|", "-", "+"],
+    [" ", " ", "F", "-", "-", "-", "G", "-", "-", "-", "+", " ", " "]
+];
 
 /**
  * Valid minimum map: Contains only start and stop character.
  */
 export const minimumMap: MapOfCharacters[][] = [
-    [" ", " ", " ", " ", " ", " "],
-    [" ", " ", "@", "-", "A", "x"],
-    [" ", " ", " ", " ", " ", " "]
+    ["@", "x"]
 ];
-export const miniMinimumMap: MapOfCharacters[][] = [
-    ["@", "x"],
+
+/**
+ * Valid map: Keep direction, even in a compact space
+ */
+export const compactMap: MapOfCharacters[][] = [
+    [" ", " ", " ", " ", " ", " ", " ", " "],
+    [" ", "+", "-", "L", "-", "+", " ", " "],
+    [" ", "|", " ", " ", "+", "A", "-", "+"],
+    ["@", "B", "+", " ", "+", "+", " ", "H"],
+    [" ", "+", "+", " ", " ", " ", " ", "x"]
+];
+export const compactMapWithLetterOnTurn: MapOfCharacters[][] = [
+    [" ", " ", " ", " ", " ", " ", " ", " "],
+    [" ", "+", "-", "L", "-", "+", " ", " "],
+    [" ", "|", " ", " ", "+", "A", "-", "+"],
+    ["@", "B", "+", " ", "+", "W", " ", "H"],
+    [" ", "+", "+", " ", " ", " ", " ", "x"]
 ];
 
 /**
@@ -112,7 +124,7 @@ export const multipleStartC: MapOfCharacters[][] = [
     [" ", " ", " ", "@", "-", "-", "A", "-", "-", "x", " ", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
     [" ", " ", "x", "-", "B", "-", "+", " ", " ", " ", " ", " "],
-    [" ", " ", " ", " ", " ", " ", "|", " ", " ", " ", "x", " "],
+    [" ", " ", " ", " ", " ", " ", "|", " ", " ", " ", " ", " "],
     [" ", " ", " ", " ", " ", " ", "@", " ", " ", " ", " ", " "]
 ];
 
@@ -120,6 +132,19 @@ export const multipleStartC: MapOfCharacters[][] = [
  * Invalid maps:
  * 2. Multiple starting paths
  */
+export const multipleStartingPathsVerA: MapOfCharacters[][] = [
+    [" ", "x", "-", "@", "-", "-", "A", "-", "x"]
+];
+export const multipleStartingPathsVerB: MapOfCharacters[][] = [
+    [" ", " ", " ", "+", "-", "-", "A", "-", "-", "x", " ", " "],
+    [" ", " ", " ", "@", " ", " ", " ", " ", " ", " ", " ", " "],
+    [" ", " ", " ", "|", " ", " ", " ", " ", " ", " ", " ", " "],
+    [" ", " ", " ", "+", "-", "-", "x", " ", " ", " ", " ", " "]
+];
+export const multipleStartingPathsVerC: MapOfCharacters[][] = [
+    [" ", " ", " ", "+", "-", "-", "A", "-", "-", "x", " ", " "],
+    [" ", "x", "-", "@", " ", " ", " ", " ", " ", " ", " ", " "]
+];
 export const forkInPathAfterStart: MapOfCharacters[][] = [
     [" ", "x", "-", "@", "-", "-", "A", "-", "-", " ", " ", " "]
 ];
