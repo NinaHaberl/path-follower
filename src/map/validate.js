@@ -19,20 +19,20 @@ function validateMapAndFindStartingPosition(map) {
                 case "x":
                     endingCharacter = true;
                 default:
-                    if (!/^\s*$|[A-Z]|-|\||\+/.test(map[row][column])) {
+                    if (!/^\s*$|[A-Z]|-|\||\+|x/.test(map[row][column])) {
                         throw new Error("Invalid map - Map contains invalid character " + map[row][column] + ". The only valid characters are all uppercase letters (A-Z), minus (-), plus (+), pipe character (|) and 'x' as ending character.");
                     }
             }
         }
     }
-    if (endingCharacter === false) {
-        throw new Error("Invalid map - Missing end character");
-    }
-    if (startPosition !== undefined && startCharacter === true) {
-        return startPosition;
-    }
-    else {
+    if (startPosition === undefined && startCharacter === false) {
         throw new Error("Invalid map - There is no start character!");
     }
+    else {
+        if (endingCharacter === false) {
+            throw new Error("Invalid map - Missing end character");
+        }
+    }
+    return startPosition;
 }
 exports.validateMapAndFindStartingPosition = validateMapAndFindStartingPosition;

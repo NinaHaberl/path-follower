@@ -26,6 +26,15 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
         oldPosition = { row, column };
 
         let [right, down, left, up] = checkSurroundingCells(map, row, column);
+        let surroundingCells: MapOfCharacters[] = [right, down, left, up];
+        let cellsWithCharacters: Array<{ character: string; direction: number; }> = [];
+
+        // throw out empty cells
+        surroundingCells.forEach((character, direction) => {
+            if(/[A-Z]|-|\||\+|x/.test(character)) {
+                cellsWithCharacters.push({character, direction});
+            }
+        });
 
         if(pathDirection === Direction.Start) {
             pathDirection = setPathDirection(cellsWithCharacters);
@@ -37,6 +46,8 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
 
         currentCharacter = getCurrentCellValue(map, row, column);
         pathAsCharacters.push(currentCharacter);
+
+        [right, down, left, up] = checkSurroundingCells(map, row, column);
 
         if(currentCharacter === " ") {
             throw new Error("Invalid map: Broken path");
@@ -57,8 +68,6 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
                 }
             }
             //checking if the letter is on the turn
-            [right, down, left, up] = checkSurroundingCells(map, row, column);
-
             if((pathDirection === Direction.Right && (right === " " || right === undefined)) ||
                 (pathDirection === Direction.Left && (left === " " || left === undefined)) ||
                 (pathDirection === Direction.Down && (down === " " || down === undefined)) ||
@@ -70,8 +79,6 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
 
         // TODO: reduce code :P
         if(currentCharacter === "+") {
-            [right, down, left, up] = checkSurroundingCells(map, row, column);
-
             if((pathDirection === Direction.Right && /[A-Z]|-|\+|x/.test(right)) ||
                 (pathDirection === Direction.Left && /[A-Z]|-|\+|x/.test(left)) ||
                 (pathDirection === Direction.Down && /[A-Z]|\||\+|x/.test(down)) ||
