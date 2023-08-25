@@ -49,8 +49,7 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
 
         if(/[A-Z]/.test(currentCharacter)) {
             // TODO: reduce code;
-            //  BUG - 'Do not collect a letter from the same location twice' not working
-            if(letterLocations.size !== 0 || !letterLocations.has(currentCharacter)) {
+            if(letterLocations.size !== 0 && !letterLocations.has(currentCharacter)) {
                 letterLocations.set(currentCharacter, [row, column]);
                 collectedLetters.push(currentCharacter);
             } else {

@@ -36,8 +36,10 @@ function collectLettersAndFollowPath(map, startPosition) {
         currentCharacter = direction_1.getCurrentCellValue(map, row, column);
         pathAsCharacters.push(currentCharacter);
         if (/[A-Z]/.test(currentCharacter)) {
-            // TODO: reduce code
-            if (letterLocations.size !== 0 || !letterLocations.has(currentCharacter)) {
+            // TODO: reduce code;
+            //  BUG - 'Do not collect a letter from the same location twice' not working
+            console.log("Trenutni znak koji smo pro\u010Ditali je " + currentCharacter + ", na adresi [" + row + "][" + column + "]");
+            if (letterLocations.size !== 0 && !letterLocations.has(currentCharacter)) {
                 letterLocations.set(currentCharacter, [row, column]);
                 collectedLetters.push(currentCharacter);
             }
