@@ -211,3 +211,11 @@ export const startMissingVerB: MapOfCharacters[][] = [
     [" ", " ", " ", " ", "|", " ", " ", " ", "|"],
     [" ", " ", " ", " ", "+", "-", "-", "-", "+"],
 ];
+
+/**
+ * Invalid map:
+ * 5. Fake turn
+ */
+export const fakeTurn: MapOfCharacters[][] = [
+    ["@", "-", "A", "+", "-", "B", "-", "x", " "]
+];

@@ -36,42 +36,33 @@ function collectLettersAndFollowPath(map, startPosition) {
         column = nextPosition.column;
         currentCharacter = direction_1.getCurrentCellValue(map, row, column);
         pathAsCharacters.push(currentCharacter);
+        // validate path rules
+        // after direction and surrounding cells setup
         _a = direction_1.checkSurroundingCells(map, row, column), right = _a[0], down = _a[1], left = _a[2], up = _a[3];
+        var nextCell = pathDirection === types_1.Direction.Right ? right :
+            pathDirection === types_1.Direction.Left ? left :
+                pathDirection === types_1.Direction.Down ? down :
+                    pathDirection === types_1.Direction.Up ? up : "";
+        var positionRules = new Map([
+            [types_1.Direction.Right, /[A-Z]|-|\+|x/],
+            [types_1.Direction.Left, /[A-Z]|-|\+|x/],
+            [types_1.Direction.Down, /[A-Z]|\||\+|x/],
+            [types_1.Direction.Up, /[A-Z]|\||\+|x/]
+        ]);
+        var directionValidation = positionRules.get(pathDirection);
         if (currentCharacter === " ") {
             throw new Error("Invalid map: Broken path");
         }
-        // validate path rules
         if (/[A-Z]/.test(currentCharacter)) {
-            // TODO: reduce code;
-            /*if(letterLocations.size !== 0 && !letterLocations.has(currentCharacter)) {
-                letterLocations.set(currentCharacter, [row, column]);
-                collectedLetters.push(currentCharacter);
-            } else {
-                let storedLocation = letterLocations.get(currentCharacter);
-                let locationCheck = [row, column];
-
-                if(!letterLocationExists(storedLocation, locationCheck)) {
-                    letterLocations.set(currentCharacter, [row, column]);
-                    collectedLetters.push(currentCharacter);
-                }
-            }*/
             if (updateLetterLocation(letterLocations, currentCharacter, row, column, collectedLetters)) {
                 collectedLetters.push(currentCharacter);
             }
-            //checking if the letter is on the turn
-            if ((pathDirection === types_1.Direction.Right && (right === " " || right === undefined)) ||
-                (pathDirection === types_1.Direction.Left && (left === " " || left === undefined)) ||
-                (pathDirection === types_1.Direction.Down && (down === " " || down === undefined)) ||
-                (pathDirection === types_1.Direction.Up && (up === " " || up === undefined))) {
+            if (nextCell === " " || nextCell === undefined) {
                 pathDirection = direction_1.makeTurn(right, down, left, up, pathDirection);
             }
         }
-        // TODO: reduce code :P
         if (currentCharacter === "+") {
-            if ((pathDirection === types_1.Direction.Right && /[A-Z]|-|\+|x/.test(right)) ||
-                (pathDirection === types_1.Direction.Left && /[A-Z]|-|\+|x/.test(left)) ||
-                (pathDirection === types_1.Direction.Down && /[A-Z]|\||\+|x/.test(down)) ||
-                (pathDirection === types_1.Direction.Up && /[A-Z]|\||\+|x/.test(up))) {
+            if (directionValidation.test(nextCell)) {
                 throw new Error("Invalid map: Fake turn");
             }
             pathDirection = direction_1.makeTurn(right, down, left, up, pathDirection);

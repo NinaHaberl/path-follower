@@ -3,7 +3,6 @@ import {Direction, MapOfCharacters, Position} from "../types";
 export function setPathDirection(cellsWithCharacters: Array<{ character: string; direction: number; }>): number {
     let direction: number;
 
-
     if(cellsWithCharacters.length === 0) {
         throw new Error("Invalid map: Broken path");
 

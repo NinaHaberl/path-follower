@@ -47,36 +47,41 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
         currentCharacter = getCurrentCellValue(map, row, column);
         pathAsCharacters.push(currentCharacter);
 
+        // validate path rules
+        // after direction and surrounding cells setup
         [right, down, left, up] = checkSurroundingCells(map, row, column);
+        let nextCell: MapOfCharacters =
+            pathDirection === Direction.Right ? right :
+            pathDirection === Direction.Left ? left :
+            pathDirection === Direction.Down ? down :
+            pathDirection === Direction.Up ? up : "";
+
+        let positionRules: Map<Direction, RegExp> = new Map([
+            [Direction.Right, /[A-Z]|-|\+|x/],
+            [Direction.Left, /[A-Z]|-|\+|x/],
+            [Direction.Down, /[A-Z]|\||\+|x/],
+            [Direction.Up, /[A-Z]|\||\+|x/]
+        ]);
+
+        let directionValidation = positionRules.get(pathDirection);
+
 
         if(currentCharacter === " ") {
             throw new Error("Invalid map: Broken path");
         }
 
-        // validate path rules
         if(/[A-Z]/.test(currentCharacter)) {
-
             if(updateLetterLocation(letterLocations, currentCharacter, row, column, collectedLetters)) {
                 collectedLetters.push(currentCharacter);
             }
 
-            // TODO: reduce code;
-            //checking if the letter is on the turn
-            if((pathDirection === Direction.Right && (right === " " || right === undefined)) ||
-                (pathDirection === Direction.Left && (left === " " || left === undefined)) ||
-                (pathDirection === Direction.Down && (down === " " || down === undefined)) ||
-                (pathDirection === Direction.Up && (up === " " || up === undefined))) {
-
+            if(nextCell === " " || nextCell === undefined) {
                 pathDirection = makeTurn(right, down, left, up, pathDirection);
             }
         }
 
-        // TODO: reduce code :P
         if(currentCharacter === "+") {
-            if((pathDirection === Direction.Right && /[A-Z]|-|\+|x/.test(right)) ||
-                (pathDirection === Direction.Left && /[A-Z]|-|\+|x/.test(left)) ||
-                (pathDirection === Direction.Down && /[A-Z]|\||\+|x/.test(down)) ||
-                (pathDirection === Direction.Up && /[A-Z]|\||\+|x/.test(up))) {
+            if(directionValidation.test(nextCell)) {
                 throw new Error("Invalid map: Fake turn");
             }
 
