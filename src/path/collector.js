@@ -3,6 +3,7 @@ exports.__esModule = true;
 var types_1 = require("../types");
 var direction_1 = require("./direction");
 function collectLettersAndFollowPath(map, startPosition) {
+    var _a, _b;
     // initialization of output fields
     var letterLocations = new Map();
     var collectedLetters = [];
@@ -15,26 +16,20 @@ function collectLettersAndFollowPath(map, startPosition) {
     var column = startPosition === null || startPosition === void 0 ? void 0 : startPosition.column;
     var oldPosition, nextPosition;
     var currentCharacter;
-    var _loop_1 = function () {
-        var _a, _b;
+    while (endOfPath !== "x") {
         oldPosition = { row: row, column: column };
         var _c = direction_1.checkSurroundingCells(map, row, column), right = _c[0], down = _c[1], left = _c[2], up = _c[3];
-        var surroundingCells = [right, down, left, up];
-        var cellsWithCharacters_1 = [];
-        // throw out empty cells
-        surroundingCells.forEach(function (character, direction) {
-            if (/[A-Z]|-|\||\+|x/.test(character)) {
-                cellsWithCharacters_1.push({ character: character, direction: direction });
-            }
-        });
         if (pathDirection === types_1.Direction.Start) {
-            pathDirection = direction_1.setPathDirection(cellsWithCharacters_1);
+            pathDirection = direction_1.setPathDirection(cellsWithCharacters);
         }
         nextPosition = direction_1.setNewPosition(pathDirection, oldPosition);
         row = nextPosition.row;
         column = nextPosition.column;
         currentCharacter = direction_1.getCurrentCellValue(map, row, column);
         pathAsCharacters.push(currentCharacter);
+        if (currentCharacter === " ") {
+            throw new Error("Invalid map: Broken path");
+        }
         if (/[A-Z]/.test(currentCharacter)) {
             // TODO: reduce code;
             if (letterLocations.size !== 0 && !letterLocations.has(currentCharacter)) {
@@ -72,25 +67,10 @@ function collectLettersAndFollowPath(map, startPosition) {
         if (currentCharacter === "x") {
             endOfPath = "x";
         }
-    };
-    while (endOfPath !== "x") {
-        _loop_1();
     }
     return { letters: collectedLetters.join(""), path: pathAsCharacters.join("") };
 }
 exports.collectLettersAndFollowPath = collectLettersAndFollowPath;
 function letterLocationExists(stored, collected) {
     return JSON.stringify(stored) === JSON.stringify(collected);
-}
-function getCellsWithCharacters(map, row, column) {
-    var _a = direction_1.checkSurroundingCells(map, row, column), right = _a[0], down = _a[1], left = _a[2], up = _a[3];
-    var surroundingCells = [right, down, left, up];
-    var cells = [];
-    // throw out empty cells
-    surroundingCells.forEach(function (character, direction) {
-        if (/[A-Z]|-|\||\+|x/.test(character)) {
-            cells.push({ character: character, direction: direction });
-        }
-    });
-    return cells;
 }

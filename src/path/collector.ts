@@ -26,15 +26,6 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
         oldPosition = { row, column };
 
         let [right, down, left, up] = checkSurroundingCells(map, row, column);
-        let surroundingCells: MapOfCharacters[] = [right, down, left, up];
-        let cellsWithCharacters: Array<{ character: string; direction: number; }> = [];
-
-        // throw out empty cells
-        surroundingCells.forEach((character, direction) => {
-            if(/[A-Z]|-|\||\+|x/.test(character)) {
-                cellsWithCharacters.push({character, direction});
-            }
-        });
 
         if(pathDirection === Direction.Start) {
             pathDirection = setPathDirection(cellsWithCharacters);
@@ -46,6 +37,10 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
 
         currentCharacter = getCurrentCellValue(map, row, column);
         pathAsCharacters.push(currentCharacter);
+
+        if(currentCharacter === " ") {
+            throw new Error("Invalid map: Broken path");
+        }
 
         if(/[A-Z]/.test(currentCharacter)) {
             // TODO: reduce code;
@@ -97,20 +92,4 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
 
 function letterLocationExists(stored, collected) {
     return JSON.stringify(stored) === JSON.stringify(collected);
-}
-
-function getCellsWithCharacters(map: MapOfCharacters[][], row: number, column: number): Array<{ character: string; direction: number; }> {
-
-    const [right, down, left, up] = checkSurroundingCells(map, row, column);
-    const surroundingCells: MapOfCharacters[] = [right, down, left, up];
-    let cells: Array<{ character: string; direction: number; }> = [];
-
-    // throw out empty cells
-    surroundingCells.forEach((character, direction) => {
-        if(/[A-Z]|-|\||\+|x/.test(character)) {
-            cells.push({character, direction});
-        }
-    });
-
-    return cells;
 }
