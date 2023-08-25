@@ -3,6 +3,7 @@ import {MapOfCharacters, Position} from "../types";
 export function validateMapAndFindStartingPosition(map: MapOfCharacters[][]): Position | undefined {
 
     let startCharacter= false;
+    let endingCharacter = false;
     let startPosition: Position | undefined = undefined;
 
     for(let row = 0; row < map.length; row++) {
@@ -17,12 +18,19 @@ export function validateMapAndFindStartingPosition(map: MapOfCharacters[][]): Po
                     }
                     break;
 
+                case "x":
+                    endingCharacter = true;
+
                 default:
-                    if (!/^\s*$|[A-Z]|-|\||\+|x/.test(map[row][column])) {
+                    if (!/^\s*$|[A-Z]|-|\||\+/.test(map[row][column])) {
                         throw new Error(`Invalid map - Map contains invalid character ${map[row][column]}. The only valid characters are all uppercase letters (A-Z), minus (-), plus (+), pipe character (|) and 'x' as ending character.`);
                     }
             }
         }
+    }
+
+    if(endingCharacter === false) {
+        throw new Error("Invalid map - Missing end character");
     }
 
     if(startPosition !== undefined && startCharacter === true) {
