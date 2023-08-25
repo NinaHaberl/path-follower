@@ -51,18 +51,16 @@ function collectLettersAndFollowPath(map, startPosition) {
             }
             //checking if the letter is on the turn
             _a = direction_1.checkSurroundingCells(map, row, column), right = _a[0], down = _a[1], left = _a[2], up = _a[3];
-            surroundingCells = [right, down, left, up];
             if ((pathDirection === types_1.Direction.Right && (right === " " || right === undefined)) ||
-                (pathDirection === types_1.Direction.Left && (right === " " || right === undefined)) ||
-                (pathDirection === types_1.Direction.Down && (right === " " || right === undefined)) ||
-                (pathDirection === types_1.Direction.Up && (right === " " || right === undefined))) {
+                (pathDirection === types_1.Direction.Left && (left === " " || left === undefined)) ||
+                (pathDirection === types_1.Direction.Down && (down === " " || down === undefined)) ||
+                (pathDirection === types_1.Direction.Up && (up === " " || up === undefined))) {
                 pathDirection = direction_1.makeTurn(right, down, left, up, pathDirection);
             }
         }
         // TODO: reduce code :P
         if (currentCharacter === "+") {
             _b = direction_1.checkSurroundingCells(map, row, column), right = _b[0], down = _b[1], left = _b[2], up = _b[3];
-            surroundingCells = [right, down, left, up];
             if ((pathDirection === types_1.Direction.Right && /[A-Z]|-|\+|x/.test(right)) ||
                 (pathDirection === types_1.Direction.Left && /[A-Z]|-|\+|x/.test(left)) ||
                 (pathDirection === types_1.Direction.Down && /[A-Z]|\||\+|x/.test(down)) ||

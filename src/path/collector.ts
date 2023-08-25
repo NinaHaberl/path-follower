@@ -63,12 +63,11 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
             }
             //checking if the letter is on the turn
             [right, down, left, up] = checkSurroundingCells(map, row, column);
-            surroundingCells = [right, down, left, up];
 
             if((pathDirection === Direction.Right && (right === " " || right === undefined)) ||
-                (pathDirection === Direction.Left && (right === " " || right === undefined)) ||
-                (pathDirection === Direction.Down && (right === " " || right === undefined)) ||
-                (pathDirection === Direction.Up && (right === " " || right === undefined))) {
+                (pathDirection === Direction.Left && (left === " " || left === undefined)) ||
+                (pathDirection === Direction.Down && (down === " " || down === undefined)) ||
+                (pathDirection === Direction.Up && (up === " " || up === undefined))) {
 
                 pathDirection = makeTurn(right, down, left, up, pathDirection);
             }
@@ -77,7 +76,6 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
         // TODO: reduce code :P
         if(currentCharacter === "+") {
             [right, down, left, up] = checkSurroundingCells(map, row, column);
-            surroundingCells = [right, down, left, up];
 
             if((pathDirection === Direction.Right && /[A-Z]|-|\+|x/.test(right)) ||
                 (pathDirection === Direction.Left && /[A-Z]|-|\+|x/.test(left)) ||
