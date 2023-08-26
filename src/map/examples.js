@@ -3,7 +3,7 @@ exports.__esModule = true;
 /**
  * Valid map: A basic example
  */
-exports.basicExaple = [
+exports.basicExample = [
     [" ", " ", " ", " ", "@", "-", "A", "-", "+"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],

@@ -3,7 +3,7 @@ import {MapOfCharacters} from "../types";
 /**
  * Valid map: A basic example
  */
-export const basicExaple: MapOfCharacters[][] = [
+export const basicExample: MapOfCharacters[][] = [
     [" ", " ", " ", " ", "@", "-", "A", "-", "+"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
