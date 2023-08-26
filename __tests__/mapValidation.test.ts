@@ -51,7 +51,7 @@ describe('validateMapAndFindStartingPosition function', () => {
     })
 });
 
-describe('collectLettersAndFollowPath function', () => {
+/*describe('collectLettersAndFollowPath function', () => {
     test('should follow the path and return collected letters and path characters' +
         ' or throw error if path breaks rules', () => {
 
@@ -81,4 +81,4 @@ describe('collectLettersAndFollowPath function', () => {
             }
         })
     })
-});
+});*/

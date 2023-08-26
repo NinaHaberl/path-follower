@@ -51,7 +51,6 @@ export function checkSurroundingCells(map: MapOfCharacters[][], row: number, col
 
     /**
      * Check map index: if index is out of bounds - return undefined
-     * TODO: refactor [reduce code]
      */
     if(!(column >= (map[row].length - 1))) {
         right = setNextCellValue(map, row, column, 0, 1);
