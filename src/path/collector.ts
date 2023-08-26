@@ -20,6 +20,7 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
     let position, nextPosition: Position;
     let currentCharacter: MapOfCharacters;
 
+    // follow path
     while(endOfPath !== "x") {
 
         // initialize current position and surrounding cells;
@@ -65,7 +66,6 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
 
         let directionValidation = positionRules.get(pathDirection);
 
-
         if(currentCharacter === " ") {
             throw new Error("Invalid map: Broken path");
         }
@@ -81,8 +81,39 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
         }
 
         if(currentCharacter === "+") {
+            console.log(`Karakter je ${currentCharacter}, smijer je ${pathDirection}`);
+            console.log(`Ćelija iznad je ${up}, ispod je ${down}`);
+            console.log(`regex = ${directionValidation}; provjeravamo nextCell: ${nextCell}`);
+
             if(directionValidation.test(nextCell)) {
+
+                const verticalRule: RegExp = /[A-Z]|\||\+|x/;
+                const horizontalRule: RegExp = /[A-Z]|-|\+|x/;
+
+                if(pathDirection === Direction.Right || pathDirection === Direction.Left) {
+                    console.log("jesmo li ovdje?"); // forkInPathVerA ne radi :P
+                    if (/[A-Z]|\||\+|x/.test(up) && /[A-Z]|\||\+|x/.test(down)) {
+                        throw new Error("Invalid map: Fork in path");
+                    }
+                } else if (pathDirection === Direction.Up || pathDirection === Direction.Down) {
+                    if (/[A-Z]|-|\+|x/.test(right) || /[A-Z]|-|\+|x/.test(left)) {
+                        throw new Error("Invalid map: Fork in path");
+                    }
+                }
+
                 throw new Error("Invalid map: Fake turn");
+
+            } else {
+                if(pathDirection === Direction.Right || pathDirection === Direction.Left) {
+                    console.log("jesmo li ovdje?"); // forkInPathVerA ne radi :P
+                    if (/[A-Z]|\||\+|x/.test(up) && /[A-Z]|\||\+|x/.test(down)) {
+                        throw new Error("Invalid map: Fork in path");
+                    }
+                } else if (pathDirection === Direction.Up || pathDirection === Direction.Down) {
+                    if (/[A-Z]|-|\+|x/.test(right) || /[A-Z]|-|\+|x/.test(left)) {
+                        throw new Error("Invalid map: Fork in path");
+                    }
+                }
             }
 
             pathDirection = makeTurn(right, down, left, up, pathDirection);

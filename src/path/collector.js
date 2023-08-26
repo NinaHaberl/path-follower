@@ -62,8 +62,37 @@ function collectLettersAndFollowPath(map, startPosition) {
             }
         }
         if (currentCharacter === "+") {
+            console.log("Karakter je " + currentCharacter + ", smijer je " + pathDirection);
+            console.log("\u0106elija iznad je " + up + ", ispod je " + down);
+            console.log("regex = " + directionValidation + "; provjeravamo nextCell: " + nextCell);
             if (directionValidation.test(nextCell)) {
+                var verticalRule = /[A-Z]|\||\+|x/;
+                var horizontalRule = /[A-Z]|-|\+|x/;
+                if (pathDirection === types_1.Direction.Right || pathDirection === types_1.Direction.Left) {
+                    console.log("jesmo li ovdje?"); // forkInPathVerA ne radi :P
+                    if (/[A-Z]|\||\+|x/.test(up) && /[A-Z]|\||\+|x/.test(down)) {
+                        throw new Error("Invalid map: Fork in path");
+                    }
+                }
+                else if (pathDirection === types_1.Direction.Up || pathDirection === types_1.Direction.Down) {
+                    if (/[A-Z]|-|\+|x/.test(right) || /[A-Z]|-|\+|x/.test(left)) {
+                        throw new Error("Invalid map: Fork in path");
+                    }
+                }
                 throw new Error("Invalid map: Fake turn");
+            }
+            else {
+                if (pathDirection === types_1.Direction.Right || pathDirection === types_1.Direction.Left) {
+                    console.log("jesmo li ovdje?"); // forkInPathVerA ne radi :P
+                    if (/[A-Z]|\||\+|x/.test(up) && /[A-Z]|\||\+|x/.test(down)) {
+                        throw new Error("Invalid map: Fork in path");
+                    }
+                }
+                else if (pathDirection === types_1.Direction.Up || pathDirection === types_1.Direction.Down) {
+                    if (/[A-Z]|-|\+|x/.test(right) || /[A-Z]|-|\+|x/.test(left)) {
+                        throw new Error("Invalid map: Fork in path");
+                    }
+                }
             }
             pathDirection = direction_1.makeTurn(right, down, left, up, pathDirection);
         }
@@ -71,6 +100,7 @@ function collectLettersAndFollowPath(map, startPosition) {
             endOfPath = "x";
         }
     };
+    // follow path
     while (endOfPath !== "x") {
         _loop_1();
     }

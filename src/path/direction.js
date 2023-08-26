@@ -12,11 +12,6 @@ function setPathDirection(cellsWithCharacters) {
         }
         else {
             /* TODO: think about edge cases of valid maps, for example
-
-            `
-              ++
-              @x
-            `,
             `
                  +--A
                  |@-+
@@ -76,33 +71,24 @@ function getCurrentCellValue(map, row, column) {
     return map[row][column];
 }
 exports.getCurrentCellValue = getCurrentCellValue;
-function makeTurn(right, down, left, up, directin) {
-    if (directin === types_1.Direction.Right || directin === types_1.Direction.Left) {
-        if (/[A-Z]|\||\+|x/.test(up) && /[A-Z]|\||\+|x/.test(down)) {
-            throw new Error("Invalid map: Fork in path");
+function makeTurn(right, down, left, up, direction) {
+    // TODO: recude code
+    if (direction === types_1.Direction.Right || direction === types_1.Direction.Left) {
+        if ((up === " " || up === undefined) && /[A-Z]|\||\+|x/.test(down)) {
+            direction = types_1.Direction.Down;
         }
         else {
-            if ((up === " " || up === undefined) && /[A-Z]|\||\+|x/.test(down)) {
-                directin = types_1.Direction.Down;
-            }
-            else {
-                directin = types_1.Direction.Up;
-            }
+            direction = types_1.Direction.Up;
         }
     }
-    else if (directin === types_1.Direction.Up || directin === types_1.Direction.Down) {
-        if (/[A-Z]|-|\+|x/.test(right) && /[A-Z]|-|\+|x/.test(left)) {
-            throw new Error("Invalid map: Fork in path");
+    else if (direction === types_1.Direction.Up || direction === types_1.Direction.Down) {
+        if ((right === " " || right === undefined) && /[A-Z]|-|\+|x/.test(left)) {
+            direction = types_1.Direction.Left;
         }
         else {
-            if ((right === " " || right === undefined) && /[A-Z]|-|\+|x/.test(left)) {
-                directin = types_1.Direction.Left;
-            }
-            else {
-                directin = types_1.Direction.Right;
-            }
+            direction = types_1.Direction.Right;
         }
     }
-    return directin;
+    return direction;
 }
 exports.makeTurn = makeTurn;

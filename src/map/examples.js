@@ -150,9 +150,6 @@ exports.forkInPathVerA = [
     [" ", "x", "F", "-", "-", "-", "-", "+"]
 ];
 exports.forkInPathVerB = [
-    [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
-    ["x", "-", "-", "-", "E", "-", "-", "B", " ", " "],
-    [" ", " ", " ", " ", " ", " ", " ", "|", " ", " "],
     [" ", "@", "-", "-", "A", "-", "-", "+", "-", "x"],
     [" ", " ", " ", " ", " ", " ", " ", "|", " ", " "],
     [" ", " ", " ", " ", " ", " ", " ", "|", " ", " "],
@@ -160,7 +157,7 @@ exports.forkInPathVerB = [
 ];
 /**
  * Invalid maps:
- * 3. Fork in path
+ * 3. Broken path
  */
 exports.brokenPath = [
     [" ", " ", " ", " ", "@", "-", "A", "-", "+"],
@@ -202,6 +199,14 @@ exports.startMissingVerB = [
  * Invalid map:
  * 5. Fake turn
  */
-exports.fakeTurn = [
+exports.fakeTurnVerA = [
     ["@", "-", "A", "+", "-", "B", "-", "x", " "]
+];
+exports.fakeTurnVerB = [
+    ["@"],
+    ["|"],
+    ["B"],
+    ["+"],
+    ["A"],
+    ["x"]
 ];

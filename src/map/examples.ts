@@ -161,9 +161,6 @@ export const forkInPathVerA: MapOfCharacters[][] = [
 ];
 
 export const forkInPathVerB: MapOfCharacters[][] = [
-    [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
-    ["x", "-", "-", "-", "E", "-", "-", "B", " ", " "],
-    [" ", " ", " ", " ", " ", " ", " ", "|", " ", " "],
     [" ", "@", "-", "-", "A", "-", "-", "+", "-", "x"],
     [" ", " ", " ", " ", " ", " ", " ", "|", " ", " "],
     [" ", " ", " ", " ", " ", " ", " ", "|", " ", " "],
@@ -172,7 +169,7 @@ export const forkInPathVerB: MapOfCharacters[][] = [
 
 /**
  * Invalid maps:
- * 3. Fork in path
+ * 3. Broken path
  */
 export const brokenPath: MapOfCharacters[][] = [
     [" ", " ", " ", " ", "@", "-", "A", "-", "+"],
@@ -216,6 +213,14 @@ export const startMissingVerB: MapOfCharacters[][] = [
  * Invalid map:
  * 5. Fake turn
  */
-export const fakeTurn: MapOfCharacters[][] = [
+export const fakeTurnVerA: MapOfCharacters[][] = [
     ["@", "-", "A", "+", "-", "B", "-", "x", " "]
+];
+export const fakeTurnVerB: MapOfCharacters[][] = [
+    ["@"],
+    ["|"],
+    ["B"],
+    ["+"],
+    ["A"],
+    ["x"]
 ];

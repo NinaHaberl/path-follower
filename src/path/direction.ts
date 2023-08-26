@@ -12,11 +12,6 @@ export function setPathDirection(cellsWithCharacters: Array<{ character: string;
 
         } else {
             /* TODO: think about edge cases of valid maps, for example
-
-            `
-              ++
-              @x
-            `,
             `
                  +--A
                  |@-+
@@ -85,33 +80,25 @@ export function getCurrentCellValue(map: MapOfCharacters[][], row: number, colum
     return map[row][column];
 }
 
-export function makeTurn(right: MapOfCharacters, down: MapOfCharacters, left: MapOfCharacters, up: MapOfCharacters, directin: Direction): Direction | Error {
-    if(directin === Direction.Right || directin === Direction.Left) {
-
-        if (/[A-Z]|\||\+|x/.test(up) && /[A-Z]|\||\+|x/.test(down)) {
-            throw new Error("Invalid map: Fork in path");
+export function makeTurn(right: MapOfCharacters, down: MapOfCharacters, left: MapOfCharacters, up: MapOfCharacters, direction: Direction): Direction | Error {
+    // TODO: recude code
+    if(direction === Direction.Right || direction === Direction.Left) {
+        if ((up === " " || up === undefined) && /[A-Z]|\||\+|x/.test(down)) {
+            direction = Direction.Down;
 
         } else {
-            if ((up === " " || up === undefined) && /[A-Z]|\||\+|x/.test(down)) {
-                directin = Direction.Down;
-
-            } else {
-                directin = Direction.Up;
-            }
+            direction = Direction.Up;
         }
 
-    } else if (directin === Direction.Up || directin === Direction.Down) {
-        if (/[A-Z]|-|\+|x/.test(right) && /[A-Z]|-|\+|x/.test(left)) {
-            throw new Error("Invalid map: Fork in path");
+    } else if (direction === Direction.Up || direction === Direction.Down) {
+        if ((right === " " || right === undefined) && /[A-Z]|-|\+|x/.test(left)) {
+            direction = Direction.Left;
         } else {
-            if ((right === " " || right === undefined) && /[A-Z]|-|\+|x/.test(left)) {
-                directin = Direction.Left;
-            } else {
-                directin = Direction.Right;
-            }
+            direction = Direction.Right;
         }
     }
-    return directin;
+
+    return direction;
 }
 
 
