@@ -51,9 +51,12 @@ function collectLettersAndFollowPath(map, startPosition) {
             [types_1.Direction.Up, verticalRule]
         ]);
         var regexValidation = positionRules.get(pathDirection);
+        // broken path
         if (currentCharacter === " ") {
             throw new Error("Invalid map: Broken path");
         }
+        // collect letter | don't repeat from same location
+        // letters may be found on turns
         if (/[A-Z]/.test(currentCharacter)) {
             if (updateLetterLocation(letterLocations, currentCharacter, row, column, collectedLetters)) {
                 collectedLetters.push(currentCharacter);
@@ -62,6 +65,7 @@ function collectLettersAndFollowPath(map, startPosition) {
                 pathDirection = direction_1.makeTurn(right, down, left, up, pathDirection, verticalRule, horizontalRule);
             }
         }
+        // make turn
         if (currentCharacter === "+") {
             if ((nextCell !== " " || nextCell !== undefined) && regexValidation.test(nextCell)) {
                 if ((pathDirection === types_1.Direction.Right || pathDirection === types_1.Direction.Left) &&
@@ -82,6 +86,7 @@ function collectLettersAndFollowPath(map, startPosition) {
                 pathDirection = direction_1.makeTurn(right, down, left, up, pathDirection, verticalRule, horizontalRule);
             }
         }
+        // end of path
         if (currentCharacter === "x") {
             endOfPath = "x";
         }

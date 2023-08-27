@@ -6,8 +6,9 @@
 import * as maps from "./map/examples";
 import {validateMapAndFindStartingPosition} from "./map/validate";
 import {collectLettersAndFollowPath} from "./path/collector";
+import {compactMapWithLetterOnTurn} from "./map/examples";
 
-const map = maps.ignoreAfterX;
+const map = maps.compactMapWithLetterOnTurn;
 const startPosition = validateMapAndFindStartingPosition(map);
 
 let output = collectLettersAndFollowPath(map, startPosition);
