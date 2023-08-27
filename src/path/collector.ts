@@ -69,10 +69,13 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
 
         let regexValidation: RegExp = positionRules.get(pathDirection);
 
+        // broken path
         if(currentCharacter === " ") {
             throw new Error("Invalid map: Broken path");
         }
 
+        // collect letter | don't repeat from same location
+        // letters may be found on turns
         if(/[A-Z]/.test(currentCharacter)) {
             if(updateLetterLocation(letterLocations, currentCharacter, row, column, collectedLetters)) {
                 collectedLetters.push(currentCharacter);
@@ -83,6 +86,7 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
             }
         }
 
+        // make turn
         if(currentCharacter === "+") {
              if((nextCell !== " " || nextCell !== undefined) && regexValidation.test(nextCell)) {
                  if ((pathDirection === Direction.Right || pathDirection === Direction.Left) &&
@@ -108,6 +112,7 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
              }
         }
 
+        // end of path
         if(currentCharacter === "x") {
             endOfPath = "x";
         }
