@@ -4,7 +4,7 @@ export function setPathDirection(cellsWithCharacters: Array<{ character: string;
     let direction: number;
 
     if(cellsWithCharacters.length === 0) {
-        throw new Error("Invalid map: Broken path");
+        throw new Error("Invalid map: Broken path after starting position");
 
     } else {
         if(cellsWithCharacters.length === 1) {
@@ -89,7 +89,7 @@ export function makeTurn(right: MapOfCharacters, down: MapOfCharacters, left: Ma
             direction = Direction.Up;
 
         } else if ((down === " " || down === undefined) && (up === " " || up === undefined)) {
-            throw new Error("Invalid map - Broken path");
+            throw new Error("Invalid map - Broken path after vertical turn");
         }
 
     } else if (direction === Direction.Up || direction === Direction.Down) {
@@ -100,7 +100,7 @@ export function makeTurn(right: MapOfCharacters, down: MapOfCharacters, left: Ma
             direction = Direction.Right;
 
         } else if ((right === " " || right === undefined) && (left === " " || left === undefined)) {
-            throw new Error("Invalid map - Broken path");
+            throw new Error("Invalid map - Broken path after horizontal turn");
         }
     }
 

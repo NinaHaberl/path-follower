@@ -4,7 +4,7 @@ var types_1 = require("../types");
 function setPathDirection(cellsWithCharacters) {
     var direction;
     if (cellsWithCharacters.length === 0) {
-        throw new Error("Invalid map: Broken path");
+        throw new Error("Invalid map: Broken path after starting position");
     }
     else {
         if (cellsWithCharacters.length === 1) {
@@ -80,7 +80,7 @@ function makeTurn(right, down, left, up, direction, verticalRule, horizontalRule
             direction = types_1.Direction.Up;
         }
         else if ((down === " " || down === undefined) && (up === " " || up === undefined)) {
-            throw new Error("Invalid map - Broken path");
+            throw new Error("Invalid map - Broken path after vertical turn");
         }
     }
     else if (direction === types_1.Direction.Up || direction === types_1.Direction.Down) {
@@ -91,7 +91,7 @@ function makeTurn(right, down, left, up, direction, verticalRule, horizontalRule
             direction = types_1.Direction.Right;
         }
         else if ((right === " " || right === undefined) && (left === " " || left === undefined)) {
-            throw new Error("Invalid map - Broken path");
+            throw new Error("Invalid map - Broken path after horizontal turn");
         }
     }
     return direction;

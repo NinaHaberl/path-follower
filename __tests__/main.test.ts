@@ -4,6 +4,7 @@ import {collectLettersAndFollowPath} from "../src/path/collector";
 
 const mapsToValidate = [
     maps.minimumMap,
+    maps.ignoreAfterX,
     maps.basicExample,
     maps.intersectionVerA,
     maps.intersectionVerB,
@@ -23,6 +24,7 @@ const mapsToValidate = [
     maps.forkInPathVerA,
     maps.forkInPathVerB,
     maps.brokenPath,
+    maps.brokenPathVerB,
     maps.xMissing,
     maps.startMissingVerA,
     maps.startMissingVerB,
