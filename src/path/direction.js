@@ -47,7 +47,6 @@ function checkSurroundingCells(map, row, column) {
     var right, down, left, up;
     /**
      * Check map index: if index is out of bounds - return undefined
-     * TODO: refactor [reduce code]
      */
     if (!(column >= (map[row].length - 1))) {
         right = setNextCellValue(map, row, column, 0, 1);
@@ -67,6 +66,7 @@ exports.checkSurroundingCells = checkSurroundingCells;
 function setNextCellValue(map, row, column, rowOffset, colOffset) {
     return map[row + rowOffset][column + colOffset];
 }
+exports.setNextCellValue = setNextCellValue;
 function getCurrentCellValue(map, row, column) {
     return map[row][column];
 }
@@ -77,8 +77,11 @@ function makeTurn(right, down, left, up, direction) {
         if ((up === " " || up === undefined) && /[A-Z]|\||\+|x/.test(down)) {
             direction = types_1.Direction.Down;
         }
-        else {
+        else if ((down === " " || down === undefined) && /[A-Z]|\||\+|x/.test(up)) {
             direction = types_1.Direction.Up;
+        }
+        else if ((down === " " || down === undefined) && (up === " " || up === undefined)) {
+            throw new Error("Invalid map - Broken path");
         }
     }
     else if (direction === types_1.Direction.Up || direction === types_1.Direction.Down) {

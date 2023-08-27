@@ -42,14 +42,14 @@ function collectLettersAndFollowPath(map, startPosition) {
         var nextCell = pathDirection === types_1.Direction.Right ? right :
             pathDirection === types_1.Direction.Left ? left :
                 pathDirection === types_1.Direction.Down ? down :
-                    pathDirection === types_1.Direction.Up ? up : "";
+                    pathDirection === types_1.Direction.Up ? up : undefined;
         var positionRules = new Map([
             [types_1.Direction.Right, /[A-Z]|-|\+|x/],
             [types_1.Direction.Left, /[A-Z]|-|\+|x/],
             [types_1.Direction.Down, /[A-Z]|\||\+|x/],
             [types_1.Direction.Up, /[A-Z]|\||\+|x/]
         ]);
-        var directionValidation = positionRules.get(pathDirection);
+        var regexValidation = positionRules.get(pathDirection);
         if (currentCharacter === " ") {
             throw new Error("Invalid map: Broken path");
         }
@@ -62,20 +62,16 @@ function collectLettersAndFollowPath(map, startPosition) {
             }
         }
         if (currentCharacter === "+") {
-            console.log("Karakter je " + currentCharacter + ", smijer je " + pathDirection);
-            console.log("\u0106elija iznad je " + up + ", ispod je " + down);
-            console.log("regex = " + directionValidation + "; provjeravamo nextCell: " + nextCell);
-            if (directionValidation.test(nextCell)) {
-                var verticalRule = /[A-Z]|\||\+|x/;
-                var horizontalRule = /[A-Z]|-|\+|x/;
+            var verticalRule = /[A-Z]|\||\+|x/;
+            var horizontalRule = /[A-Z]|-|\+|x/;
+            if ((nextCell !== " " || nextCell !== undefined) && regexValidation.test(nextCell)) {
                 if (pathDirection === types_1.Direction.Right || pathDirection === types_1.Direction.Left) {
-                    console.log("jesmo li ovdje?"); // forkInPathVerA ne radi :P
-                    if (/[A-Z]|\||\+|x/.test(up) && /[A-Z]|\||\+|x/.test(down)) {
+                    if (verticalRule.test(up) || verticalRule.test(down)) {
                         throw new Error("Invalid map: Fork in path");
                     }
                 }
                 else if (pathDirection === types_1.Direction.Up || pathDirection === types_1.Direction.Down) {
-                    if (/[A-Z]|-|\+|x/.test(right) || /[A-Z]|-|\+|x/.test(left)) {
+                    if (horizontalRule.test(right) || horizontalRule.test(left)) {
                         throw new Error("Invalid map: Fork in path");
                     }
                 }
@@ -83,18 +79,17 @@ function collectLettersAndFollowPath(map, startPosition) {
             }
             else {
                 if (pathDirection === types_1.Direction.Right || pathDirection === types_1.Direction.Left) {
-                    console.log("jesmo li ovdje?"); // forkInPathVerA ne radi :P
-                    if (/[A-Z]|\||\+|x/.test(up) && /[A-Z]|\||\+|x/.test(down)) {
+                    if (verticalRule.test(up) && verticalRule.test(down)) {
                         throw new Error("Invalid map: Fork in path");
                     }
                 }
                 else if (pathDirection === types_1.Direction.Up || pathDirection === types_1.Direction.Down) {
-                    if (/[A-Z]|-|\+|x/.test(right) || /[A-Z]|-|\+|x/.test(left)) {
+                    if (horizontalRule.test(right) && horizontalRule.test(left)) {
                         throw new Error("Invalid map: Fork in path");
                     }
                 }
+                pathDirection = direction_1.makeTurn(right, down, left, up, pathDirection);
             }
-            pathDirection = direction_1.makeTurn(right, down, left, up, pathDirection);
         }
         if (currentCharacter === "x") {
             endOfPath = "x";

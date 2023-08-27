@@ -51,34 +51,19 @@ describe('validateMapAndFindStartingPosition function', () => {
     })
 });
 
-/*describe('collectLettersAndFollowPath function', () => {
+describe('collectLettersAndFollowPath function', () => {
     test('should follow the path and return collected letters and path characters' +
         ' or throw error if path breaks rules', () => {
 
-        let result;
+        const map = maps.basicExample;
+        const startPosition = validateMapAndFindStartingPosition(map);
+        const result = collectLettersAndFollowPath(map, startPosition);
 
-        mapsToValidate.forEach(map => {
-            let startPosition = validateMapAndFindStartingPosition(map);
-
-            if(startPosition !== undefined) {
-                try {
-                    result = collectLettersAndFollowPath(map, startPosition);
-                    expect(result).toHaveProperty("letters");
-                    expect(result).toHaveProperty("path");
-                    expect(typeof result.letters).toBe("string");
-                    expect(typeof result.path).toBe("string");
-                } catch {
-                    expect(() => {
-                        collectLettersAndFollowPath(map, startPosition);
-                    }).toThrow();
-                }
-            } else {
-                const fakeCollectLettersAndFollowPath = jest.fn(); // Stvaramo lažnu funkciju
-
-                expect(() => {
-                    fakeCollectLettersAndFollowPath(map, startPosition);
-                }).toThrow();
-            }
-        })
+        expect(() => {
+            expect(result).toHaveProperty("letters");
+            expect(result).toHaveProperty("path");
+            expect(typeof result.letters).toBe("string");
+            expect(typeof result.path).toBe("string");
+        });
     })
-});*/
+});

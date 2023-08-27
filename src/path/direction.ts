@@ -71,7 +71,7 @@ export function checkSurroundingCells(map: MapOfCharacters[][], row: number, col
     return [right, down, left, up];
 }
 
-function setNextCellValue(map: MapOfCharacters[][], row: number, column: number, rowOffset: number, colOffset: number): MapOfCharacters {
+export function setNextCellValue(map: MapOfCharacters[][], row: number, column: number, rowOffset: number, colOffset: number): MapOfCharacters {
     return map[row + rowOffset][column + colOffset];
 }
 
@@ -85,8 +85,11 @@ export function makeTurn(right: MapOfCharacters, down: MapOfCharacters, left: Ma
         if ((up === " " || up === undefined) && /[A-Z]|\||\+|x/.test(down)) {
             direction = Direction.Down;
 
-        } else {
+        } else if ((down === " " || down === undefined) && /[A-Z]|\||\+|x/.test(up)) {
             direction = Direction.Up;
+
+        } else if ((down === " " || down === undefined) && (up === " " || up === undefined)) {
+            throw new Error("Invalid map - Broken path");
         }
 
     } else if (direction === Direction.Up || direction === Direction.Down) {
