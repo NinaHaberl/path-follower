@@ -15,6 +15,9 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
     let pathDirection: Direction = Direction.Start;
     let endOfPath: MapOfCharacters | null = null;
 
+    const verticalRule: RegExp = /[A-Z]|\||\+|x/;
+    const horizontalRule: RegExp = /[A-Z]|-|\+|x/;
+
     let row = startPosition?.row;
     let column = startPosition?.column;
     let position, nextPosition: Position;
@@ -49,22 +52,22 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
         pathAsCharacters.push(currentCharacter);
 
         // validate path rules
-        // after direction and surrounding cells setup
         [right, down, left, up] = checkSurroundingCells(map, row, column);
         let nextCell: MapOfCharacters =
             pathDirection === Direction.Right ? right :
             pathDirection === Direction.Left ? left :
             pathDirection === Direction.Down ? down :
-            pathDirection === Direction.Up ? up : undefined;
+            pathDirection === Direction.Up;
+
 
         let positionRules: Map<Direction, RegExp> = new Map([
-            [Direction.Right, /[A-Z]|-|\+|x/],
-            [Direction.Left, /[A-Z]|-|\+|x/],
-            [Direction.Down, /[A-Z]|\||\+|x/],
-            [Direction.Up, /[A-Z]|\||\+|x/]
+            [Direction.Right, horizontalRule],
+            [Direction.Left, horizontalRule],
+            [Direction.Down, verticalRule],
+            [Direction.Up, verticalRule]
         ]);
 
-        let regexValidation = positionRules.get(pathDirection);
+        let regexValidation: RegExp = positionRules.get(pathDirection);
 
         if(currentCharacter === " ") {
             throw new Error("Invalid map: Broken path");
@@ -76,14 +79,11 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
             }
 
             if(nextCell === " " || nextCell === undefined) {
-                pathDirection = makeTurn(right, down, left, up, pathDirection);
+                pathDirection = makeTurn(right, down, left, up, pathDirection, verticalRule, horizontalRule);
             }
         }
 
         if(currentCharacter === "+") {
-            const verticalRule: RegExp = /[A-Z]|\||\+|x/;
-            const horizontalRule: RegExp = /[A-Z]|-|\+|x/;
-
              if((nextCell !== " " || nextCell !== undefined) && regexValidation.test(nextCell)) {
                  if ((pathDirection === Direction.Right || pathDirection === Direction.Left) &&
                      (verticalRule.test(up) || verticalRule.test(down)) ||
@@ -96,19 +96,15 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
                 throw new Error("Invalid map: Fake turn");
 
              } else {
+                 if((pathDirection === Direction.Right || pathDirection === Direction.Left) &&
+                     verticalRule.test(up) && verticalRule.test(down) ||
 
-                 if(pathDirection === Direction.Right || pathDirection === Direction.Left) {
-                     if (verticalRule.test(up) && verticalRule.test(down)) {
-                         throw new Error("Invalid map: Fork in path");
-                     }
+                     (pathDirection === Direction.Up || pathDirection === Direction.Down) &&
+                     horizontalRule.test(right) && horizontalRule.test(left)) {
 
-                 } else if (pathDirection === Direction.Up || pathDirection === Direction.Down) {
-                     if (horizontalRule.test(right) && horizontalRule.test(left)) {
-                         throw new Error("Invalid map: Fork in path");
-                     }
+                     throw new Error("Invalid map: Fork in path");
                  }
-
-                 pathDirection = makeTurn(right, down, left, up, pathDirection);
+                 pathDirection = makeTurn(right, down, left, up, pathDirection, verticalRule, horizontalRule);
              }
         }
 

@@ -79,13 +79,13 @@ export function getCurrentCellValue(map: MapOfCharacters[][], row: number, colum
     return map[row][column];
 }
 
-export function makeTurn(right: MapOfCharacters, down: MapOfCharacters, left: MapOfCharacters, up: MapOfCharacters, direction: Direction): Direction | Error {
-    // TODO: recude code
+export function makeTurn(right: MapOfCharacters, down: MapOfCharacters, left: MapOfCharacters, up: MapOfCharacters, direction: Direction, verticalRule: RegExp, horizontalRule: RegExp): Direction {
+
     if(direction === Direction.Right || direction === Direction.Left) {
-        if ((up === " " || up === undefined) && /[A-Z]|\||\+|x/.test(down)) {
+        if ((up === " " || up === undefined) && verticalRule.test(down)) {
             direction = Direction.Down;
 
-        } else if ((down === " " || down === undefined) && /[A-Z]|\||\+|x/.test(up)) {
+        } else if ((down === " " || down === undefined) && verticalRule.test(up)) {
             direction = Direction.Up;
 
         } else if ((down === " " || down === undefined) && (up === " " || up === undefined)) {
@@ -93,10 +93,14 @@ export function makeTurn(right: MapOfCharacters, down: MapOfCharacters, left: Ma
         }
 
     } else if (direction === Direction.Up || direction === Direction.Down) {
-        if ((right === " " || right === undefined) && /[A-Z]|-|\+|x/.test(left)) {
+        if ((right === " " || right === undefined) && horizontalRule.test(left)) {
             direction = Direction.Left;
-        } else {
+
+        } else if((left === " " || left === undefined) && horizontalRule.test(right)) {
             direction = Direction.Right;
+
+        } else if ((right === " " || right === undefined) && (left === " " || left === undefined)) {
+            throw new Error("Invalid map - Broken path");
         }
     }
 

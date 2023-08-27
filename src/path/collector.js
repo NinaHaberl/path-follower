@@ -10,6 +10,8 @@ function collectLettersAndFollowPath(map, startPosition) {
     // initialization of path direction and positions
     var pathDirection = types_1.Direction.Start;
     var endOfPath = null;
+    var verticalRule = /[A-Z]|\||\+|x/;
+    var horizontalRule = /[A-Z]|-|\+|x/;
     var row = startPosition === null || startPosition === void 0 ? void 0 : startPosition.row;
     var column = startPosition === null || startPosition === void 0 ? void 0 : startPosition.column;
     var position, nextPosition;
@@ -37,17 +39,16 @@ function collectLettersAndFollowPath(map, startPosition) {
         currentCharacter = direction_1.getCurrentCellValue(map, row, column);
         pathAsCharacters.push(currentCharacter);
         // validate path rules
-        // after direction and surrounding cells setup
         _a = direction_1.checkSurroundingCells(map, row, column), right = _a[0], down = _a[1], left = _a[2], up = _a[3];
         var nextCell = pathDirection === types_1.Direction.Right ? right :
             pathDirection === types_1.Direction.Left ? left :
                 pathDirection === types_1.Direction.Down ? down :
-                    pathDirection === types_1.Direction.Up ? up : undefined;
+                    pathDirection === types_1.Direction.Up;
         var positionRules = new Map([
-            [types_1.Direction.Right, /[A-Z]|-|\+|x/],
-            [types_1.Direction.Left, /[A-Z]|-|\+|x/],
-            [types_1.Direction.Down, /[A-Z]|\||\+|x/],
-            [types_1.Direction.Up, /[A-Z]|\||\+|x/]
+            [types_1.Direction.Right, horizontalRule],
+            [types_1.Direction.Left, horizontalRule],
+            [types_1.Direction.Down, verticalRule],
+            [types_1.Direction.Up, verticalRule]
         ]);
         var regexValidation = positionRules.get(pathDirection);
         if (currentCharacter === " ") {
@@ -58,23 +59,11 @@ function collectLettersAndFollowPath(map, startPosition) {
                 collectedLetters.push(currentCharacter);
             }
             if (nextCell === " " || nextCell === undefined) {
-                pathDirection = direction_1.makeTurn(right, down, left, up, pathDirection);
+                pathDirection = direction_1.makeTurn(right, down, left, up, pathDirection, verticalRule, horizontalRule);
             }
         }
         if (currentCharacter === "+") {
-            var verticalRule = /[A-Z]|\||\+|x/;
-            var horizontalRule = /[A-Z]|-|\+|x/;
             if ((nextCell !== " " || nextCell !== undefined) && regexValidation.test(nextCell)) {
-                /*if(pathDirection === Direction.Right || pathDirection === Direction.Left) {
-                    if (verticalRule.test(up) || verticalRule.test(down)) {
-                        throw new Error("Invalid map: Fork in path");
-                    }
-
-                } else if (pathDirection === Direction.Up || pathDirection === Direction.Down) {
-                    if (horizontalRule.test(right) || horizontalRule.test(left)) {
-                        throw new Error("Invalid map: Fork in path");
-                    }
-                }*/
                 if ((pathDirection === types_1.Direction.Right || pathDirection === types_1.Direction.Left) &&
                     (verticalRule.test(up) || verticalRule.test(down)) ||
                     (pathDirection === types_1.Direction.Up || pathDirection === types_1.Direction.Down) &&
@@ -84,17 +73,13 @@ function collectLettersAndFollowPath(map, startPosition) {
                 throw new Error("Invalid map: Fake turn");
             }
             else {
-                if (pathDirection === types_1.Direction.Right || pathDirection === types_1.Direction.Left) {
-                    if (verticalRule.test(up) && verticalRule.test(down)) {
-                        throw new Error("Invalid map: Fork in path");
-                    }
+                if ((pathDirection === types_1.Direction.Right || pathDirection === types_1.Direction.Left) &&
+                    verticalRule.test(up) && verticalRule.test(down) ||
+                    (pathDirection === types_1.Direction.Up || pathDirection === types_1.Direction.Down) &&
+                        horizontalRule.test(right) && horizontalRule.test(left)) {
+                    throw new Error("Invalid map: Fork in path");
                 }
-                else if (pathDirection === types_1.Direction.Up || pathDirection === types_1.Direction.Down) {
-                    if (horizontalRule.test(right) && horizontalRule.test(left)) {
-                        throw new Error("Invalid map: Fork in path");
-                    }
-                }
-                pathDirection = direction_1.makeTurn(right, down, left, up, pathDirection);
+                pathDirection = direction_1.makeTurn(right, down, left, up, pathDirection, verticalRule, horizontalRule);
             }
         }
         if (currentCharacter === "x") {

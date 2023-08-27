@@ -71,13 +71,12 @@ function getCurrentCellValue(map, row, column) {
     return map[row][column];
 }
 exports.getCurrentCellValue = getCurrentCellValue;
-function makeTurn(right, down, left, up, direction) {
-    // TODO: recude code
+function makeTurn(right, down, left, up, direction, verticalRule, horizontalRule) {
     if (direction === types_1.Direction.Right || direction === types_1.Direction.Left) {
-        if ((up === " " || up === undefined) && /[A-Z]|\||\+|x/.test(down)) {
+        if ((up === " " || up === undefined) && verticalRule.test(down)) {
             direction = types_1.Direction.Down;
         }
-        else if ((down === " " || down === undefined) && /[A-Z]|\||\+|x/.test(up)) {
+        else if ((down === " " || down === undefined) && verticalRule.test(up)) {
             direction = types_1.Direction.Up;
         }
         else if ((down === " " || down === undefined) && (up === " " || up === undefined)) {
@@ -85,11 +84,14 @@ function makeTurn(right, down, left, up, direction) {
         }
     }
     else if (direction === types_1.Direction.Up || direction === types_1.Direction.Down) {
-        if ((right === " " || right === undefined) && /[A-Z]|-|\+|x/.test(left)) {
+        if ((right === " " || right === undefined) && horizontalRule.test(left)) {
             direction = types_1.Direction.Left;
         }
-        else {
+        else if ((left === " " || left === undefined) && horizontalRule.test(right)) {
             direction = types_1.Direction.Right;
+        }
+        else if ((right === " " || right === undefined) && (left === " " || left === undefined)) {
+            throw new Error("Invalid map - Broken path");
         }
     }
     return direction;
