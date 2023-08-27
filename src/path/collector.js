@@ -65,15 +65,21 @@ function collectLettersAndFollowPath(map, startPosition) {
             var verticalRule = /[A-Z]|\||\+|x/;
             var horizontalRule = /[A-Z]|-|\+|x/;
             if ((nextCell !== " " || nextCell !== undefined) && regexValidation.test(nextCell)) {
-                if (pathDirection === types_1.Direction.Right || pathDirection === types_1.Direction.Left) {
+                /*if(pathDirection === Direction.Right || pathDirection === Direction.Left) {
                     if (verticalRule.test(up) || verticalRule.test(down)) {
                         throw new Error("Invalid map: Fork in path");
                     }
-                }
-                else if (pathDirection === types_1.Direction.Up || pathDirection === types_1.Direction.Down) {
+
+                } else if (pathDirection === Direction.Up || pathDirection === Direction.Down) {
                     if (horizontalRule.test(right) || horizontalRule.test(left)) {
                         throw new Error("Invalid map: Fork in path");
                     }
+                }*/
+                if ((pathDirection === types_1.Direction.Right || pathDirection === types_1.Direction.Left) &&
+                    (verticalRule.test(up) || verticalRule.test(down)) ||
+                    (pathDirection === types_1.Direction.Up || pathDirection === types_1.Direction.Down) &&
+                        (horizontalRule.test(right) || horizontalRule.test(left))) {
+                    throw new Error("Invalid map: Fork in path");
                 }
                 throw new Error("Invalid map: Fake turn");
             }
