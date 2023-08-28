@@ -18,7 +18,7 @@ function collectLettersAndFollowPath(map, startPosition) {
     var currentCharacter;
     var _loop_1 = function () {
         var _a;
-        // initialize current position and surrounding cells;
+        // current position and surrounding cells;
         position = { row: row, column: column };
         var _b = direction_1.checkSurroundingCells(map, row, column), right = _b[0], down = _b[1], left = _b[2], up = _b[3];
         var surroundingCells = [right, down, left, up];

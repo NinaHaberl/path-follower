@@ -26,7 +26,7 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
     // follow path
     while(endOfPath !== "x") {
 
-        // initialize current position and surrounding cells;
+        // current position and surrounding cells;
         position = { row, column };
         let [right, down, left, up]: MapOfCharacters | undefined = checkSurroundingCells(map, row, column);
         let surroundingCells: MapOfCharacters[] = [right, down, left, up];
