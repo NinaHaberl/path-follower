@@ -1,4 +1,3 @@
-import {Direction, MapOfCharacters, Position} from "../src/types";
 import * as maps from "../src/map/examples";
 import {checkSurroundingCells, getCurrentCellValue, setNextCellValue} from "../src/path/direction";
 
@@ -9,7 +8,7 @@ describe('checkSurroundingCells function', () => {
         const map = maps.intersectionVerA;
         const result = checkSurroundingCells(map, 1, 2);
 
-        let expectedValues: [MapOfCharacters | undefined, MapOfCharacters | undefined, MapOfCharacters | undefined, MapOfCharacters | undefined] = [
+        let expectedValues: [string | undefined, string | undefined, string | undefined, string | undefined] = [
             "-", "|", " ", " "
         ];
 
@@ -19,18 +18,18 @@ describe('checkSurroundingCells function', () => {
 
 describe('setNextCellValue function', () => {
     test('should return the value of the cell at the given offset', () => {
-        const map: MapOfCharacters[][] = maps.basicExample;
+        const map: string[][] = maps.basicExample;
 
-        let result: MapOfCharacters = setNextCellValue(map, 0, 8, 1, 0);
+        let result: string = setNextCellValue(map, 0, 8, 1, 0);
         expect(result).toBe("|");
     });
 });
 
 describe('getCurrentCellValue function', () => {
     test('should return the value of current cell', () => {
-        const map: MapOfCharacters[][] = maps.basicExample;
+        const map: string[][] = maps.basicExample;
 
-        let result: MapOfCharacters = getCurrentCellValue(map, 0, 8);
+        let result: string = getCurrentCellValue(map, 0, 8);
         expect(result).toBe("+");
     });
 });

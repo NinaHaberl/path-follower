@@ -1,7 +1,7 @@
-import {Direction, MapOfCharacters, Position} from "../types";
+import {Direction, Position} from "../types";
 import {checkSurroundingCells, getCurrentCellValue, makeTurn, setNewPosition, setPathDirection} from "./direction";
 
-export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosition: Position | undefined): {
+export function collectLettersAndFollowPath(map: string[][], startPosition: Position | undefined): {
     letters: string;
     path: string
 } {
@@ -13,7 +13,7 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
 
     // initialization of path direction and positions
     let pathDirection: Direction = Direction.Start;
-    let endOfPath: MapOfCharacters | null = null;
+    let endOfPath: string | null = null;
 
     const verticalRule: RegExp = /[A-Z]|\||\+|x/;
     const horizontalRule: RegExp = /[A-Z]|-|\+|x/;
@@ -21,15 +21,15 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
     let row = startPosition?.row;
     let column = startPosition?.column;
     let position, nextPosition: Position;
-    let currentCharacter: MapOfCharacters;
+    let currentCharacter: string;
 
     // follow path
     while(endOfPath !== "x") {
 
         // current position and surrounding cells;
         position = { row, column };
-        let [right, down, left, up]: MapOfCharacters | undefined = checkSurroundingCells(map, row, column);
-        let surroundingCells: MapOfCharacters[] = [right, down, left, up];
+        let [right, down, left, up] = checkSurroundingCells(map, row, column);
+        let surroundingCells = [right, down, left, up];
         let cellsWithCharacters: Array<{ character: string; direction: number; }> = [];
 
         // throw out empty cells
@@ -53,7 +53,7 @@ export function collectLettersAndFollowPath(map: MapOfCharacters[][], startPosit
 
         // validate path rules
         [right, down, left, up] = checkSurroundingCells(map, row, column);
-        let nextCell: MapOfCharacters =
+        let nextCell: string =
             pathDirection === Direction.Right ? right :
             pathDirection === Direction.Left ? left :
             pathDirection === Direction.Down ? down :

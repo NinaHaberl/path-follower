@@ -1,4 +1,4 @@
-import {Direction, MapOfCharacters, Position} from "../types";
+import {Direction, string, Position} from "../types";
 
 export function setPathDirection(cellsWithCharacters: Array<{ character: string; direction: number; }>): number {
     let direction: number;
@@ -45,7 +45,7 @@ export function setNewPosition(direction: Direction, position: Position): Positi
 
     return position;
 }
-export function checkSurroundingCells(map: MapOfCharacters[][], row: number, column: number): [MapOfCharacters | undefined, MapOfCharacters | undefined, MapOfCharacters | undefined, MapOfCharacters | undefined] {
+export function checkSurroundingCells(map: string[][], row: number, column: number): [string | undefined, string | undefined, string | undefined, string | undefined] {
 
     let right:string | undefined, down:string | undefined, left:string | undefined, up:string | undefined;
 
@@ -71,15 +71,15 @@ export function checkSurroundingCells(map: MapOfCharacters[][], row: number, col
     return [right, down, left, up];
 }
 
-export function setNextCellValue(map: MapOfCharacters[][], row: number, column: number, rowOffset: number, colOffset: number): MapOfCharacters {
+export function setNextCellValue(map: string[][], row: number, column: number, rowOffset: number, colOffset: number): string {
     return map[row + rowOffset][column + colOffset];
 }
 
-export function getCurrentCellValue(map: MapOfCharacters[][], row: number, column: number): MapOfCharacters {
+export function getCurrentCellValue(map: string[][], row: number, column: number): string {
     return map[row][column];
 }
 
-export function makeTurn(right: MapOfCharacters, down: MapOfCharacters, left: MapOfCharacters, up: MapOfCharacters, direction: Direction, verticalRule: RegExp, horizontalRule: RegExp): Direction {
+export function makeTurn(right: string, down: string, left: string, up: string, direction: Direction, verticalRule: RegExp, horizontalRule: RegExp): Direction {
 
     if(direction === Direction.Right || direction === Direction.Left) {
         if ((up === " " || up === undefined) && verticalRule.test(down)) {

@@ -1,5 +1,3 @@
-export type MapOfCharacters = "@" | "-" | "+" | "|" | "x" | string;
-
 export interface Position {
     row: number | undefined;
     column: number | undefined;

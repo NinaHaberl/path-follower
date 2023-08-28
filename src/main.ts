@@ -6,7 +6,6 @@
 import * as maps from "./map/examples";
 import {validateMapAndFindStartingPosition} from "./map/validate";
 import {collectLettersAndFollowPath} from "./path/collector";
-import {compactMapWithLetterOnTurn} from "./map/examples";
 
 const map = maps.lettersOnTurnsWithIntersection;
 const startPosition = validateMapAndFindStartingPosition(map);

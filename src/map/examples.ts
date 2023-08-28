@@ -1,15 +1,15 @@
-import {MapOfCharacters} from "../types";
+import {string} from "../types";
 
 /**
  * Valid minimum map: Contains only start and stop character.
  */
-export const minimumMap: MapOfCharacters[][] = [
+export const minimumMap: string[][] = [
     ["@", "x"]
 ];
 /**
  * Valid map: A basic example
  */
-export const basicExample: MapOfCharacters[][] = [
+export const basicExample: string[][] = [
     [" ", " ", " ", " ", "@", "-", "A", "-", "+"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
@@ -21,7 +21,7 @@ export const basicExample: MapOfCharacters[][] = [
 /**
  * Valid map: Ignore stuff after end of path
  */
-export const ignoreAfterX: MapOfCharacters[][] = [
+export const ignoreAfterX: string[][] = [
     [" ", " ", " ", " ", "@", "-", "A", "-", "+"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
@@ -33,7 +33,7 @@ export const ignoreAfterX: MapOfCharacters[][] = [
 /**
  * Valid map: Go straight through intersections
  */
-export const intersectionVerA: MapOfCharacters[][] = [
+export const intersectionVerA: string[][] = [
     ["@", " ", " ", " ", " ", " ", " ", " ", " ", " "],
     ["|", " ", "+", "-", "C", "-", "-", "+", " ", " "],
     ["A", " ", "|", " ", " ", " ", " ", "|", " ", " "],
@@ -42,7 +42,7 @@ export const intersectionVerA: MapOfCharacters[][] = [
     [" ", " ", "|", " ", " ", " ", " ", " ", " ", "|"],
     [" ", " ", "+", "-", "-", "-", "D", "-", "-", "+"]
 ];
-export const intersectionVerB: MapOfCharacters[][] = [
+export const intersectionVerB: string[][] = [
     ["@", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
     ["|", " ", "+", "-", "C", "-", "-", "+", " ", " ", " ", " ", " "],
     ["A", " ", "|", " ", " ", " ", " ", "|", " ", " ", " ", " ", " "],
@@ -55,14 +55,14 @@ export const intersectionVerB: MapOfCharacters[][] = [
 /**
  * Valid map: Letters may be found on turns
  */
-export const lettersOnTurns: MapOfCharacters[][] = [
+export const lettersOnTurns: string[][] = [
     ["@", "-", "-", "A", "-", "-", "-", "+"],
     [" ", " ", " ", " ", " ", " ", " ", "|"],
     ["x", "-", "B", "+", " ", " ", " ", "|"],
     [" ", " ", " ", "|", " ", " ", " ", "|"],
     [" ", " ", " ", "+", "-", "-", "-", "C"]
 ];
-export const lettersOnTurnsVerB: MapOfCharacters[][] = [
+export const lettersOnTurnsVerB: string[][] = [
     ["@", "-", "-", "C", "-", "-", "-", "+"],
     [" ", " ", " ", " ", " ", " ", " ", "|"],
     ["x", "-", "L", "+", " ", " ", " ", "|"],
@@ -73,7 +73,7 @@ export const lettersOnTurnsVerB: MapOfCharacters[][] = [
 /**
  * Valid map: Do not collect a letter from the same location twice
  */
-export const goonies: MapOfCharacters[][] = [
+export const goonies: string[][] = [
     [" ", " ", " ", " ", "+", "-", "O", "-", "N", "-", "+", " ", " "],
     [" ", " ", " ", " ", "|", " ", " ", " ", " ", " ", "|", " ", " "],
     [" ", " ", " ", " ", "|", " ", " ", " ", "+", "-", "I", "-", "+"],
@@ -83,7 +83,7 @@ export const goonies: MapOfCharacters[][] = [
     [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "|"],
     [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "x"],
 ];
-export const lettersOnTurnsWithIntersection: MapOfCharacters[][] = [
+export const lettersOnTurnsWithIntersection: string[][] = [
     ["@", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
     ["|", " ", "+", "-", "E", "-", "-", "+", " ", " ", " ", " ", " "],
     ["A", " ", "|", " ", " ", " ", " ", "|", " ", " ", " ", " ", " "],
@@ -96,14 +96,14 @@ export const lettersOnTurnsWithIntersection: MapOfCharacters[][] = [
 /**
  * Valid map: Keep direction, even in a compact space
  */
-export const compactMap: MapOfCharacters[][] = [
+export const compactMap: string[][] = [
     [" ", " ", " ", " ", " ", " ", " ", " "],
     [" ", "+", "-", "L", "-", "+", " ", " "],
     [" ", "|", " ", " ", "+", "A", "-", "+"],
     ["@", "B", "+", " ", "+", "+", " ", "H"],
     [" ", "+", "+", " ", " ", " ", " ", "x"]
 ];
-export const compactMapWithLetterOnTurn: MapOfCharacters[][] = [
+export const compactMapWithLetterOnTurn: string[][] = [
     [" ", " ", " ", " ", " ", " ", " ", " "],
     [" ", "+", "-", "L", "-", "+", " ", " "],
     [" ", "|", " ", " ", "+", "A", "-", "+"],
@@ -115,7 +115,7 @@ export const compactMapWithLetterOnTurn: MapOfCharacters[][] = [
  * Invalid maps:
  * 1. Multiple starts
  */
-export const multipleStartA: MapOfCharacters[][] = [
+export const multipleStartA: string[][] = [
     [" ", " ", " ", "@", "-", "-", "A", "@", "-", "-", "+", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "|", " "],
     [" ", " ", "x", "-", "B", "-", "+", " ", " ", " ", "C", " "],
@@ -123,7 +123,7 @@ export const multipleStartA: MapOfCharacters[][] = [
     [" ", " ", " ", " ", " ", " ", "+", "-", "-", "-", "+", " "]
 ];
 
-export const multipleStartB: MapOfCharacters[][] = [
+export const multipleStartB: string[][] = [
     [" ", " ", " ", "@", "-", "-", "A", "-", "-", "-", "+", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "|", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "C", " "],
@@ -131,7 +131,7 @@ export const multipleStartB: MapOfCharacters[][] = [
     [" ", " ", " ", " ", " ", "@", "-", "B", "-", "-", "+", " "]
 ];
 
-export const multipleStartC: MapOfCharacters[][] = [
+export const multipleStartC: string[][] = [
     [" ", " ", " ", "@", "-", "-", "A", "-", "-", "x", " ", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
     [" ", " ", "x", "-", "B", "-", "+", " ", " ", " ", " ", " "],
@@ -143,16 +143,16 @@ export const multipleStartC: MapOfCharacters[][] = [
  * Invalid maps:
  * 2. Multiple starting paths
  */
-export const multipleStartingPathsVerA: MapOfCharacters[][] = [
+export const multipleStartingPathsVerA: string[][] = [
     [" ", "x", "-", "@", "-", "-", "A", "-", "x"]
 ];
-export const multipleStartingPathsVerB: MapOfCharacters[][] = [
+export const multipleStartingPathsVerB: string[][] = [
     [" ", " ", " ", "+", "-", "-", "A", "-", "-", "x", " ", " "],
     [" ", " ", " ", "@", " ", " ", " ", " ", " ", " ", " ", " "],
     [" ", " ", " ", "|", " ", " ", " ", " ", " ", " ", " ", " "],
     [" ", " ", " ", "+", "-", "-", "x", " ", " ", " ", " ", " "]
 ];
-export const multipleStartingPathsVerC: MapOfCharacters[][] = [
+export const multipleStartingPathsVerC: string[][] = [
     [" ", " ", " ", "+", "-", "-", "A", "-", "-", "x", " ", " "],
     [" ", "x", "-", "@", " ", " ", " ", " ", " ", " ", " ", " "]
 ];
@@ -161,7 +161,7 @@ export const multipleStartingPathsVerC: MapOfCharacters[][] = [
  * Invalid maps:
  * 3. Fork in path
  */
-export const forkInPathVerA: MapOfCharacters[][] = [
+export const forkInPathVerA: string[][] = [
     [" ", " ", " ", " ", " ", " ", " ", " "],
     ["x", "-", "-", "-", "E", "-", "-", "B"],
     [" ", " ", " ", " ", " ", " ", " ", "|"],
@@ -171,7 +171,7 @@ export const forkInPathVerA: MapOfCharacters[][] = [
     [" ", "x", "F", "-", "-", "-", "-", "+"]
 ];
 
-export const forkInPathVerB: MapOfCharacters[][] = [
+export const forkInPathVerB: string[][] = [
     [" ", "@", "-", "-", "A", "-", "-", "+", "-", "x"],
     [" ", " ", " ", " ", " ", " ", " ", "|", " ", " "],
     [" ", " ", " ", " ", " ", " ", " ", "|", " ", " "],
@@ -182,7 +182,7 @@ export const forkInPathVerB: MapOfCharacters[][] = [
  * Invalid maps:
  * 3. Broken path
  */
-export const brokenPath: MapOfCharacters[][] = [
+export const brokenPath: string[][] = [
     [" ", " ", " ", " ", "@", "-", "A", "-", "+"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
     [" ", " ", " ", " ", " ", " ", " ", " ", " "],
@@ -190,7 +190,7 @@ export const brokenPath: MapOfCharacters[][] = [
     [" ", " ", " ", " ", "|", " ", " ", " ", "|"],
     [" ", " ", " ", " ", "+", "-", "-", "-", "+"],
 ];
-export const brokenPathVerB: MapOfCharacters[][] = [
+export const brokenPathVerB: string[][] = [
     [" ", " ", " ", " ", "@", "-", "A", "-", "+"],
     [" ", " ", " ", " ", " ", " ", " ", " ", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
@@ -198,7 +198,7 @@ export const brokenPathVerB: MapOfCharacters[][] = [
     [" ", " ", " ", " ", "|", " ", " ", " ", "|"],
     [" ", " ", " ", " ", "+", "-", "-", "-", "+"],
 ];
-export const brokenPathVerC: MapOfCharacters[][] = [
+export const brokenPathVerC: string[][] = [
     [" ", " ", " ", " ", "@", "-", "A", "-", "+"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
@@ -211,7 +211,7 @@ export const brokenPathVerC: MapOfCharacters[][] = [
  * Invalid map:
  * 4. Missing start or end character
  */
-export const xMissing: MapOfCharacters[][] = [
+export const xMissing: string[][] = [
     [" ", " ", " ", " ", "@", "-", "A", "-", "+"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
@@ -219,7 +219,7 @@ export const xMissing: MapOfCharacters[][] = [
     [" ", " ", " ", " ", "|", " ", " ", " ", "|"],
     [" ", " ", " ", " ", "+", "-", "-", "-", "+"],
 ];
-export const startMissingVerA: MapOfCharacters[][] = [
+export const startMissingVerA: string[][] = [
     [" ", " ", " ", " ", " ", "-", "A", "-", "+"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
@@ -227,7 +227,7 @@ export const startMissingVerA: MapOfCharacters[][] = [
     [" ", " ", " ", " ", "|", " ", " ", " ", "|"],
     [" ", " ", " ", " ", "+", "-", "-", "-", "+"],
 ];
-export const startMissingVerB: MapOfCharacters[][] = [
+export const startMissingVerB: string[][] = [
     [" ", " ", " ", " ", " ", "-", "A", "-", "+"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
@@ -240,10 +240,10 @@ export const startMissingVerB: MapOfCharacters[][] = [
  * Invalid map:
  * 5. Fake turn
  */
-export const fakeTurnVerA: MapOfCharacters[][] = [
+export const fakeTurnVerA: string[][] = [
     ["@", "-", "A", "+", "-", "B", "-", "x", " "]
 ];
-export const fakeTurnVerB: MapOfCharacters[][] = [
+export const fakeTurnVerB: string[][] = [
     ["@"],
     ["|"],
     ["B"],

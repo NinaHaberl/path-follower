@@ -1,6 +1,6 @@
-import {MapOfCharacters, Position} from "../types";
+import {string, Position} from "../types";
 
-export const validateMapAndFindStartingPosition = (map: MapOfCharacters[][]): Position | undefined => {
+export const validateMapAndFindStartingPosition = (map: string[][]): Position | undefined => {
 
     let endingCharacter = false;
     let startPosition: Position | undefined = undefined;
@@ -43,4 +43,4 @@ export const validateMapAndFindStartingPosition = (map: MapOfCharacters[][]): Po
     return startPosition;
 };
 
-export const isValidMapCharacter = (character: MapOfCharacters) => /^\s*$|[A-Z]|-|\||\+|x/.test(character);
+export const isValidMapCharacter = (character: string) => /^\s*$|[A-Z]|-|\||\+|x/.test(character);
