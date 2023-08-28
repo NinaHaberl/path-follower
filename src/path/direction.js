@@ -1,8 +1,36 @@
 "use strict";
 exports.__esModule = true;
 var types_1 = require("../types");
-function setPathDirection(cellsWithCharacters) {
+// export const setPathDirection = (map: string[][], row: number, column: number): number => {
+//
+//     let [right, down, left, up] = checkSurroundingCells(map, row, column);
+//     let horizontalDirection, verticalDirection = false;
+//
+//     const verticalRule: RegExp = /[A-Z]|\||\+|x/;
+//     const horizontalRule: RegExp = /[A-Z]|-|\+|x/;
+//
+//     if(right && left) {
+//         if(verticalRule.test(right) && verticalRule.test(left)) {
+//             throw new Error("Invalid map: Fork in path after starting position");
+//         } else {
+//             verticalDirection = true;
+//         }
+//     } else if(down && up) {
+//
+//     }
+//     return Direction.Right;
+// }
+exports.setPathDirection = function (map, row, column) {
     var direction;
+    var _a = checkSurroundingCells(map, row, column), right = _a[0], down = _a[1], left = _a[2], up = _a[3];
+    var surroundingCells = [right, down, left, up];
+    var cellsWithCharacters = [];
+    // throw out empty cells
+    surroundingCells.forEach(function (character, direction) {
+        if (character && /[A-Z]|-|\||\+|x/.test(character)) {
+            cellsWithCharacters.push({ character: character, direction: direction });
+        }
+    });
     if (cellsWithCharacters.length === 0) {
         throw new Error("Invalid map: Broken path after starting position");
     }
@@ -19,12 +47,12 @@ function setPathDirection(cellsWithCharacters) {
                  x
              `
              */
-            throw new Error("Invalid map: Multiple starting paths");
+            direction = types_1.Direction.Right;
+            //throw new Error("Invalid map: Multiple starting paths");
         }
     }
     return direction;
-}
-exports.setPathDirection = setPathDirection;
+};
 function setNewPosition(direction, position) {
     switch (direction) {
         case types_1.Direction.Right:

@@ -1,6 +1,6 @@
-import {string, Position} from "../types";
+import {Position} from "../types";
 
-export const validateMapAndFindStartingPosition = (map: string[][]): Position | undefined => {
+export const validateMapAndFindStartingPosition = (map: string[][]): Position => {
 
     let endingCharacter = false;
     let startPosition: Position | undefined = undefined;

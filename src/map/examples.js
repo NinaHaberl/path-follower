@@ -1,13 +1,15 @@
+"use strict";
+exports.__esModule = true;
 /**
  * Valid minimum map: Contains only start and stop character.
  */
-export const minimumMap: string[][] = [
+exports.minimumMap = [
     ["@", "x"]
 ];
 /**
  * Valid map: A basic example
  */
-export const basicExample: string[][] = [
+exports.basicExample = [
     [" ", " ", " ", " ", "@", "-", "A", "-", "+"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
@@ -15,11 +17,10 @@ export const basicExample: string[][] = [
     [" ", " ", " ", " ", "|", " ", " ", " ", "|"],
     [" ", " ", " ", " ", "+", "-", "-", "-", "+"]
 ];
-
 /**
  * Valid map: Ignore stuff after end of path
  */
-export const ignoreAfterX: string[][] = [
+exports.ignoreAfterX = [
     [" ", " ", " ", " ", "@", "-", "A", "-", "+"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
@@ -27,11 +28,10 @@ export const ignoreAfterX: string[][] = [
     [" ", " ", " ", " ", "|", " ", " ", " ", "|"],
     [" ", " ", " ", " ", "+", "-", "-", "-", "+"]
 ];
-
 /**
  * Valid map: Go straight through intersections
  */
-export const intersectionVerA: string[][] = [
+exports.intersectionVerA = [
     ["@", " ", " ", " ", " ", " ", " ", " ", " ", " "],
     ["|", " ", "+", "-", "C", "-", "-", "+", " ", " "],
     ["A", " ", "|", " ", " ", " ", " ", "|", " ", " "],
@@ -40,7 +40,7 @@ export const intersectionVerA: string[][] = [
     [" ", " ", "|", " ", " ", " ", " ", " ", " ", "|"],
     [" ", " ", "+", "-", "-", "-", "D", "-", "-", "+"]
 ];
-export const intersectionVerB: string[][] = [
+exports.intersectionVerB = [
     ["@", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
     ["|", " ", "+", "-", "C", "-", "-", "+", " ", " ", " ", " ", " "],
     ["A", " ", "|", " ", " ", " ", " ", "|", " ", " ", " ", " ", " "],
@@ -49,29 +49,27 @@ export const intersectionVerB: string[][] = [
     [" ", " ", "|", " ", " ", " ", " ", " ", "x", "-", "|", "-", "+"],
     [" ", " ", "+", "-", "-", "-", "D", "-", "-", "-", "+", " ", " "]
 ];
-
 /**
  * Valid map: Letters may be found on turns
  */
-export const lettersOnTurns: string[][] = [
+exports.lettersOnTurns = [
     ["@", "-", "-", "A", "-", "-", "-", "+"],
     [" ", " ", " ", " ", " ", " ", " ", "|"],
     ["x", "-", "B", "+", " ", " ", " ", "|"],
     [" ", " ", " ", "|", " ", " ", " ", "|"],
     [" ", " ", " ", "+", "-", "-", "-", "C"]
 ];
-export const lettersOnTurnsVerB: string[][] = [
+exports.lettersOnTurnsVerB = [
     ["@", "-", "-", "C", "-", "-", "-", "+"],
     [" ", " ", " ", " ", " ", " ", " ", "|"],
     ["x", "-", "L", "+", " ", " ", " ", "|"],
     [" ", " ", " ", "|", " ", " ", " ", "|"],
     [" ", " ", " ", "O", "-", "-", "-", "O"]
 ];
-
 /**
  * Valid map: Do not collect a letter from the same location twice
  */
-export const goonies: string[][] = [
+exports.goonies = [
     [" ", " ", " ", " ", "+", "-", "O", "-", "N", "-", "+", " ", " "],
     [" ", " ", " ", " ", "|", " ", " ", " ", " ", " ", "|", " ", " "],
     [" ", " ", " ", " ", "|", " ", " ", " ", "+", "-", "I", "-", "+"],
@@ -81,7 +79,7 @@ export const goonies: string[][] = [
     [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "|"],
     [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "x"],
 ];
-export const lettersOnTurnsWithIntersection: string[][] = [
+exports.lettersOnTurnsWithIntersection = [
     ["@", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
     ["|", " ", "+", "-", "E", "-", "-", "+", " ", " ", " ", " ", " "],
     ["A", " ", "|", " ", " ", " ", " ", "|", " ", " ", " ", " ", " "],
@@ -90,86 +88,79 @@ export const lettersOnTurnsWithIntersection: string[][] = [
     [" ", " ", "|", " ", " ", " ", " ", " ", "x", "-", "|", "-", "+"],
     [" ", " ", "F", "-", "-", "-", "G", "-", "-", "-", "+", " ", " "]
 ];
-
 /**
  * Valid map: Keep direction, even in a compact space
  */
-export const compactMap: string[][] = [
+exports.compactMap = [
     [" ", " ", " ", " ", " ", " ", " ", " "],
     [" ", "+", "-", "L", "-", "+", " ", " "],
     [" ", "|", " ", " ", "+", "A", "-", "+"],
     ["@", "B", "+", " ", "+", "+", " ", "H"],
     [" ", "+", "+", " ", " ", " ", " ", "x"]
 ];
-export const compactMapWithLetterOnTurn: string[][] = [
+exports.compactMapWithLetterOnTurn = [
     [" ", " ", " ", " ", " ", " ", " ", " "],
     [" ", "+", "-", "L", "-", "+", " ", " "],
     [" ", "|", " ", " ", "+", "A", "-", "+"],
     ["@", "B", "+", " ", "+", "W", " ", "H"],
     [" ", "+", "+", " ", " ", " ", " ", "x"]
 ];
-
 /**
  * Edge cases: Valid maps around the start
  */
-export const aroundStartVerA: string[][] = [
+exports.aroundStartVerA = [
     ["+", "-", "-", "+"],
     ["|", "@", "-", "A"],
     ["B", " ", " ", " "],
     ["x", " ", " ", " "],
 ];
-
 /**
  * Invalid maps:
  * 1. Multiple starts
  */
-export const multipleStartA: string[][] = [
+exports.multipleStartA = [
     [" ", " ", " ", "@", "-", "-", "A", "@", "-", "-", "+", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "|", " "],
     [" ", " ", "x", "-", "B", "-", "+", " ", " ", " ", "C", " "],
     [" ", " ", " ", " ", " ", " ", "|", " ", " ", " ", "|", " "],
     [" ", " ", " ", " ", " ", " ", "+", "-", "-", "-", "+", " "]
 ];
-
-export const multipleStartB: string[][] = [
+exports.multipleStartB = [
     [" ", " ", " ", "@", "-", "-", "A", "-", "-", "-", "+", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "|", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "C", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "x", " "],
     [" ", " ", " ", " ", " ", "@", "-", "B", "-", "-", "+", " "]
 ];
-
-export const multipleStartC: string[][] = [
+exports.multipleStartC = [
     [" ", " ", " ", "@", "-", "-", "A", "-", "-", "x", " ", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
     [" ", " ", "x", "-", "B", "-", "+", " ", " ", " ", " ", " "],
     [" ", " ", " ", " ", " ", " ", "|", " ", " ", " ", " ", " "],
     [" ", " ", " ", " ", " ", " ", "@", " ", " ", " ", " ", " "]
 ];
-
 /**
  * Invalid maps:
  * 2. Multiple starting paths
  */
-export const multipleStartingPathsVerA: string[][] = [
+exports.multipleStartingPathsVerA = [
     [" ", "x", "-", "@", "-", "-", "A", "-", "x"]
 ];
-export const multipleStartingPathsVerB: string[][] = [
+exports.multipleStartingPathsVerB = [
     [" ", " ", " ", "+", "-", "-", "A", "-", "-", "x", " ", " "],
     [" ", " ", " ", "@", " ", " ", " ", " ", " ", " ", " ", " "],
     [" ", " ", " ", "|", " ", " ", " ", " ", " ", " ", " ", " "],
     [" ", " ", " ", "+", "-", "-", "x", " ", " ", " ", " ", " "]
 ];
-export const multipleStartingPathsVerC: string[][] = [
+exports.multipleStartingPathsVerC = [
     [" ", " ", " ", "+", "-", "-", "A", "-", "-", "x", " ", " "],
     [" ", "x", "-", "@", " ", " ", " ", " ", " ", " ", " ", " "]
 ];
-
 /**
  * Invalid maps:
  * 3. Fork in path
  */
-export const forkInPathVerA: string[][] = [
+exports.forkInPathVerA = [
     [" ", " ", " ", " ", " ", " ", " ", " "],
     ["x", "-", "-", "-", "E", "-", "-", "B"],
     [" ", " ", " ", " ", " ", " ", " ", "|"],
@@ -178,19 +169,17 @@ export const forkInPathVerA: string[][] = [
     [" ", " ", " ", " ", " ", " ", " ", "|"],
     [" ", "x", "F", "-", "-", "-", "-", "+"]
 ];
-
-export const forkInPathVerB: string[][] = [
+exports.forkInPathVerB = [
     [" ", "@", "-", "-", "A", "-", "-", "+", "-", "x"],
     [" ", " ", " ", " ", " ", " ", " ", "|", " ", " "],
     [" ", " ", " ", " ", " ", " ", " ", "|", " ", " "],
     [" ", "x", "F", "-", "-", "-", "-", "+", " ", " "]
 ];
-
 /**
  * Invalid maps:
  * 3. Broken path
  */
-export const brokenPath: string[][] = [
+exports.brokenPath = [
     [" ", " ", " ", " ", "@", "-", "A", "-", "+"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
     [" ", " ", " ", " ", " ", " ", " ", " ", " "],
@@ -198,7 +187,7 @@ export const brokenPath: string[][] = [
     [" ", " ", " ", " ", "|", " ", " ", " ", "|"],
     [" ", " ", " ", " ", "+", "-", "-", "-", "+"],
 ];
-export const brokenPathVerB: string[][] = [
+exports.brokenPathVerB = [
     [" ", " ", " ", " ", "@", "-", "A", "-", "+"],
     [" ", " ", " ", " ", " ", " ", " ", " ", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
@@ -206,7 +195,7 @@ export const brokenPathVerB: string[][] = [
     [" ", " ", " ", " ", "|", " ", " ", " ", "|"],
     [" ", " ", " ", " ", "+", "-", "-", "-", "+"],
 ];
-export const brokenPathVerC: string[][] = [
+exports.brokenPathVerC = [
     [" ", " ", " ", " ", "@", "-", "A", "-", "+"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
@@ -214,12 +203,11 @@ export const brokenPathVerC: string[][] = [
     [" ", " ", " ", " ", "|", " ", " ", " ", "|"],
     [" ", " ", " ", " ", "+", "-", "-", "-", "+"],
 ];
-
 /**
  * Invalid map:
  * 4. Missing start or end character
  */
-export const xMissing: string[][] = [
+exports.xMissing = [
     [" ", " ", " ", " ", "@", "-", "A", "-", "+"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
@@ -227,7 +215,7 @@ export const xMissing: string[][] = [
     [" ", " ", " ", " ", "|", " ", " ", " ", "|"],
     [" ", " ", " ", " ", "+", "-", "-", "-", "+"],
 ];
-export const startMissingVerA: string[][] = [
+exports.startMissingVerA = [
     [" ", " ", " ", " ", " ", "-", "A", "-", "+"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
@@ -235,7 +223,7 @@ export const startMissingVerA: string[][] = [
     [" ", " ", " ", " ", "|", " ", " ", " ", "|"],
     [" ", " ", " ", " ", "+", "-", "-", "-", "+"],
 ];
-export const startMissingVerB: string[][] = [
+exports.startMissingVerB = [
     [" ", " ", " ", " ", " ", "-", "A", "-", "+"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
     [" ", " ", " ", " ", " ", " ", " ", " ", "|"],
@@ -243,15 +231,14 @@ export const startMissingVerB: string[][] = [
     [" ", " ", " ", " ", "|", " ", " ", " ", "|"],
     [" ", " ", " ", " ", "+", "-", "-", "-", "+"],
 ];
-
 /**
  * Invalid map:
  * 5. Fake turn
  */
-export const fakeTurnVerA: string[][] = [
+exports.fakeTurnVerA = [
     ["@", "-", "A", "+", "-", "B", "-", "x", " "]
 ];
-export const fakeTurnVerB: string[][] = [
+exports.fakeTurnVerB = [
     ["@"],
     ["|"],
     ["B"],

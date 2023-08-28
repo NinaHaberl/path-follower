@@ -1,6 +1,6 @@
 export interface Position {
-    row: number | undefined;
-    column: number | undefined;
+    row: number;
+    column: number;
 };
 
 export enum Direction {

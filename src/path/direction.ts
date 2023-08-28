@@ -1,7 +1,37 @@
-import {Direction, string, Position} from "../types";
+import {Direction, Position} from "../types";
 
-export function setPathDirection(cellsWithCharacters: Array<{ character: string; direction: number; }>): number {
+// export const setPathDirection = (map: string[][], row: number, column: number): number => {
+//
+//     let [right, down, left, up] = checkSurroundingCells(map, row, column);
+//     let horizontalDirection, verticalDirection = false;
+//
+//     const verticalRule: RegExp = /[A-Z]|\||\+|x/;
+//     const horizontalRule: RegExp = /[A-Z]|-|\+|x/;
+//
+//     if(right && left) {
+//         if(verticalRule.test(right) && verticalRule.test(left)) {
+//             throw new Error("Invalid map: Fork in path after starting position");
+//         } else {
+//             verticalDirection = true;
+//         }
+//     } else if(down && up) {
+//
+//     }
+//     return Direction.Right;
+// }
+export const setPathDirection = (map: string[][], row: number, column: number): number => {
+
     let direction: number;
+    let [right, down, left, up] = checkSurroundingCells(map, row, column);
+    let surroundingCells = [right, down, left, up];
+    let cellsWithCharacters: Array<{ character: string | undefined; direction: number; }> = [];
+
+    // throw out empty cells
+    surroundingCells.forEach((character, direction) => {
+        if(character && /[A-Z]|-|\||\+|x/.test(character)) {
+            cellsWithCharacters.push({character, direction});
+        }
+    });
 
     if(cellsWithCharacters.length === 0) {
         throw new Error("Invalid map: Broken path after starting position");
@@ -19,7 +49,9 @@ export function setPathDirection(cellsWithCharacters: Array<{ character: string;
                  x
              `
              */
-            throw new Error("Invalid map: Multiple starting paths");
+            direction = Direction.Right;
+            //throw new Error("Invalid map: Multiple starting paths");
+
         }
     }
 

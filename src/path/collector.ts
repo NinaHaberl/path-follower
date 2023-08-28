@@ -1,7 +1,7 @@
 import {Direction, Position} from "../types";
 import {checkSurroundingCells, getCurrentCellValue, makeTurn, setNewPosition, setPathDirection} from "./direction";
 
-export function collectLettersAndFollowPath(map: string[][], startPosition: Position | undefined): {
+export function collectLettersAndFollowPath(map: string[][], startPosition: Position): {
     letters: string;
     path: string
 } {
@@ -9,39 +9,24 @@ export function collectLettersAndFollowPath(map: string[][], startPosition: Posi
     // initialization of output fields
     let collectedLetters: string[] = [];
     let pathAsCharacters: string[] = ["@"];
+
     const letterLocations: Map<string, [number, number]> = new Map();
 
     // initialization of path direction and positions
-    let pathDirection: Direction = Direction.Start;
-    let endOfPath: string | null = null;
+    let row: number = startPosition.row;
+    let column: number = startPosition.column;
+    let position = {row, column};
+    let pathDirection: Direction = setPathDirection(map, row, column);
 
     const verticalRule: RegExp = /[A-Z]|\||\+|x/;
     const horizontalRule: RegExp = /[A-Z]|-|\+|x/;
 
-    let row = startPosition?.row;
-    let column = startPosition?.column;
-    let position, nextPosition: Position;
+    let nextPosition: Position;
     let currentCharacter: string;
+    let endOfPath: string | null = null;
 
     // follow path
     while(endOfPath !== "x") {
-
-        // current position and surrounding cells;
-        position = { row, column };
-        let [right, down, left, up] = checkSurroundingCells(map, row, column);
-        let surroundingCells = [right, down, left, up];
-        let cellsWithCharacters: Array<{ character: string; direction: number; }> = [];
-
-        // throw out empty cells
-        surroundingCells.forEach((character, direction) => {
-            if(/[A-Z]|-|\||\+|x/.test(character)) {
-                cellsWithCharacters.push({character, direction});
-            }
-        });
-
-        if(pathDirection === Direction.Start) {
-            pathDirection = setPathDirection(cellsWithCharacters);
-        }
 
         // set next position and surrounding cells;
         nextPosition = setNewPosition(pathDirection, position);
@@ -52,13 +37,12 @@ export function collectLettersAndFollowPath(map: string[][], startPosition: Posi
         pathAsCharacters.push(currentCharacter);
 
         // validate path rules
-        [right, down, left, up] = checkSurroundingCells(map, row, column);
-        let nextCell: string =
+        let [right, down, left, up] = checkSurroundingCells(map, row, column);
+        let nextCell =
             pathDirection === Direction.Right ? right :
             pathDirection === Direction.Left ? left :
             pathDirection === Direction.Down ? down :
-            pathDirection === Direction.Up;
-
+            pathDirection === Direction.Up ? up : undefined;
 
         let positionRules: Map<Direction, RegExp> = new Map([
             [Direction.Right, horizontalRule],
@@ -81,6 +65,7 @@ export function collectLettersAndFollowPath(map: string[][], startPosition: Posi
                 collectedLetters.push(currentCharacter);
             }
 
+            console.log(`trenutna ćelija je ${currentCharacter}, sljedeća je ${nextCell}`);
             if(nextCell === " " || nextCell === undefined) {
                 pathDirection = makeTurn(right, down, left, up, pathDirection, verticalRule, horizontalRule);
             }
@@ -121,7 +106,7 @@ export function collectLettersAndFollowPath(map: string[][], startPosition: Posi
     return { letters: collectedLetters.join(""), path: pathAsCharacters.join("") };
 }
 function updateLetterLocation(
-    letterLocations: Map<string, [number?, number?]>,
+    letterLocations: Map<string, [number, number]>,
     currentCharacter: string,
     row: number,
     column: number

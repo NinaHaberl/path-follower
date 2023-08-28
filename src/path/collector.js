@@ -8,30 +8,17 @@ function collectLettersAndFollowPath(map, startPosition) {
     var pathAsCharacters = ["@"];
     var letterLocations = new Map();
     // initialization of path direction and positions
-    var pathDirection = types_1.Direction.Start;
-    var endOfPath = null;
+    var row = startPosition.row;
+    var column = startPosition.column;
+    var position = { row: row, column: column };
+    var pathDirection = direction_1.setPathDirection(map, row, column);
     var verticalRule = /[A-Z]|\||\+|x/;
     var horizontalRule = /[A-Z]|-|\+|x/;
-    var row = startPosition === null || startPosition === void 0 ? void 0 : startPosition.row;
-    var column = startPosition === null || startPosition === void 0 ? void 0 : startPosition.column;
-    var position, nextPosition;
+    var nextPosition;
     var currentCharacter;
-    var _loop_1 = function () {
-        var _a;
-        // current position and surrounding cells;
-        position = { row: row, column: column };
-        var _b = direction_1.checkSurroundingCells(map, row, column), right = _b[0], down = _b[1], left = _b[2], up = _b[3];
-        var surroundingCells = [right, down, left, up];
-        var cellsWithCharacters = [];
-        // throw out empty cells
-        surroundingCells.forEach(function (character, direction) {
-            if (/[A-Z]|-|\||\+|x/.test(character)) {
-                cellsWithCharacters.push({ character: character, direction: direction });
-            }
-        });
-        if (pathDirection === types_1.Direction.Start) {
-            pathDirection = direction_1.setPathDirection(cellsWithCharacters);
-        }
+    var endOfPath = null;
+    // follow path
+    while (endOfPath !== "x") {
         // set next position and surrounding cells;
         nextPosition = direction_1.setNewPosition(pathDirection, position);
         row = nextPosition.row;
@@ -39,11 +26,11 @@ function collectLettersAndFollowPath(map, startPosition) {
         currentCharacter = direction_1.getCurrentCellValue(map, row, column);
         pathAsCharacters.push(currentCharacter);
         // validate path rules
-        _a = direction_1.checkSurroundingCells(map, row, column), right = _a[0], down = _a[1], left = _a[2], up = _a[3];
+        var _a = direction_1.checkSurroundingCells(map, row, column), right = _a[0], down = _a[1], left = _a[2], up = _a[3];
         var nextCell = pathDirection === types_1.Direction.Right ? right :
             pathDirection === types_1.Direction.Left ? left :
                 pathDirection === types_1.Direction.Down ? down :
-                    pathDirection === types_1.Direction.Up;
+                    pathDirection === types_1.Direction.Up ? up : undefined;
         var positionRules = new Map([
             [types_1.Direction.Right, horizontalRule],
             [types_1.Direction.Left, horizontalRule],
@@ -61,6 +48,7 @@ function collectLettersAndFollowPath(map, startPosition) {
             if (updateLetterLocation(letterLocations, currentCharacter, row, column, collectedLetters)) {
                 collectedLetters.push(currentCharacter);
             }
+            console.log("trenutna \u0107elija je " + currentCharacter + ", sljede\u0107a je " + nextCell);
             if (nextCell === " " || nextCell === undefined) {
                 pathDirection = direction_1.makeTurn(right, down, left, up, pathDirection, verticalRule, horizontalRule);
             }
@@ -90,10 +78,6 @@ function collectLettersAndFollowPath(map, startPosition) {
         if (currentCharacter === "x") {
             endOfPath = "x";
         }
-    };
-    // follow path
-    while (endOfPath !== "x") {
-        _loop_1();
     }
     return { letters: collectedLetters.join(""), path: pathAsCharacters.join("") };
 }

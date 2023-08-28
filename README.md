@@ -2,7 +2,7 @@
 ## What you are looking at
 A piece of code written in TypeScript that takes a map of characters as an input
 and outputs the collected letters and the list of characters of the travelled path.
-Tests are written in Jest, and can be found in the __tests__ directory.
+Tests are written in Jest, and can be found in the `__tests__` directory.
 
 Input:
 - a 2-dimensional map of characters ([check examples.ts file](https://github.com/NinaHaberl/path-follower/src/map/examples.ts))
