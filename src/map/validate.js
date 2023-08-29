@@ -37,3 +37,5 @@ exports.validateMapAndFindStartingPosition = function (map) {
     return startPosition;
 };
 exports.isValidMapCharacter = function (character) { return /^\s*$|[A-Z]|-|\||\+|x/.test(character); };
+exports.isVerticalDirectionCharacterValid = function (character) { return /[A-Z]|\||\+|x/.test(character); };
+exports.isHorizontalDirectionCharacterValid = function (character) { return /[A-Z]|-|\+|x/.test(character); };

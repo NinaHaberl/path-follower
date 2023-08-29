@@ -49,7 +49,65 @@ export const setPathDirection = (map: string[][], row: number, column: number): 
                  x
              `
              */
-            throw new Error("Invalid map: Multiple starting paths");
+            let horizontalDirection = false;
+            let verticalDirection = false;
+
+            for (let x = 0; x < cellsWithCharacters.length; x++) {
+                const {direction, character} = cellsWithCharacters[x];
+
+                switch(direction) {
+                    case Direction.Right:
+
+                        break;
+                    case Direction.Down:
+                        break;
+                    case Direction.Left:
+                        break;
+                    case Direction.Up:
+                        break;
+                }
+            }
+
+            // for (let x = 0; x < cellsWithCharacters.length; x++) {
+            //     switch (cellsWithCharacters[x].direction) {
+            //         case Direction.Right:
+            //             if(horizontalDirection === false && horizontalRule.test(cellsWithCharacters[x].character)) {
+            //                 horizontalDirection = true;
+            //                 direction = cellsWithCharacters[x].direction;
+            //                 break;
+            //             } else {
+            //                 throw new Error("Invalid map: Multiple starting paths");
+            //             }
+            //
+            //         case Direction.Down:
+            //             if(verticalDirection === false && verticalRule.test(cellsWithCharacters[x].character)) {
+            //                 verticalDirection = true;
+            //                 direction = cellsWithCharacters[x].direction;
+            //                 break;
+            //             } else {
+            //                 throw new Error("Invalid map: Multiple starting paths");
+            //             }
+            //
+            //         case Direction.Left:
+            //             if(horizontalDirection === false && horizontalRule.test(cellsWithCharacters[x].character)) {
+            //                 horizontalDirection = true;
+            //                 direction = cellsWithCharacters[x].direction;
+            //                 break;
+            //             } else {
+            //                 throw new Error("Invalid map: Multiple starting paths");
+            //             }
+            //
+            //         case Direction.Up:
+            //             if(verticalDirection === false && verticalRule.test(cellsWithCharacters[x].character)) {
+            //                 verticalDirection = true;
+            //                 direction = cellsWithCharacters[x].direction;
+            //                 break;
+            //             } else {
+            //                 throw new Error("Invalid map: Multiple starting paths");
+            //             }
+            //     }
+            //     console.log(cellsWithCharacters[x].direction);
+            //     console.log(cellsWithCharacters[x].character);
         }
     }
 

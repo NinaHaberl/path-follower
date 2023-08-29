@@ -45,3 +45,7 @@ export const validateMapAndFindStartingPosition = (map: string[][]): Position =>
 };
 
 export const isValidMapCharacter = (character: string) => /^\s*$|[A-Z]|-|\||\+|x/.test(character);
+
+export const isVerticalDirectionCharacterValid = (character: string) =>/[A-Z]|\||\+|x/.test(character);
+
+export const isHorizontalDirectionCharacterValid = (character: string) =>/[A-Z]|-|\+|x/.test(character);

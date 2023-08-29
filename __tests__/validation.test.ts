@@ -1,5 +1,10 @@
 import * as maps from '../src/map/examples';
-import {isValidMapCharacter, validateMapAndFindStartingPosition} from "../src/map/validate";
+import {
+    isValidMapCharacter,
+    isVerticalDirectionCharacterValid,
+    isHorizontalDirectionCharacterValid,
+    validateMapAndFindStartingPosition
+} from "../src/map/validate";
 import {collectLettersAndFollowPath} from "../src/path/collector";
 
 const mapsToValidate = [
@@ -83,4 +88,34 @@ describe('isValidMapCharacter function', () => {
             expect(isValidMapCharacter(character)).toBeTruthy();
         })
     })
-})
+});
+
+describe('isVerticalDirectionCharacterValid function', () => {
+    test('should allow uppercase characters', () => {
+
+        const upperCaseLetters: string[] = Array.from({length: 26}, (_, i) => String.fromCharCode(65 + i));
+        upperCaseLetters.forEach(character => {
+            expect(isVerticalDirectionCharacterValid(character)).toBeTruthy();
+        })
+    }), test('should allow special characters', () => {
+
+        ['|', 'x'].forEach(character => {
+            expect(isVerticalDirectionCharacterValid(character)).toBeTruthy();
+        })
+    })
+});
+
+describe('isHorizontalDirectionCharacterValid function', () => {
+    test('should allow uppercase characters', () => {
+
+        const upperCaseLetters: string[] = Array.from({length: 26}, (_, i) => String.fromCharCode(65 + i));
+        upperCaseLetters.forEach(character => {
+            expect(isHorizontalDirectionCharacterValid(character)).toBeTruthy();
+        })
+    }), test('should allow special characters', () => {
+
+        ['-', 'x'].forEach(character => {
+            expect(isHorizontalDirectionCharacterValid(character)).toBeTruthy();
+        })
+    })
+});
