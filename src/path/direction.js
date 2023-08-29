@@ -47,8 +47,7 @@ exports.setPathDirection = function (map, row, column) {
                  x
              `
              */
-            direction = types_1.Direction.Right;
-            //throw new Error("Invalid map: Multiple starting paths");
+            throw new Error("Invalid map: Multiple starting paths");
         }
     }
     return direction;

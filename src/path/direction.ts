@@ -49,9 +49,7 @@ export const setPathDirection = (map: string[][], row: number, column: number): 
                  x
              `
              */
-            direction = Direction.Right;
-            //throw new Error("Invalid map: Multiple starting paths");
-
+            throw new Error("Invalid map: Multiple starting paths");
         }
     }
 

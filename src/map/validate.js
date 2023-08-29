@@ -5,12 +5,12 @@ exports.validateMapAndFindStartingPosition = function (map) {
     var startPosition = undefined;
     var start = "@";
     var end = "x";
-    for (var row = 0; row < map.length; row++) {
-        for (var column = 0; column < map[row].length; column++) {
-            switch (map[row][column]) {
+    map.forEach(function (row, rowIndex) {
+        row.forEach(function (character, columnIndex) {
+            switch (character) {
                 case start:
                     if (!startPosition) {
-                        startPosition = { row: row, column: column };
+                        startPosition = { row: rowIndex, column: columnIndex };
                     }
                     else {
                         throw new Error("Invalid map - Multiple starts: map contains more than one '@' character");
@@ -20,12 +20,12 @@ exports.validateMapAndFindStartingPosition = function (map) {
                     endingCharacter = true;
                     break;
                 default:
-                    if (!exports.isValidMapCharacter(map[row][column])) {
-                        throw new Error("Invalid map - Map contains invalid character " + map[row][column] + ". The only valid characters are all uppercase letters (A-Z), minus (-), plus (+), pipe character (|) and 'x' as ending character.");
+                    if (!exports.isValidMapCharacter(character)) {
+                        throw new Error("Invalid map - Map contains invalid character \"" + character + "\": valid characters are all uppercase letters (A-Z), minus (-), plus (+), pipe character (|) and 'x' as ending character.");
                     }
             }
-        }
-    }
+        });
+    });
     if (startPosition === undefined) {
         throw new Error("Invalid map - There is no start character!");
     }
