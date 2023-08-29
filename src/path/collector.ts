@@ -61,11 +61,10 @@ export function collectLettersAndFollowPath(map: string[][], startPosition: Posi
         // collect letter | don't repeat from same location
         // letters may be found on turns
         if(/[A-Z]/.test(currentCharacter)) {
-            if(updateLetterLocation(letterLocations, currentCharacter, row, column, collectedLetters)) {
+            if(updateLetterLocation(letterLocations, currentCharacter, row, column)) {
                 collectedLetters.push(currentCharacter);
             }
 
-            console.log(`trenutna ćelija je ${currentCharacter}, sljedeća je ${nextCell}`);
             if(nextCell === " " || nextCell === undefined) {
                 pathDirection = makeTurn(right, down, left, up, pathDirection, verticalRule, horizontalRule);
             }

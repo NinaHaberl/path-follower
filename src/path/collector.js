@@ -45,10 +45,9 @@ function collectLettersAndFollowPath(map, startPosition) {
         // collect letter | don't repeat from same location
         // letters may be found on turns
         if (/[A-Z]/.test(currentCharacter)) {
-            if (updateLetterLocation(letterLocations, currentCharacter, row, column, collectedLetters)) {
+            if (updateLetterLocation(letterLocations, currentCharacter, row, column)) {
                 collectedLetters.push(currentCharacter);
             }
-            console.log("trenutna \u0107elija je " + currentCharacter + ", sljede\u0107a je " + nextCell);
             if (nextCell === " " || nextCell === undefined) {
                 pathDirection = direction_1.makeTurn(right, down, left, up, pathDirection, verticalRule, horizontalRule);
             }
