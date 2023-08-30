@@ -1,27 +1,17 @@
 import {Direction, Position} from "../types";
+import {isHorizontalDirectionCharacterValid, isVerticalDirectionCharacterValid} from "../map/validate";
 
-// export const setPathDirection = (map: string[][], row: number, column: number): number => {
-//
-//     let [right, down, left, up] = checkSurroundingCells(map, row, column);
-//     let horizontalDirection, verticalDirection = false;
-//
-//     const verticalRule: RegExp = /[A-Z]|\||\+|x/;
-//     const horizontalRule: RegExp = /[A-Z]|-|\+|x/;
-//
-//     if(right && left) {
-//         if(verticalRule.test(right) && verticalRule.test(left)) {
-//             throw new Error("Invalid map: Fork in path after starting position");
-//         } else {
-//             verticalDirection = true;
-//         }
-//     } else if(down && up) {
-//
-//     }
-//     return Direction.Right;
-// }
-export const setPathDirection = (map: string[][], row: number, column: number): number => {
+const setPathDirection = (start: boolean, direction: Direction): Direction => {
+    if(!start) {
+        return direction;
 
-    let direction: number;
+    } else {
+        throw new Error("Invalid map: Multiple starting paths");
+    }
+}
+export const getPathDirection = (map: string[][], row: number, column: number): number => {
+
+    let pathDirection: number;
     let [right, down, left, up] = checkSurroundingCells(map, row, column);
     let surroundingCells = [right, down, left, up];
     let cellsWithCharacters: Array<{ character: string | undefined; direction: number; }> = [];
@@ -38,83 +28,35 @@ export const setPathDirection = (map: string[][], row: number, column: number): 
 
     } else {
         if(cellsWithCharacters.length === 1) {
-            direction = cellsWithCharacters[0].direction;
+            pathDirection = cellsWithCharacters[0].direction;
 
         } else {
-            /* TODO: think about edge cases of valid maps, for example
-            `
-                 +--A
-                 |@-+
-                 |
-                 x
-             `
-             */
-            let horizontalDirection = false;
-            let verticalDirection = false;
+
+            let startDirection = false;
 
             for (let x = 0; x < cellsWithCharacters.length; x++) {
-                const {direction, character} = cellsWithCharacters[x];
+                const {character, direction} = cellsWithCharacters[x];
 
-                switch(direction) {
-                    case Direction.Right:
+                if(direction === Direction.Right || direction === Direction.Left) {
+                    if(isHorizontalDirectionCharacterValid(character)) {
+                        pathDirection = setPathDirection(startDirection, direction);
+                        startDirection = true;
+                    }
 
-                        break;
-                    case Direction.Down:
-                        break;
-                    case Direction.Left:
-                        break;
-                    case Direction.Up:
-                        break;
+                } else if(direction === Direction.Up || direction === Direction.Down) {
+                    if(isVerticalDirectionCharacterValid(character)) {
+                        pathDirection = setPathDirection(startDirection, direction);
+                        startDirection = true;
+                    }
                 }
             }
-
-            // for (let x = 0; x < cellsWithCharacters.length; x++) {
-            //     switch (cellsWithCharacters[x].direction) {
-            //         case Direction.Right:
-            //             if(horizontalDirection === false && horizontalRule.test(cellsWithCharacters[x].character)) {
-            //                 horizontalDirection = true;
-            //                 direction = cellsWithCharacters[x].direction;
-            //                 break;
-            //             } else {
-            //                 throw new Error("Invalid map: Multiple starting paths");
-            //             }
-            //
-            //         case Direction.Down:
-            //             if(verticalDirection === false && verticalRule.test(cellsWithCharacters[x].character)) {
-            //                 verticalDirection = true;
-            //                 direction = cellsWithCharacters[x].direction;
-            //                 break;
-            //             } else {
-            //                 throw new Error("Invalid map: Multiple starting paths");
-            //             }
-            //
-            //         case Direction.Left:
-            //             if(horizontalDirection === false && horizontalRule.test(cellsWithCharacters[x].character)) {
-            //                 horizontalDirection = true;
-            //                 direction = cellsWithCharacters[x].direction;
-            //                 break;
-            //             } else {
-            //                 throw new Error("Invalid map: Multiple starting paths");
-            //             }
-            //
-            //         case Direction.Up:
-            //             if(verticalDirection === false && verticalRule.test(cellsWithCharacters[x].character)) {
-            //                 verticalDirection = true;
-            //                 direction = cellsWithCharacters[x].direction;
-            //                 break;
-            //             } else {
-            //                 throw new Error("Invalid map: Multiple starting paths");
-            //             }
-            //     }
-            //     console.log(cellsWithCharacters[x].direction);
-            //     console.log(cellsWithCharacters[x].character);
         }
     }
 
-    return direction;
+    return pathDirection;
 }
 
-export function setNewPosition(direction: Direction, position: Position): Position {
+export const setNewPosition = (direction: Direction, position: Position): Position => {
 
     switch (direction) {
         case Direction.Right:
@@ -133,7 +75,7 @@ export function setNewPosition(direction: Direction, position: Position): Positi
 
     return position;
 }
-export function checkSurroundingCells(map: string[][], row: number, column: number): [string | undefined, string | undefined, string | undefined, string | undefined] {
+export const checkSurroundingCells = (map: string[][], row: number, column: number): [string | undefined, string | undefined, string | undefined, string | undefined] => {
 
     let right:string | undefined, down:string | undefined, left:string | undefined, up:string | undefined;
 
@@ -159,15 +101,15 @@ export function checkSurroundingCells(map: string[][], row: number, column: numb
     return [right, down, left, up];
 }
 
-export function setNextCellValue(map: string[][], row: number, column: number, rowOffset: number, colOffset: number): string {
+export const setNextCellValue = (map: string[][], row: number, column: number, rowOffset: number, colOffset: number): string => {
     return map[row + rowOffset][column + colOffset];
 }
 
-export function getCurrentCellValue(map: string[][], row: number, column: number): string {
+export const getCurrentCellValue = (map: string[][], row: number, column: number): string => {
     return map[row][column];
 }
 
-export function makeTurn(right: string, down: string, left: string, up: string, direction: Direction, verticalRule: RegExp, horizontalRule: RegExp): Direction {
+export const makeTurn = (right: string, down: string, left: string, up: string, direction: Direction, verticalRule: RegExp, horizontalRule: RegExp): Direction => {
 
     if(direction === Direction.Right || direction === Direction.Left) {
         if ((up === " " || up === undefined) && verticalRule.test(down)) {

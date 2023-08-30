@@ -113,8 +113,8 @@ export const compactMapWithLetterOnTurn: string[][] = [
  * Edge cases: Valid maps around the start
  */
 export const aroundStartVerA: string[][] = [
-    ["+", "-", "-", "+"],
-    ["|", "@", "-", "A"],
+    ["C", "-", "A", " "],
+    ["|", "@", "+", " "],
     ["B", " ", " ", " "],
     ["x", " ", " ", " "],
 ];

@@ -2,7 +2,7 @@
 exports.__esModule = true;
 var types_1 = require("../types");
 var direction_1 = require("./direction");
-function collectLettersAndFollowPath(map, startPosition) {
+exports.collectLettersAndFollowPath = function (map, startPosition) {
     // initialization of output fields
     var collectedLetters = [];
     var pathAsCharacters = ["@"];
@@ -11,7 +11,7 @@ function collectLettersAndFollowPath(map, startPosition) {
     var row = startPosition.row;
     var column = startPosition.column;
     var position = { row: row, column: column };
-    var pathDirection = direction_1.setPathDirection(map, row, column);
+    var pathDirection = direction_1.getPathDirection(map, row, column);
     var verticalRule = /[A-Z]|\||\+|x/;
     var horizontalRule = /[A-Z]|-|\+|x/;
     var nextPosition;
@@ -79,9 +79,8 @@ function collectLettersAndFollowPath(map, startPosition) {
         }
     }
     return { letters: collectedLetters.join(""), path: pathAsCharacters.join("") };
-}
-exports.collectLettersAndFollowPath = collectLettersAndFollowPath;
-function updateLetterLocation(letterLocations, currentCharacter, row, column) {
+};
+var updateLetterLocation = function (letterLocations, currentCharacter, row, column) {
     var storedLocation = letterLocations.get(currentCharacter);
     var currentLocation = [row, column];
     var storageUpdate = false;
@@ -90,7 +89,7 @@ function updateLetterLocation(letterLocations, currentCharacter, row, column) {
         storageUpdate = true;
     }
     return storageUpdate;
-}
-function letterLocationExists(stored, current) {
+};
+var letterLocationExists = function (stored, current) {
     return JSON.stringify(stored) === JSON.stringify(current);
-}
+};

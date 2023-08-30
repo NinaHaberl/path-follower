@@ -1,10 +1,16 @@
 import {Direction, Position} from "../types";
-import {checkSurroundingCells, getCurrentCellValue, makeTurn, setNewPosition, setPathDirection} from "./direction";
+import {
+    checkSurroundingCells,
+    getCurrentCellValue,
+    makeTurn,
+    setNewPosition,
+    getPathDirection
+} from "./direction";
 
-export function collectLettersAndFollowPath(map: string[][], startPosition: Position): {
+export const collectLettersAndFollowPath = (map: string[][], startPosition: Position): {
     letters: string;
     path: string
-} {
+} => {
 
     // initialization of output fields
     let collectedLetters: string[] = [];
@@ -16,7 +22,7 @@ export function collectLettersAndFollowPath(map: string[][], startPosition: Posi
     let row: number = startPosition.row;
     let column: number = startPosition.column;
     let position = {row, column};
-    let pathDirection: Direction = setPathDirection(map, row, column);
+    let pathDirection: Direction = getPathDirection(map, row, column);
 
     const verticalRule: RegExp = /[A-Z]|\||\+|x/;
     const horizontalRule: RegExp = /[A-Z]|-|\+|x/;
@@ -104,12 +110,12 @@ export function collectLettersAndFollowPath(map: string[][], startPosition: Posi
 
     return { letters: collectedLetters.join(""), path: pathAsCharacters.join("") };
 }
-function updateLetterLocation(
+const updateLetterLocation = (
     letterLocations: Map<string, [number, number]>,
     currentCharacter: string,
     row: number,
     column: number
-): boolean {
+): boolean => {
     const storedLocation = letterLocations.get(currentCharacter);
     const currentLocation = [row, column];
     let storageUpdate = false;
@@ -120,6 +126,6 @@ function updateLetterLocation(
     }
     return storageUpdate;
 }
-function letterLocationExists(stored, current) {
+const letterLocationExists = (stored, current) => {
     return JSON.stringify(stored) === JSON.stringify(current);
 }

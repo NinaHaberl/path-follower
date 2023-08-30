@@ -109,8 +109,8 @@ exports.compactMapWithLetterOnTurn = [
  * Edge cases: Valid maps around the start
  */
 exports.aroundStartVerA = [
-    ["+", "-", "-", "+"],
-    ["|", "@", "-", "A"],
+    ["C", "-", "A", " "],
+    ["|", "@", "+", " "],
     ["B", " ", " ", " "],
     ["x", " ", " ", " "],
 ];

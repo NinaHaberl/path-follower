@@ -1,28 +1,18 @@
 "use strict";
 exports.__esModule = true;
 var types_1 = require("../types");
-// export const setPathDirection = (map: string[][], row: number, column: number): number => {
-//
-//     let [right, down, left, up] = checkSurroundingCells(map, row, column);
-//     let horizontalDirection, verticalDirection = false;
-//
-//     const verticalRule: RegExp = /[A-Z]|\||\+|x/;
-//     const horizontalRule: RegExp = /[A-Z]|-|\+|x/;
-//
-//     if(right && left) {
-//         if(verticalRule.test(right) && verticalRule.test(left)) {
-//             throw new Error("Invalid map: Fork in path after starting position");
-//         } else {
-//             verticalDirection = true;
-//         }
-//     } else if(down && up) {
-//
-//     }
-//     return Direction.Right;
-// }
-exports.setPathDirection = function (map, row, column) {
-    var direction;
-    var _a = checkSurroundingCells(map, row, column), right = _a[0], down = _a[1], left = _a[2], up = _a[3];
+var validate_1 = require("../map/validate");
+var setPathDirection = function (start, direction) {
+    if (!start) {
+        return direction;
+    }
+    else {
+        throw new Error("Invalid map: Multiple starting paths");
+    }
+};
+exports.getPathDirection = function (map, row, column) {
+    var pathDirection;
+    var _a = exports.checkSurroundingCells(map, row, column), right = _a[0], down = _a[1], left = _a[2], up = _a[3];
     var surroundingCells = [right, down, left, up];
     var cellsWithCharacters = [];
     // throw out empty cells
@@ -36,7 +26,7 @@ exports.setPathDirection = function (map, row, column) {
     }
     else {
         if (cellsWithCharacters.length === 1) {
-            direction = cellsWithCharacters[0].direction;
+            pathDirection = cellsWithCharacters[0].direction;
         }
         else {
             /* TODO: think about edge cases of valid maps, for example
@@ -47,66 +37,41 @@ exports.setPathDirection = function (map, row, column) {
                  x
              `
              */
-            var horizontalDirection = false;
-            var verticalDirection = false;
+            var startDirection = false;
             for (var x = 0; x < cellsWithCharacters.length; x++) {
-                var _b = cellsWithCharacters[x], direction_1 = _b.direction, character = _b.character;
-                switch (direction_1) {
-                    case types_1.Direction.Right:
-                        break;
-                    case types_1.Direction.Down:
-                        break;
-                    case types_1.Direction.Left:
-                        break;
-                    case types_1.Direction.Up:
-                        break;
+                var _b = cellsWithCharacters[x], character = _b.character, direction = _b.direction;
+                if (direction === types_1.Direction.Right || direction === types_1.Direction.Left) {
+                    if (validate_1.isHorizontalDirectionCharacterValid(character)) {
+                        pathDirection = setPathDirection(startDirection, direction);
+                        startDirection = true;
+                        // if(!startDirection) {
+                        //     startDirection = true;
+                        //     pathDirection = direction;
+                        //
+                        // } else {
+                        //     throw new Error("Invalid map: Multiple starting paths");
+                        // }
+                    }
+                }
+                else if (direction === types_1.Direction.Up || direction === types_1.Direction.Down) {
+                    if (validate_1.isVerticalDirectionCharacterValid(character)) {
+                        pathDirection = setPathDirection(startDirection, direction);
+                        startDirection = true;
+                        // if(!startDirection) {
+                        //     startDirection = true;
+                        //     pathDirection = direction;
+                        //
+                        // } else {
+                        //     throw new Error("Invalid map: Multiple starting paths");
+                        // }
+                    }
                 }
             }
-            // for (let x = 0; x < cellsWithCharacters.length; x++) {
-            //     switch (cellsWithCharacters[x].direction) {
-            //         case Direction.Right:
-            //             if(horizontalDirection === false && horizontalRule.test(cellsWithCharacters[x].character)) {
-            //                 horizontalDirection = true;
-            //                 direction = cellsWithCharacters[x].direction;
-            //                 break;
-            //             } else {
-            //                 throw new Error("Invalid map: Multiple starting paths");
-            //             }
-            //
-            //         case Direction.Down:
-            //             if(verticalDirection === false && verticalRule.test(cellsWithCharacters[x].character)) {
-            //                 verticalDirection = true;
-            //                 direction = cellsWithCharacters[x].direction;
-            //                 break;
-            //             } else {
-            //                 throw new Error("Invalid map: Multiple starting paths");
-            //             }
-            //
-            //         case Direction.Left:
-            //             if(horizontalDirection === false && horizontalRule.test(cellsWithCharacters[x].character)) {
-            //                 horizontalDirection = true;
-            //                 direction = cellsWithCharacters[x].direction;
-            //                 break;
-            //             } else {
-            //                 throw new Error("Invalid map: Multiple starting paths");
-            //             }
-            //
-            //         case Direction.Up:
-            //             if(verticalDirection === false && verticalRule.test(cellsWithCharacters[x].character)) {
-            //                 verticalDirection = true;
-            //                 direction = cellsWithCharacters[x].direction;
-            //                 break;
-            //             } else {
-            //                 throw new Error("Invalid map: Multiple starting paths");
-            //             }
-            //     }
-            //     console.log(cellsWithCharacters[x].direction);
-            //     console.log(cellsWithCharacters[x].character);
         }
     }
-    return direction;
+    return pathDirection;
 };
-function setNewPosition(direction, position) {
+exports.setNewPosition = function (direction, position) {
     switch (direction) {
         case types_1.Direction.Right:
             position.column = position.column + 1;
@@ -122,37 +87,33 @@ function setNewPosition(direction, position) {
             break;
     }
     return position;
-}
-exports.setNewPosition = setNewPosition;
-function checkSurroundingCells(map, row, column) {
+};
+exports.checkSurroundingCells = function (map, row, column) {
     var right, down, left, up;
     /**
      * Check map index: if index is out of bounds - return undefined
      */
     if (!(column >= (map[row].length - 1))) {
-        right = setNextCellValue(map, row, column, 0, 1);
+        right = exports.setNextCellValue(map, row, column, 0, 1);
     }
     if (!(row >= (map.length - 1))) {
-        down = setNextCellValue(map, row, column, 1, 0);
+        down = exports.setNextCellValue(map, row, column, 1, 0);
     }
     if (column !== 0) {
-        left = setNextCellValue(map, row, column, 0, -1);
+        left = exports.setNextCellValue(map, row, column, 0, -1);
     }
     if (row !== 0) {
-        up = setNextCellValue(map, row, column, -1, 0);
+        up = exports.setNextCellValue(map, row, column, -1, 0);
     }
     return [right, down, left, up];
-}
-exports.checkSurroundingCells = checkSurroundingCells;
-function setNextCellValue(map, row, column, rowOffset, colOffset) {
+};
+exports.setNextCellValue = function (map, row, column, rowOffset, colOffset) {
     return map[row + rowOffset][column + colOffset];
-}
-exports.setNextCellValue = setNextCellValue;
-function getCurrentCellValue(map, row, column) {
+};
+exports.getCurrentCellValue = function (map, row, column) {
     return map[row][column];
-}
-exports.getCurrentCellValue = getCurrentCellValue;
-function makeTurn(right, down, left, up, direction, verticalRule, horizontalRule) {
+};
+exports.makeTurn = function (right, down, left, up, direction, verticalRule, horizontalRule) {
     if (direction === types_1.Direction.Right || direction === types_1.Direction.Left) {
         if ((up === " " || up === undefined) && verticalRule.test(down)) {
             direction = types_1.Direction.Down;
@@ -176,5 +137,4 @@ function makeTurn(right, down, left, up, direction, verticalRule, horizontalRule
         }
     }
     return direction;
-}
-exports.makeTurn = makeTurn;
+};
