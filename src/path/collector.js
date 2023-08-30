@@ -49,6 +49,10 @@ exports.collectLettersAndFollowPath = function (map, startPosition) {
                 collectedLetters.push(currentCharacter);
             }
             if (nextCell === " " || nextCell === undefined) {
+                /*
+                TODO : dodati provjeru za fork in path
+                - sve prebaciti u zasebnu funkciju
+                 */
                 pathDirection = direction_1.makeTurn(right, down, left, up, pathDirection, verticalRule, horizontalRule);
             }
         }

@@ -29,44 +29,22 @@ exports.getPathDirection = function (map, row, column) {
             pathDirection = cellsWithCharacters[0].direction;
         }
         else {
-            /* TODO: think about edge cases of valid maps, for example
-            `
-                 +--A
-                 |@-+
-                 |
-                 x
-             `
-             */
-            var startDirection = false;
-            for (var x = 0; x < cellsWithCharacters.length; x++) {
-                var _b = cellsWithCharacters[x], character = _b.character, direction = _b.direction;
+            var startDirection_1 = false;
+            cellsWithCharacters.forEach(function (cell) {
+                var character = cell.character, direction = cell.direction;
                 if (direction === types_1.Direction.Right || direction === types_1.Direction.Left) {
                     if (validate_1.isHorizontalDirectionCharacterValid(character)) {
-                        pathDirection = setPathDirection(startDirection, direction);
-                        startDirection = true;
-                        // if(!startDirection) {
-                        //     startDirection = true;
-                        //     pathDirection = direction;
-                        //
-                        // } else {
-                        //     throw new Error("Invalid map: Multiple starting paths");
-                        // }
+                        pathDirection = setPathDirection(startDirection_1, direction);
+                        startDirection_1 = true;
                     }
                 }
                 else if (direction === types_1.Direction.Up || direction === types_1.Direction.Down) {
                     if (validate_1.isVerticalDirectionCharacterValid(character)) {
-                        pathDirection = setPathDirection(startDirection, direction);
-                        startDirection = true;
-                        // if(!startDirection) {
-                        //     startDirection = true;
-                        //     pathDirection = direction;
-                        //
-                        // } else {
-                        //     throw new Error("Invalid map: Multiple starting paths");
-                        // }
+                        pathDirection = setPathDirection(startDirection_1, direction);
+                        startDirection_1 = true;
                     }
                 }
-            }
+            });
         }
     }
     return pathDirection;
@@ -114,11 +92,12 @@ exports.getCurrentCellValue = function (map, row, column) {
     return map[row][column];
 };
 exports.makeTurn = function (right, down, left, up, direction, verticalRule, horizontalRule) {
+    var turn = false;
     if (direction === types_1.Direction.Right || direction === types_1.Direction.Left) {
-        if ((up === " " || up === undefined) && verticalRule.test(down)) {
+        if (((up === " " || up === undefined) || /-/.test(up)) && verticalRule.test(down)) {
             direction = types_1.Direction.Down;
         }
-        else if ((down === " " || down === undefined) && verticalRule.test(up)) {
+        else if (((down === " " || down === undefined) || /-/.test(down)) && verticalRule.test(up)) {
             direction = types_1.Direction.Up;
         }
         else if ((down === " " || down === undefined) && (up === " " || up === undefined)) {
@@ -126,10 +105,10 @@ exports.makeTurn = function (right, down, left, up, direction, verticalRule, hor
         }
     }
     else if (direction === types_1.Direction.Up || direction === types_1.Direction.Down) {
-        if ((right === " " || right === undefined) && horizontalRule.test(left)) {
+        if (((right === " " || right === undefined) || /\|/.test(right)) && horizontalRule.test(left)) {
             direction = types_1.Direction.Left;
         }
-        else if ((left === " " || left === undefined) && horizontalRule.test(right)) {
+        else if (((left === " " || left === undefined) || /\|/.test(left)) && horizontalRule.test(right)) {
             direction = types_1.Direction.Right;
         }
         else if ((right === " " || right === undefined) && (left === " " || left === undefined)) {

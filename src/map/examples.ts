@@ -118,6 +118,30 @@ export const aroundStartVerA: string[][] = [
     ["B", " ", " ", " "],
     ["x", " ", " ", " "],
 ];
+export const aroundStartVerB: string[][] = [
+    ["D", "-", "A", "+", " "],
+    ["|", "@", " ", "|", " "],
+    ["B", "|", " ", "+", "x"],
+    ["A", "+", " ", " ", " "],
+];
+export const aroundStartVerC: string[][] = [
+    ["L", "-", "+", " ", " "],
+    ["|", "@", "|", " ", " "],
+    ["L", "|", "O", "-", "x"],
+    ["E", "H", " ", " ", " "],
+];
+export const aroundStartSnail: string[][] = [
+    ["A", "-", "N", " ", " ", " "],
+    ["|", "@", "S", " ", "+", "x"],
+    ["I", "-", "-", "L", "+", " "],
+];
+export const aroundStartPretzel: string[][] = [
+    ["E", "-", "+", " ", " "],
+    ["|", "@", "|", " ", " "],
+    ["R", "P", "|", "+", "L"],
+    [" ", " ", "T", "E", "x"],
+    [" ", " ", "Z", "+", " "],
+];
 
 /**
  * Invalid maps:

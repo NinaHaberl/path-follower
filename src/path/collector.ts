@@ -72,6 +72,10 @@ export const collectLettersAndFollowPath = (map: string[][], startPosition: Posi
             }
 
             if(nextCell === " " || nextCell === undefined) {
+                /*
+                TODO : dodati provjeru za fork in path
+                - sve prebaciti u zasebnu funkciju
+                 */
                 pathDirection = makeTurn(right, down, left, up, pathDirection, verticalRule, horizontalRule);
             }
         }
