@@ -125,11 +125,11 @@ const updateLetterLocation = (
     let storageUpdate = false;
 
     if (!storedLocation || !letterLocationExists(storedLocation, currentLocation)) {
-        letterLocations.set(currentCharacter, currentLocation);
+        letterLocations.set(currentCharacter, [row, column]);
         storageUpdate = true;
     }
     return storageUpdate;
 }
-const letterLocationExists = (stored, current) => {
+const letterLocationExists = (stored: [number, number], current: number[]) => {
     return JSON.stringify(stored) === JSON.stringify(current);
 }
