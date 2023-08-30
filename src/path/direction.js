@@ -66,25 +66,6 @@ exports.setNewPosition = function (direction, position) {
     }
     return position;
 };
-exports.checkSurroundingCells = function (map, row, column) {
-    var right, down, left, up;
-    /**
-     * Check map index: if index is out of bounds - return undefined
-     */
-    if (!(column >= (map[row].length - 1))) {
-        right = exports.setNextCellValue(map, row, column, 0, 1);
-    }
-    if (!(row >= (map.length - 1))) {
-        down = exports.setNextCellValue(map, row, column, 1, 0);
-    }
-    if (column !== 0) {
-        left = exports.setNextCellValue(map, row, column, 0, -1);
-    }
-    if (row !== 0) {
-        up = exports.setNextCellValue(map, row, column, -1, 0);
-    }
-    return [right, down, left, up];
-};
 exports.setNextCellValue = function (map, row, column, rowOffset, colOffset) {
     return map[row + rowOffset][column + colOffset];
 };
@@ -115,4 +96,39 @@ exports.makeTurn = function (right, down, left, up, direction, verticalRule, hor
         }
     }
     return direction;
+};
+exports.checkSurroundingCells = function (map, row, column) {
+    var right, down, left, up;
+    /**
+     * Check map index: if index is out of bounds - return undefined
+     */
+    if (!(column >= (map[row].length - 1))) {
+        right = exports.setNextCellValue(map, row, column, 0, 1);
+    }
+    if (!(row >= (map.length - 1))) {
+        down = exports.setNextCellValue(map, row, column, 1, 0);
+    }
+    if (column !== 0) {
+        left = exports.setNextCellValue(map, row, column, 0, -1);
+    }
+    if (row !== 0) {
+        up = exports.setNextCellValue(map, row, column, -1, 0);
+    }
+    return [right, down, left, up];
+};
+exports.checkLShapedFork = function (pathDirection, verticalRule, horizontalRule, right, down, left, up) {
+    if ((pathDirection === types_1.Direction.Right || pathDirection === types_1.Direction.Left) &&
+        (verticalRule.test(up) || verticalRule.test(down)) ||
+        (pathDirection === types_1.Direction.Up || pathDirection === types_1.Direction.Down) &&
+            (horizontalRule.test(right) || horizontalRule.test(left))) {
+        throw new Error("Invalid map: Fork in path - L shaped fork");
+    }
+};
+exports.checkTShapedFork = function (pathDirection, verticalRule, horizontalRule, right, down, left, up) {
+    if ((pathDirection === types_1.Direction.Right || pathDirection === types_1.Direction.Left) &&
+        verticalRule.test(up) && verticalRule.test(down) ||
+        (pathDirection === types_1.Direction.Up || pathDirection === types_1.Direction.Down) &&
+            horizontalRule.test(right) && horizontalRule.test(left)) {
+        throw new Error("Invalid map: Fork in path - T shaped fork");
+    }
 };

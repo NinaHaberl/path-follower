@@ -75,6 +75,44 @@ export const setNewPosition = (direction: Direction, position: Position): Positi
 
     return position;
 }
+export const setNextCellValue = (map: string[][], row: number, column: number, rowOffset: number, colOffset: number): string => {
+    return map[row + rowOffset][column + colOffset];
+}
+
+export const getCurrentCellValue = (map: string[][], row: number, column: number): string => {
+    return map[row][column];
+}
+
+export const makeTurn = (right: string | undefined, down: string | undefined, left: string | undefined, up: string | undefined, direction: Direction, verticalRule: RegExp, horizontalRule: RegExp): Direction => {
+
+    if(direction === Direction.Right || direction === Direction.Left) {
+        if (((up === " " || up === undefined) || /-/.test(up)) && verticalRule.test(down!)) {
+            direction = Direction.Down;
+
+        } else if (((down === " " || down === undefined) || /-/.test(down)) && verticalRule.test(up!)) {
+            direction = Direction.Up;
+
+        } else if ((down === " " || down === undefined) && (up === " " || up === undefined)) {
+            throw new Error("Invalid map - Broken path after vertical turn");
+
+        }
+
+    } else if (direction === Direction.Up || direction === Direction.Down) {
+        if (((right === " " || right === undefined) || /\|/.test(right)) && horizontalRule.test(left!)) {
+            direction = Direction.Left;
+
+        } else if(((left === " " || left === undefined) || /\|/.test(left)) && horizontalRule.test(right!)) {
+            direction = Direction.Right;
+
+        } else if ((right === " " || right === undefined) && (left === " " || left === undefined)) {
+            throw new Error("Invalid map - Broken path after horizontal turn");
+
+        }
+    }
+
+    return direction;
+}
+
 export const checkSurroundingCells = (map: string[][], row: number, column: number): [string | undefined, string | undefined, string | undefined, string | undefined] => {
 
     let right:string | undefined, down:string | undefined, left:string | undefined, up:string | undefined;
@@ -101,40 +139,42 @@ export const checkSurroundingCells = (map: string[][], row: number, column: numb
     return [right, down, left, up];
 }
 
-export const setNextCellValue = (map: string[][], row: number, column: number, rowOffset: number, colOffset: number): string => {
-    return map[row + rowOffset][column + colOffset];
-}
+export const checkLShapedFork = (
+    pathDirection: Direction,
+    verticalRule: RegExp,
+    horizontalRule: RegExp,
+    right: string | undefined,
+    down: string | undefined,
+    left: string | undefined,
+    up: string | undefined
+) => {
+    if ((pathDirection === Direction.Right || pathDirection === Direction.Left) &&
+        (verticalRule.test(up!) || verticalRule.test(down!)) ||
 
-export const getCurrentCellValue = (map: string[][], row: number, column: number): string => {
-    return map[row][column];
-}
+        (pathDirection === Direction.Up || pathDirection === Direction.Down) &&
+        (horizontalRule.test(right!) || horizontalRule.test(left!))) {
 
-export const makeTurn = (right: string | undefined, down: string | undefined, left: string | undefined, up: string | undefined, direction: Direction, verticalRule: RegExp, horizontalRule: RegExp): Direction => {
-
-    if(direction === Direction.Right || direction === Direction.Left) {
-        if (((up === " " || up === undefined) || /-/.test(up)) && verticalRule.test(down!)) {
-            direction = Direction.Down;
-
-        } else if (((down === " " || down === undefined) || /-/.test(down)) && verticalRule.test(up!)) {
-            direction = Direction.Up;
-
-        } else if ((down === " " || down === undefined) && (up === " " || up === undefined)) {
-            throw new Error("Invalid map - Broken path after vertical turn");
-        }
-
-    } else if (direction === Direction.Up || direction === Direction.Down) {
-        if (((right === " " || right === undefined) || /\|/.test(right)) && horizontalRule.test(left!)) {
-            direction = Direction.Left;
-
-        } else if(((left === " " || left === undefined) || /\|/.test(left)) && horizontalRule.test(right!)) {
-            direction = Direction.Right;
-
-        } else if ((right === " " || right === undefined) && (left === " " || left === undefined)) {
-            throw new Error("Invalid map - Broken path after horizontal turn");
-        }
+        throw new Error("Invalid map: Fork in path - L shaped fork");
     }
+}
 
-    return direction;
+export const checkTShapedFork = (
+    pathDirection: Direction,
+    verticalRule: RegExp,
+    horizontalRule: RegExp,
+    right: string | undefined,
+    down: string | undefined,
+    left: string | undefined,
+    up: string | undefined
+) => {
+    if((pathDirection === Direction.Right || pathDirection === Direction.Left) &&
+        verticalRule.test(up!) && verticalRule.test(down!) ||
+
+        (pathDirection === Direction.Up || pathDirection === Direction.Down) &&
+        horizontalRule.test(right!) && horizontalRule.test(left!)) {
+
+        throw new Error("Invalid map: Fork in path - T shaped fork");
+    }
 }
 
 

@@ -49,31 +49,18 @@ exports.collectLettersAndFollowPath = function (map, startPosition) {
                 collectedLetters.push(currentCharacter);
             }
             if (nextCell === " " || nextCell === undefined) {
-                /*
-                TODO : dodati provjeru za fork in path
-                - sve prebaciti u zasebnu funkciju
-                 */
+                direction_1.checkTShapedFork(pathDirection, verticalRule, horizontalRule, right, down, left, up);
                 pathDirection = direction_1.makeTurn(right, down, left, up, pathDirection, verticalRule, horizontalRule);
             }
         }
         // make turn
         if (currentCharacter === "+") {
             if ((nextCell !== " " || nextCell !== undefined) && regexValidation.test(nextCell)) {
-                if ((pathDirection === types_1.Direction.Right || pathDirection === types_1.Direction.Left) &&
-                    (verticalRule.test(up) || verticalRule.test(down)) ||
-                    (pathDirection === types_1.Direction.Up || pathDirection === types_1.Direction.Down) &&
-                        (horizontalRule.test(right) || horizontalRule.test(left))) {
-                    throw new Error("Invalid map: Fork in path");
-                }
+                direction_1.checkLShapedFork(pathDirection, verticalRule, horizontalRule, right, down, left, up);
                 throw new Error("Invalid map: Fake turn");
             }
             else {
-                if ((pathDirection === types_1.Direction.Right || pathDirection === types_1.Direction.Left) &&
-                    verticalRule.test(up) && verticalRule.test(down) ||
-                    (pathDirection === types_1.Direction.Up || pathDirection === types_1.Direction.Down) &&
-                        horizontalRule.test(right) && horizontalRule.test(left)) {
-                    throw new Error("Invalid map: Fork in path");
-                }
+                direction_1.checkTShapedFork(pathDirection, verticalRule, horizontalRule, right, down, left, up);
                 pathDirection = direction_1.makeTurn(right, down, left, up, pathDirection, verticalRule, horizontalRule);
             }
         }

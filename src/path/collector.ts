@@ -1,10 +1,10 @@
 import {Direction, Position} from "../types";
 import {
-    checkSurroundingCells,
+    checkSurroundingCells, checkLShapedFork, checkTShapedFork,
     getCurrentCellValue,
     makeTurn,
     setNewPosition,
-    getPathDirection
+    getPathDirection,
 } from "./direction";
 
 export const collectLettersAndFollowPath = (map: string[][], startPosition: Position): {
@@ -64,48 +64,28 @@ export const collectLettersAndFollowPath = (map: string[][], startPosition: Posi
             throw new Error("Invalid map: Broken path");
         }
 
-        // collect letter | don't repeat from same location
-        // letters may be found on turns
         if(/[A-Z]/.test(currentCharacter)) {
+            // collect letter but don't repeat from same location
             if(updateLetterLocation(letterLocations, currentCharacter, row, column)) {
                 collectedLetters.push(currentCharacter);
             }
 
+            // letters may be found on turns
             if(nextCell === " " || nextCell === undefined) {
-                /*
-                TODO : dodati provjeru za fork in path
-                - sve prebaciti u zasebnu funkciju
-                 */
+                checkTShapedFork(pathDirection, verticalRule, horizontalRule, right, down, left, up);
                 pathDirection = makeTurn(right, down, left, up, pathDirection, verticalRule, horizontalRule);
+
             }
         }
 
         // make turn
         if(currentCharacter === "+") {
-
-             /*
-             TODO: forkInPath - zasebna funkcija
-              */
              if((nextCell !== " " || nextCell !== undefined) && regexValidation!.test(nextCell!)) {
-                 if ((pathDirection === Direction.Right || pathDirection === Direction.Left) &&
-                     (verticalRule.test(up!) || verticalRule.test(down!)) ||
-
-                     (pathDirection === Direction.Up || pathDirection === Direction.Down) &&
-                     (horizontalRule.test(right!) || horizontalRule.test(left!))) {
-
-                     throw new Error("Invalid map: Fork in path");
-                 }
-                throw new Error("Invalid map: Fake turn");
+                 checkLShapedFork(pathDirection, verticalRule, horizontalRule, right, down, left, up);
+                 throw new Error("Invalid map: Fake turn");
 
              } else {
-                 if((pathDirection === Direction.Right || pathDirection === Direction.Left) &&
-                     verticalRule.test(up!) && verticalRule.test(down!) ||
-
-                     (pathDirection === Direction.Up || pathDirection === Direction.Down) &&
-                     horizontalRule.test(right!) && horizontalRule.test(left!)) {
-
-                     throw new Error("Invalid map: Fork in path");
-                 }
+                 checkTShapedFork(pathDirection, verticalRule, horizontalRule, right, down, left, up);
                  pathDirection = makeTurn(right, down, left, up, pathDirection, verticalRule, horizontalRule);
              }
         }
