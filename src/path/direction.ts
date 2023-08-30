@@ -11,7 +11,7 @@ const setPathDirection = (start: boolean, direction: Direction): Direction => {
 }
 export const getPathDirection = (map: string[][], row: number, column: number): number => {
 
-    let pathDirection: number;
+    let pathDirection: number = -1;
     let [right, down, left, up] = checkSurroundingCells(map, row, column);
     let surroundingCells = [right, down, left, up];
     let cellsWithCharacters: Array<{ character: string; direction: number; }> = [];
@@ -111,13 +111,11 @@ export const getCurrentCellValue = (map: string[][], row: number, column: number
 
 export const makeTurn = (right: string | undefined, down: string | undefined, left: string | undefined, up: string | undefined, direction: Direction, verticalRule: RegExp, horizontalRule: RegExp): Direction => {
 
-    let turn = false;
-
     if(direction === Direction.Right || direction === Direction.Left) {
-        if (((up === " " || up === undefined) || /-/.test(up)) && verticalRule.test(down)) {
+        if (((up === " " || up === undefined) || /-/.test(up)) && verticalRule.test(down!)) {
             direction = Direction.Down;
 
-        } else if (((down === " " || down === undefined) || /-/.test(down)) && verticalRule.test(up)) {
+        } else if (((down === " " || down === undefined) || /-/.test(down)) && verticalRule.test(up!)) {
             direction = Direction.Up;
 
         } else if ((down === " " || down === undefined) && (up === " " || up === undefined)) {
@@ -125,10 +123,10 @@ export const makeTurn = (right: string | undefined, down: string | undefined, le
         }
 
     } else if (direction === Direction.Up || direction === Direction.Down) {
-        if (((right === " " || right === undefined) || /\|/.test(right)) && horizontalRule.test(left)) {
+        if (((right === " " || right === undefined) || /\|/.test(right)) && horizontalRule.test(left!)) {
             direction = Direction.Left;
 
-        } else if(((left === " " || left === undefined) || /\|/.test(left)) && horizontalRule.test(right)) {
+        } else if(((left === " " || left === undefined) || /\|/.test(left)) && horizontalRule.test(right!)) {
             direction = Direction.Right;
 
         } else if ((right === " " || right === undefined) && (left === " " || left === undefined)) {

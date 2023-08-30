@@ -11,7 +11,7 @@ var setPathDirection = function (start, direction) {
     }
 };
 exports.getPathDirection = function (map, row, column) {
-    var pathDirection;
+    var pathDirection = -1;
     var _a = exports.checkSurroundingCells(map, row, column), right = _a[0], down = _a[1], left = _a[2], up = _a[3];
     var surroundingCells = [right, down, left, up];
     var cellsWithCharacters = [];
@@ -92,7 +92,6 @@ exports.getCurrentCellValue = function (map, row, column) {
     return map[row][column];
 };
 exports.makeTurn = function (right, down, left, up, direction, verticalRule, horizontalRule) {
-    var turn = false;
     if (direction === types_1.Direction.Right || direction === types_1.Direction.Left) {
         if (((up === " " || up === undefined) || /-/.test(up)) && verticalRule.test(down)) {
             direction = types_1.Direction.Down;

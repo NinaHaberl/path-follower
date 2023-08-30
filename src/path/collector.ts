@@ -57,7 +57,7 @@ export const collectLettersAndFollowPath = (map: string[][], startPosition: Posi
             [Direction.Up, verticalRule]
         ]);
 
-        let regexValidation: RegExp = positionRules.get(pathDirection);
+        let regexValidation: RegExp | undefined = positionRules.get(pathDirection);
 
         // broken path
         if(currentCharacter === " ") {
@@ -82,12 +82,12 @@ export const collectLettersAndFollowPath = (map: string[][], startPosition: Posi
 
         // make turn
         if(currentCharacter === "+") {
-             if((nextCell !== " " || nextCell !== undefined) && regexValidation.test(nextCell)) {
+             if((nextCell !== " " || nextCell !== undefined) && regexValidation!.test(nextCell!)) {
                  if ((pathDirection === Direction.Right || pathDirection === Direction.Left) &&
-                     (verticalRule.test(up) || verticalRule.test(down)) ||
+                     (verticalRule.test(up!) || verticalRule.test(down!)) ||
 
                      (pathDirection === Direction.Up || pathDirection === Direction.Down) &&
-                     (horizontalRule.test(right) || horizontalRule.test(left))) {
+                     (horizontalRule.test(right!) || horizontalRule.test(left!))) {
 
                      throw new Error("Invalid map: Fork in path");
                  }
@@ -95,10 +95,10 @@ export const collectLettersAndFollowPath = (map: string[][], startPosition: Posi
 
              } else {
                  if((pathDirection === Direction.Right || pathDirection === Direction.Left) &&
-                     verticalRule.test(up) && verticalRule.test(down) ||
+                     verticalRule.test(up!) && verticalRule.test(down!) ||
 
                      (pathDirection === Direction.Up || pathDirection === Direction.Down) &&
-                     horizontalRule.test(right) && horizontalRule.test(left)) {
+                     horizontalRule.test(right!) && horizontalRule.test(left!)) {
 
                      throw new Error("Invalid map: Fork in path");
                  }
