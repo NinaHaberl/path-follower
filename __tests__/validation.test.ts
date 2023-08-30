@@ -19,6 +19,11 @@ const mapsToValidate = [
     maps.goonies,
     maps.compactMap,
     maps.compactMapWithLetterOnTurn,
+    maps.aroundStartVerA,
+    maps.aroundStartVerB,
+    maps.aroundStartVerC,
+    maps.aroundStartSnail,
+    maps.aroundStartPretzel,
 
     maps.multipleStartA,
     maps.multipleStartB,

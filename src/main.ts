@@ -7,7 +7,7 @@ import * as maps from "./map/examples";
 import {validateMapAndFindStartingPosition} from "./map/validate";
 import {collectLettersAndFollowPath} from "./path/collector";
 
-const map = maps.aroundStartPretzel;
+const map = maps.forkInPathLetterOnTurn;
 const startPosition = validateMapAndFindStartingPosition(map);
 
 let output = collectLettersAndFollowPath(map, startPosition);

@@ -82,6 +82,10 @@ export const collectLettersAndFollowPath = (map: string[][], startPosition: Posi
 
         // make turn
         if(currentCharacter === "+") {
+
+             /*
+             TODO: forkInPath - zasebna funkcija
+              */
              if((nextCell !== " " || nextCell !== undefined) && regexValidation!.test(nextCell!)) {
                  if ((pathDirection === Direction.Right || pathDirection === Direction.Left) &&
                      (verticalRule.test(up!) || verticalRule.test(down!)) ||
