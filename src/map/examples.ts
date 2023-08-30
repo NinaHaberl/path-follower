@@ -131,9 +131,9 @@ export const aroundStartVerC: string[][] = [
     ["E", "H", " ", " ", " "],
 ];
 export const aroundStartSnail: string[][] = [
-    ["A", "-", "N", " ", " ", " "],
-    ["|", "@", "S", " ", "+", "x"],
-    ["I", "-", "-", "L", "+", " "],
+    ["A", "-", "N", " ", " ", " ", " "],
+    ["|", "@", "S", " ", " ", "+", "x"],
+    ["I", "-", "-", "L", "-", "+", " "],
 ];
 export const aroundStartPretzel: string[][] = [
     ["E", "-", "+", " ", " "],

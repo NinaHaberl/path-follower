@@ -89,7 +89,7 @@ var updateLetterLocation = function (letterLocations, currentCharacter, row, col
     var currentLocation = [row, column];
     var storageUpdate = false;
     if (!storedLocation || !letterLocationExists(storedLocation, currentLocation)) {
-        letterLocations.set(currentCharacter, currentLocation);
+        letterLocations.set(currentCharacter, [row, column]);
         storageUpdate = true;
     }
     return storageUpdate;

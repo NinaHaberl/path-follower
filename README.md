@@ -5,7 +5,7 @@ and outputs the collected letters and the list of characters of the travelled pa
 Tests are written in Jest, and can be found in the `__tests__` directory.
 
 Input:
-- a 2-dimensional map of characters ([check examples.ts file](https://github.com/NinaHaberl/path-follower/src/map/examples.ts))
+- a 2-dimensional map of characters ([check examples.ts file](https://github.com/NinaHaberl/path-follower/blob/main/src/map/examples.ts))
 - the only valid characters are all uppercase letters (A-Z), plus '+', minus '-' and pipe '|'
 sign. '@' represents a starting character and 'x' ending character
 - turns can be letters or '+'
@@ -154,6 +154,60 @@ Expected result:
 Expected result:
 - Collected letters: `BLAWH`
 - Path as characters: `@B+++B|+-L-+AW++A-+Hx`
+
+**Compact map around start character**
+```
+   C-A
+   |@+
+   B
+   x
+```
+Expected result:
+- Collected letters: `ACB`
+- Path as characters: `@+A-C|Bx`
+# 
+```
+    D-A+
+    |@ |
+    B| +x
+    A+
+```
+Expected result:
+- Collected letters: `ABDA`
+- Path as characters: `@|+AB|D-A+|+x`
+
+# 
+```
+    L-+
+    |@|
+    L|O-x
+    EH
+```
+Expected result:
+- Collected letters: `HELLO`
+- Path as characters: `@|HEL|L-+|O-x`
+
+# 
+```
+    A-N
+    |@S  +x
+    I--L-+
+```
+Expected result:
+- Collected letters: `SNAIL`
+- Path as characters: `@SN-A|I--L-++x`
+
+# 
+```
+    E-+
+    |@|
+    RP|+L
+      TEx
+      Z+
+```
+Expected result:
+- Collected letters: `PRETZEL`
+- Path as characters: `@PR|E-+||TZ+E+Lx`
 
 ### Invalid maps
 **Multiple starts**
