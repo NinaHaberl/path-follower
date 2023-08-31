@@ -1,11 +1,30 @@
 import {Direction, Position} from "../types";
 import {
-    checkSurroundingCells, checkLShapedFork, checkTShapedFork,
+    getSurroundingCells, checkLShapedFork, checkTShapedFork,
     getCurrentCellValue,
     makeTurn,
-    setNewPosition,
+    getNewPosition,
     getPathDirection,
 } from "./direction";
+
+
+const getNextCell = (pathDirection: Direction | Direction.Down | Direction.Left | Direction.Up | Direction.Start, right: string | undefined, left: string | undefined, down: string | undefined, up: string | undefined) => pathDirection === Direction.Right ? right :
+    pathDirection === Direction.Left ? left :
+        pathDirection === Direction.Down ? down :
+            pathDirection === Direction.Up ? up : undefined;
+
+
+const verticalRule: RegExp = /[A-Z]|\||\+|x/;
+const horizontalRule: RegExp = /[A-Z]|-|\+|x/;
+const getPositionRules = (horizontalRule: RegExp, verticalRule: RegExp) => new Map([
+    [Direction.Right, horizontalRule],
+    [Direction.Left, horizontalRule],
+    [Direction.Down, verticalRule],
+    [Direction.Up, verticalRule]
+]);
+const positionRules: Map<Direction, RegExp> = getPositionRules(horizontalRule, verticalRule);
+
+const isUppercase = (currentCharacter: string) => /[A-Z]/.test(currentCharacter);
 
 export const collectLettersAndFollowPath = (map: string[][], startPosition: Position): {
     letters: string;
@@ -13,49 +32,25 @@ export const collectLettersAndFollowPath = (map: string[][], startPosition: Posi
 } => {
 
     // initialization of output fields
+    const letterLocations: Map<string, [number, number]> = new Map();
     let collectedLetters: string[] = [];
     let pathAsCharacters: string[] = ["@"];
+    let pathDirection: Direction = getPathDirection(map, startPosition);
 
-    const letterLocations: Map<string, [number, number]> = new Map();
-
-    // initialization of path direction and positions
-    let row: number = startPosition.row;
-    let column: number = startPosition.column;
-    let position = {row, column};
-    let pathDirection: Direction = getPathDirection(map, row, column);
-
-    const verticalRule: RegExp = /[A-Z]|\||\+|x/;
-    const horizontalRule: RegExp = /[A-Z]|-|\+|x/;
-
-    let nextPosition: Position;
     let currentCharacter: string;
     let endOfPath: string | null = null;
-
+    let position: Position = startPosition;
     // follow path
     while(endOfPath !== "x") {
 
-        // set next position and surrounding cells;
-        nextPosition = setNewPosition(pathDirection, position);
-        row = nextPosition.row;
-        column = nextPosition.column;
+        position = getNewPosition(pathDirection, position);
 
-        currentCharacter = getCurrentCellValue(map, row, column);
+        currentCharacter = getCurrentCellValue(map, position.row, position.column);
         pathAsCharacters.push(currentCharacter);
 
         // validate path rules
-        let [right, down, left, up] = checkSurroundingCells(map, row, column);
-        let nextCell =
-            pathDirection === Direction.Right ? right :
-            pathDirection === Direction.Left ? left :
-            pathDirection === Direction.Down ? down :
-            pathDirection === Direction.Up ? up : undefined;
-
-        let positionRules: Map<Direction, RegExp> = new Map([
-            [Direction.Right, horizontalRule],
-            [Direction.Left, horizontalRule],
-            [Direction.Down, verticalRule],
-            [Direction.Up, verticalRule]
-        ]);
+        let [right, down, left, up] = getSurroundingCells(map, position);
+        let nextCell = getNextCell(pathDirection, right, left, down, up);
 
         let regexValidation: RegExp | undefined = positionRules.get(pathDirection);
 
@@ -64,9 +59,9 @@ export const collectLettersAndFollowPath = (map: string[][], startPosition: Posi
             throw new Error("Invalid map: Broken path");
         }
 
-        if(/[A-Z]/.test(currentCharacter)) {
+        if(isUppercase(currentCharacter)) {
             // collect letter but don't repeat from same location
-            if(updateLetterLocation(letterLocations, currentCharacter, row, column)) {
+            if(updateLetterLocation(letterLocations, currentCharacter, position)) {
                 collectedLetters.push(currentCharacter);
             }
 
@@ -100,15 +95,14 @@ export const collectLettersAndFollowPath = (map: string[][], startPosition: Posi
 const updateLetterLocation = (
     letterLocations: Map<string, [number, number]>,
     currentCharacter: string,
-    row: number,
-    column: number
+    position: Position
 ): boolean => {
     const storedLocation = letterLocations.get(currentCharacter);
-    const currentLocation = [row, column];
+    const currentLocation = [position.row, position.column];
     let storageUpdate = false;
 
     if (!storedLocation || !letterLocationExists(storedLocation, currentLocation)) {
-        letterLocations.set(currentCharacter, [row, column]);
+        letterLocations.set(currentCharacter, [position.row, position.column]);
         storageUpdate = true;
     }
     return storageUpdate;

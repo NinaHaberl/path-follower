@@ -1,12 +1,12 @@
 import * as maps from "../src/map/examples";
-import {checkSurroundingCells, getCurrentCellValue, setNextCellValue} from "../src/path/direction";
+import {getSurroundingCells, getCurrentCellValue, setNextCellValue} from "../src/path/direction";
 
 describe('checkSurroundingCells function', () => {
     test('check surrounding cells and return the value of each cell: ' +
         'out of boundaries cells are undefined', () => {
 
         const map = maps.intersectionVerA;
-        const result = checkSurroundingCells(map, 1, 2);
+        const result = getSurroundingCells(map, {row: 1, column: 2});
 
         let expectedValues: [string | undefined, string | undefined, string | undefined, string | undefined] = [
             "-", "|", " ", " "

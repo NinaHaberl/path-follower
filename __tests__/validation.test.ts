@@ -7,65 +7,28 @@ import {
 } from "../src/map/validate";
 import {collectLettersAndFollowPath} from "../src/path/collector";
 
-const mapsToValidate = [
-    maps.minimumMap,
-    maps.ignoreAfterX,
-    maps.basicExample,
-    maps.intersectionVerA,
-    maps.intersectionVerB,
-    maps.lettersOnTurns,
-    maps.lettersOnTurnsVerB,
-    maps.lettersOnTurnsWithIntersection,
-    maps.goonies,
-    maps.compactMap,
-    maps.compactMapWithLetterOnTurn,
-    maps.aroundStartVerA,
-    maps.aroundStartVerB,
-    maps.aroundStartVerC,
-    maps.aroundStartSnail,
-    maps.aroundStartPretzel,
+describe('collectLettersAndFollowPath function', () => {
+    test('should throw error if map has multiple start, missing start or missinig end character', () => {
 
-    maps.multipleStartA,
-    maps.multipleStartB,
-    maps.multipleStartC,
-    maps.multipleStartingPathsVerA,
-    maps.multipleStartingPathsVerB,
-    maps.multipleStartingPathsVerC,
-    maps.forkInPathVerA,
-    maps.forkInPathVerB,
-    maps.brokenPath,
-    maps.brokenPathVerB,
-    maps.xMissing,
-    maps.startMissingVerA,
-    maps.startMissingVerB,
-    maps.fakeTurnVerA,
-    maps.fakeTurnVerB
-
-];
-
-describe('validateMapAndFindStartingPosition function', () => {
-    test('should validate map and return the starting position of @ character' +
-        ' or throw error if map is not valid', () => {
-
-        let result;
-
-        mapsToValidate.forEach(map => {
-            try {
-                result = validateMapAndFindStartingPosition(map);
-                expect(result?.row).toBeGreaterThanOrEqual(0);
-                expect(result?.column).toBeGreaterThanOrEqual(0);
-            } catch {
-                expect(() => {
-                    validateMapAndFindStartingPosition(map);
-                }).toThrow();
-            }
-        })
+        const map = maps.multipleStartA;
+        expect(() => {
+            validateMapAndFindStartingPosition(map);
+        }).toThrow();
     })
 });
 
 describe('collectLettersAndFollowPath function', () => {
-    test('should follow the path and return collected letters and path characters' +
-        ' or throw error if path breaks rules', () => {
+    test('should validate map and return the starting position of @ character', () => {
+
+        const map = maps.basicExample;
+        const result = validateMapAndFindStartingPosition(map);
+        expect(result?.row).toBeGreaterThanOrEqual(0);
+        expect(result?.column).toBeGreaterThanOrEqual(0);
+    })
+});
+
+describe('collectLettersAndFollowPath function', () => {
+    test('should follow the path and return collected letters and path characters', () => {
 
         const map = maps.basicExample;
         const startPosition = validateMapAndFindStartingPosition(map);

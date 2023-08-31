@@ -2,69 +2,52 @@
 exports.__esModule = true;
 var types_1 = require("../types");
 var validate_1 = require("../map/validate");
-var setPathDirection = function (start, direction) {
-    if (!start) {
-        return direction;
-    }
-    else {
-        throw new Error("Invalid map: Multiple starting paths");
-    }
-};
-exports.getPathDirection = function (map, row, column) {
-    var pathDirection = -1;
-    var _a = exports.checkSurroundingCells(map, row, column), right = _a[0], down = _a[1], left = _a[2], up = _a[3];
-    var surroundingCells = [right, down, left, up];
+var getCellsWithCharacters = function (cells) {
     var cellsWithCharacters = [];
-    // throw out empty cells
-    surroundingCells.forEach(function (character, direction) {
+    cells.forEach(function (character, direction) {
+        // throw out empty cells
         if (character && /[A-Z]|-|\||\+|x/.test(character)) {
             cellsWithCharacters.push({ character: character, direction: direction });
         }
     });
-    if (cellsWithCharacters.length === 0) {
+    return cellsWithCharacters;
+};
+var isHorizontalDirection = function (c) { return c.direction === types_1.Direction.Right || c.direction === types_1.Direction.Left; };
+var isVerticalDirection = function (c) { return c.direction === types_1.Direction.Up || c.direction === types_1.Direction.Down; };
+exports.getPathDirection = function (map, position) {
+    var surroundingCells = exports.getSurroundingCells(map, position);
+    var surroundingCellsWithCharacters = getCellsWithCharacters(surroundingCells);
+    var validStartingPaths = surroundingCellsWithCharacters
+        .filter(function (c) {
+        return (isHorizontalDirection(c) && validate_1.isHorizontalDirectionCharacterValid(c.character)) ||
+            (isVerticalDirection(c) && validate_1.isVerticalDirectionCharacterValid(c.character));
+    });
+    if (validStartingPaths.length == 0) {
         throw new Error("Invalid map: Broken path after starting position");
     }
-    else {
-        if (cellsWithCharacters.length === 1) {
-            pathDirection = cellsWithCharacters[0].direction;
-        }
-        else {
-            var startDirection_1 = false;
-            cellsWithCharacters.forEach(function (cell) {
-                var character = cell.character, direction = cell.direction;
-                if (direction === types_1.Direction.Right || direction === types_1.Direction.Left) {
-                    if (validate_1.isHorizontalDirectionCharacterValid(character)) {
-                        pathDirection = setPathDirection(startDirection_1, direction);
-                        startDirection_1 = true;
-                    }
-                }
-                else if (direction === types_1.Direction.Up || direction === types_1.Direction.Down) {
-                    if (validate_1.isVerticalDirectionCharacterValid(character)) {
-                        pathDirection = setPathDirection(startDirection_1, direction);
-                        startDirection_1 = true;
-                    }
-                }
-            });
-        }
+    if (validStartingPaths.length > 1) {
+        throw new Error("Invalid map: Multiple starting paths");
     }
-    return pathDirection;
+    return validStartingPaths[0].direction;
 };
-exports.setNewPosition = function (direction, position) {
+exports.getNewPosition = function (direction, position) {
+    var row = position.row;
+    var column = position.column;
     switch (direction) {
         case types_1.Direction.Right:
-            position.column = position.column + 1;
+            column = column + 1;
             break;
         case types_1.Direction.Down:
-            position.row = position.row + 1;
+            row = row + 1;
             break;
         case types_1.Direction.Left:
-            position.column = position.column - 1;
+            column = column - 1;
             break;
         case types_1.Direction.Up:
-            position.row = position.row - 1;
+            row = row - 1;
             break;
     }
-    return position;
+    return { row: row, column: column };
 };
 exports.setNextCellValue = function (map, row, column, rowOffset, colOffset) {
     return map[row + rowOffset][column + colOffset];
@@ -97,7 +80,9 @@ exports.makeTurn = function (right, down, left, up, direction, verticalRule, hor
     }
     return direction;
 };
-exports.checkSurroundingCells = function (map, row, column) {
+exports.getSurroundingCells = function (map, position) {
+    var row = position.row;
+    var column = position.column;
     var right, down, left, up;
     /**
      * Check map index: if index is out of bounds - return undefined
@@ -117,18 +102,14 @@ exports.checkSurroundingCells = function (map, row, column) {
     return [right, down, left, up];
 };
 exports.checkLShapedFork = function (pathDirection, verticalRule, horizontalRule, right, down, left, up) {
-    if ((pathDirection === types_1.Direction.Right || pathDirection === types_1.Direction.Left) &&
-        (verticalRule.test(up) || verticalRule.test(down)) ||
-        (pathDirection === types_1.Direction.Up || pathDirection === types_1.Direction.Down) &&
-            (horizontalRule.test(right) || horizontalRule.test(left))) {
+    if ((pathDirection === types_1.Direction.Right || pathDirection === types_1.Direction.Left) && (verticalRule.test(up) || verticalRule.test(down)) ||
+        (pathDirection === types_1.Direction.Up || pathDirection === types_1.Direction.Down) && (horizontalRule.test(right) || horizontalRule.test(left))) {
         throw new Error("Invalid map: Fork in path - L shaped fork");
     }
 };
 exports.checkTShapedFork = function (pathDirection, verticalRule, horizontalRule, right, down, left, up) {
-    if ((pathDirection === types_1.Direction.Right || pathDirection === types_1.Direction.Left) &&
-        verticalRule.test(up) && verticalRule.test(down) ||
-        (pathDirection === types_1.Direction.Up || pathDirection === types_1.Direction.Down) &&
-            horizontalRule.test(right) && horizontalRule.test(left)) {
+    if ((pathDirection === types_1.Direction.Right || pathDirection === types_1.Direction.Left) && verticalRule.test(up) && verticalRule.test(down) ||
+        (pathDirection === types_1.Direction.Up || pathDirection === types_1.Direction.Down) && horizontalRule.test(right) && horizontalRule.test(left)) {
         throw new Error("Invalid map: Fork in path - T shaped fork");
     }
 };

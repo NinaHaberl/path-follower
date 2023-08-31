@@ -2,49 +2,45 @@
 exports.__esModule = true;
 var types_1 = require("../types");
 var direction_1 = require("./direction");
+var getNextCell = function (pathDirection, right, left, down, up) { return pathDirection === types_1.Direction.Right ? right :
+    pathDirection === types_1.Direction.Left ? left :
+        pathDirection === types_1.Direction.Down ? down :
+            pathDirection === types_1.Direction.Up ? up : undefined; };
+var verticalRule = /[A-Z]|\||\+|x/;
+var horizontalRule = /[A-Z]|-|\+|x/;
+var getPositionRules = function (horizontalRule, verticalRule) { return new Map([
+    [types_1.Direction.Right, horizontalRule],
+    [types_1.Direction.Left, horizontalRule],
+    [types_1.Direction.Down, verticalRule],
+    [types_1.Direction.Up, verticalRule]
+]); };
+var positionRules = getPositionRules(horizontalRule, verticalRule);
+var isUppercase = function (currentCharacter) { return /[A-Z]/.test(currentCharacter); };
 exports.collectLettersAndFollowPath = function (map, startPosition) {
     // initialization of output fields
+    var letterLocations = new Map();
     var collectedLetters = [];
     var pathAsCharacters = ["@"];
-    var letterLocations = new Map();
-    // initialization of path direction and positions
-    var row = startPosition.row;
-    var column = startPosition.column;
-    var position = { row: row, column: column };
-    var pathDirection = direction_1.getPathDirection(map, row, column);
-    var verticalRule = /[A-Z]|\||\+|x/;
-    var horizontalRule = /[A-Z]|-|\+|x/;
-    var nextPosition;
+    var pathDirection = direction_1.getPathDirection(map, startPosition);
     var currentCharacter;
     var endOfPath = null;
+    var position = startPosition;
     // follow path
     while (endOfPath !== "x") {
-        // set next position and surrounding cells;
-        nextPosition = direction_1.setNewPosition(pathDirection, position);
-        row = nextPosition.row;
-        column = nextPosition.column;
-        currentCharacter = direction_1.getCurrentCellValue(map, row, column);
+        position = direction_1.getNewPosition(pathDirection, position);
+        currentCharacter = direction_1.getCurrentCellValue(map, position.row, position.column);
         pathAsCharacters.push(currentCharacter);
         // validate path rules
-        var _a = direction_1.checkSurroundingCells(map, row, column), right = _a[0], down = _a[1], left = _a[2], up = _a[3];
-        var nextCell = pathDirection === types_1.Direction.Right ? right :
-            pathDirection === types_1.Direction.Left ? left :
-                pathDirection === types_1.Direction.Down ? down :
-                    pathDirection === types_1.Direction.Up ? up : undefined;
-        var positionRules = new Map([
-            [types_1.Direction.Right, horizontalRule],
-            [types_1.Direction.Left, horizontalRule],
-            [types_1.Direction.Down, verticalRule],
-            [types_1.Direction.Up, verticalRule]
-        ]);
+        var _a = direction_1.getSurroundingCells(map, position), right = _a[0], down = _a[1], left = _a[2], up = _a[3];
+        var nextCell = getNextCell(pathDirection, right, left, down, up);
         var regexValidation = positionRules.get(pathDirection);
         // broken path
         if (currentCharacter === " ") {
             throw new Error("Invalid map: Broken path");
         }
-        if (/[A-Z]/.test(currentCharacter)) {
+        if (isUppercase(currentCharacter)) {
             // collect letter but don't repeat from same location
-            if (updateLetterLocation(letterLocations, currentCharacter, row, column)) {
+            if (updateLetterLocation(letterLocations, currentCharacter, position)) {
                 collectedLetters.push(currentCharacter);
             }
             // letters may be found on turns
@@ -71,12 +67,12 @@ exports.collectLettersAndFollowPath = function (map, startPosition) {
     }
     return { letters: collectedLetters.join(""), path: pathAsCharacters.join("") };
 };
-var updateLetterLocation = function (letterLocations, currentCharacter, row, column) {
+var updateLetterLocation = function (letterLocations, currentCharacter, position) {
     var storedLocation = letterLocations.get(currentCharacter);
-    var currentLocation = [row, column];
+    var currentLocation = [position.row, position.column];
     var storageUpdate = false;
     if (!storedLocation || !letterLocationExists(storedLocation, currentLocation)) {
-        letterLocations.set(currentCharacter, [row, column]);
+        letterLocations.set(currentCharacter, [position.row, position.column]);
         storageUpdate = true;
     }
     return storageUpdate;
