@@ -42,12 +42,12 @@ exports.collectLettersAndFollowPath = function (map, startPosition) {
         if (currentCharacter === " ") {
             throw new Error("Invalid map: Broken path");
         }
-        // collect letter | don't repeat from same location
-        // letters may be found on turns
         if (/[A-Z]/.test(currentCharacter)) {
+            // collect letter but don't repeat from same location
             if (updateLetterLocation(letterLocations, currentCharacter, row, column)) {
                 collectedLetters.push(currentCharacter);
             }
+            // letters may be found on turns
             if (nextCell === " " || nextCell === undefined) {
                 direction_1.checkTShapedFork(pathDirection, verticalRule, horizontalRule, right, down, left, up);
                 pathDirection = direction_1.makeTurn(right, down, left, up, pathDirection, verticalRule, horizontalRule);

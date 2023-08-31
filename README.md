@@ -209,6 +209,17 @@ Expected result:
 - Collected letters: `PRETZEL`
 - Path as characters: `@PR|E-+||TZ+E+Lx`
 
+# 
+```
+       I+
+     N+||I+
+    @|A|||x
+    ++||N+
+      G+
+```
+Expected result:
+- Collected letters: `NAGINI`
+- Path as characters: `@++|N+A|G+|||I+||N+|I+x`
 ### Invalid maps
 **Multiple starts**
 ```

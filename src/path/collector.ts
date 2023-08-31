@@ -74,7 +74,6 @@ export const collectLettersAndFollowPath = (map: string[][], startPosition: Posi
             if(nextCell === " " || nextCell === undefined) {
                 checkTShapedFork(pathDirection, verticalRule, horizontalRule, right, down, left, up);
                 pathDirection = makeTurn(right, down, left, up, pathDirection, verticalRule, horizontalRule);
-
             }
         }
 
