@@ -8,11 +8,11 @@ import {
 } from "./direction";
 
 
-const getNextCell = (pathDirection: Direction | Direction.Down | Direction.Left | Direction.Up | Direction.Start, right: string | undefined, left: string | undefined, down: string | undefined, up: string | undefined) => pathDirection === Direction.Right ? right :
+export const getNextCell = (pathDirection: Direction | Direction.Down | Direction.Left | Direction.Up | Direction.Start, right: string | undefined, left: string | undefined, down: string | undefined, up: string | undefined) =>
+    pathDirection === Direction.Right ? right :
     pathDirection === Direction.Left ? left :
-        pathDirection === Direction.Down ? down :
-            pathDirection === Direction.Up ? up : undefined;
-
+    pathDirection === Direction.Down ? down :
+    pathDirection === Direction.Up ? up : undefined;
 
 const verticalRule: RegExp = /[A-Z]|\||\+|x/;
 const horizontalRule: RegExp = /[A-Z]|-|\+|x/;

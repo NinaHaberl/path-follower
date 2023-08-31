@@ -1,5 +1,7 @@
 import * as maps from "../src/map/examples";
-import {getSurroundingCells, getCurrentCellValue, setNextCellValue} from "../src/path/direction";
+import {Direction} from "../src/types";
+import {getCurrentCellValue, getSurroundingCells, setNextCellValue} from "../src/path/direction";
+import {getNextCell} from "../src/path/collector";
 
 describe('checkSurroundingCells function', () => {
     test('check surrounding cells and return the value of each cell: ' +
@@ -31,5 +33,32 @@ describe('getCurrentCellValue function', () => {
 
         let result: string = getCurrentCellValue(map, 0, 8);
         expect(result).toBe("+");
+    });
+});
+
+describe('getNextCell function', () => {
+    test('should return the value of next cell', () => {
+        const map: string[][] = maps.basicExample;
+        let position = {row: 0, column: 7};
+        let pathDirection = Direction.Right;
+        let [right, down, left, up] = getSurroundingCells(map, position);
+
+        let result = getNextCell(pathDirection, right, left, down, up);
+        expect(result).toBe(right);
+
+        // switch (Direction) {
+        //     case Direction.Right:
+        //         result = right;
+        //         break;
+        //     case Direction.Down:
+        //         result = down;
+        //         break;
+        //     case Direction.Left:
+        //         result = left;
+        //         break;
+        //     case Direction.Up:
+        //         result = up;
+        //         break;
+        // }
     });
 });

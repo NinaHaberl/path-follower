@@ -2,10 +2,12 @@
 exports.__esModule = true;
 var types_1 = require("../types");
 var direction_1 = require("./direction");
-var getNextCell = function (pathDirection, right, left, down, up) { return pathDirection === types_1.Direction.Right ? right :
-    pathDirection === types_1.Direction.Left ? left :
-        pathDirection === types_1.Direction.Down ? down :
-            pathDirection === types_1.Direction.Up ? up : undefined; };
+exports.getNextCell = function (pathDirection, right, left, down, up) {
+    return pathDirection === types_1.Direction.Right ? right :
+        pathDirection === types_1.Direction.Left ? left :
+            pathDirection === types_1.Direction.Down ? down :
+                pathDirection === types_1.Direction.Up ? up : undefined;
+};
 var verticalRule = /[A-Z]|\||\+|x/;
 var horizontalRule = /[A-Z]|-|\+|x/;
 var getPositionRules = function (horizontalRule, verticalRule) { return new Map([
@@ -32,7 +34,7 @@ exports.collectLettersAndFollowPath = function (map, startPosition) {
         pathAsCharacters.push(currentCharacter);
         // validate path rules
         var _a = direction_1.getSurroundingCells(map, position), right = _a[0], down = _a[1], left = _a[2], up = _a[3];
-        var nextCell = getNextCell(pathDirection, right, left, down, up);
+        var nextCell = exports.getNextCell(pathDirection, right, left, down, up);
         var regexValidation = positionRules.get(pathDirection);
         // broken path
         if (currentCharacter === " ") {
