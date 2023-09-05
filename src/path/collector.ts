@@ -16,7 +16,7 @@ export const getNextCell = (pathDirection: Direction | Direction.Down | Directio
 
 const verticalRule: RegExp = /[A-Z]|\||\+|x/;
 const horizontalRule: RegExp = /[A-Z]|-|\+|x/;
-const getPositionRules = (horizontalRule: RegExp, verticalRule: RegExp) => new Map([
+export const getPositionRules = (horizontalRule: RegExp, verticalRule: RegExp) => new Map([
     [Direction.Right, horizontalRule],
     [Direction.Left, horizontalRule],
     [Direction.Down, verticalRule],

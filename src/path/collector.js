@@ -10,13 +10,13 @@ exports.getNextCell = function (pathDirection, right, left, down, up) {
 };
 var verticalRule = /[A-Z]|\||\+|x/;
 var horizontalRule = /[A-Z]|-|\+|x/;
-var getPositionRules = function (horizontalRule, verticalRule) { return new Map([
+exports.getPositionRules = function (horizontalRule, verticalRule) { return new Map([
     [types_1.Direction.Right, horizontalRule],
     [types_1.Direction.Left, horizontalRule],
     [types_1.Direction.Down, verticalRule],
     [types_1.Direction.Up, verticalRule]
 ]); };
-var positionRules = getPositionRules(horizontalRule, verticalRule);
+var positionRules = exports.getPositionRules(horizontalRule, verticalRule);
 var isUppercase = function (currentCharacter) { return /[A-Z]/.test(currentCharacter); };
 exports.collectLettersAndFollowPath = function (map, startPosition) {
     // initialization of output fields

@@ -1,7 +1,7 @@
 import * as maps from "../src/map/examples";
 import {Direction} from "../src/types";
 import {getCurrentCellValue, getSurroundingCells, setNextCellValue} from "../src/path/direction";
-import {getNextCell} from "../src/path/collector";
+import {getNextCell, getPositionRules} from "../src/path/collector";
 
 describe('checkSurroundingCells function', () => {
     test('check surrounding cells and return the value of each cell: ' +
@@ -47,5 +47,19 @@ describe('getNextCell function', () => {
         expect(getNextCell(Direction.Left, right, left, down, up)).toBe(left);
         expect(getNextCell(Direction.Down, right, left, down, up)).toBe(down);
         expect(getNextCell(Direction.Up, right, left, down, up)).toBe(up);
+    });
+});
+
+describe('getPositionRules', () => {
+    test('should return a map with the specified rules for each direction', () => {
+        const verticalRule: RegExp = /[A-Z]|\||\+|x/;
+        const horizontalRule: RegExp = /[A-Z]|-|\+|x/;
+
+        const positionRules = getPositionRules(horizontalRule, verticalRule);
+
+        expect(positionRules.get(Direction.Right)).toBe(horizontalRule);
+        expect(positionRules.get(Direction.Left)).toBe(horizontalRule);
+        expect(positionRules.get(Direction.Down)).toBe(verticalRule);
+        expect(positionRules.get(Direction.Up)).toBe(verticalRule);
     });
 });
