@@ -38,27 +38,14 @@ describe('getCurrentCellValue function', () => {
 
 describe('getNextCell function', () => {
     test('should return the value of next cell', () => {
-        const map: string[][] = maps.basicExample;
-        let position = {row: 0, column: 7};
-        let pathDirection = Direction.Right;
-        let [right, down, left, up] = getSurroundingCells(map, position);
+        const right = '-';
+        const left = '|';
+        const down = '-';
+        const up = '-';
 
-        let result = getNextCell(pathDirection, right, left, down, up);
-        expect(result).toBe(right);
-
-        // switch (Direction) {
-        //     case Direction.Right:
-        //         result = right;
-        //         break;
-        //     case Direction.Down:
-        //         result = down;
-        //         break;
-        //     case Direction.Left:
-        //         result = left;
-        //         break;
-        //     case Direction.Up:
-        //         result = up;
-        //         break;
-        // }
+        expect(getNextCell(Direction.Right, right, left, down, up)).toBe(right);
+        expect(getNextCell(Direction.Left, right, left, down, up)).toBe(left);
+        expect(getNextCell(Direction.Down, right, left, down, up)).toBe(down);
+        expect(getNextCell(Direction.Up, right, left, down, up)).toBe(up);
     });
 });
