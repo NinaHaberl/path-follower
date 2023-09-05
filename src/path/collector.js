@@ -17,7 +17,7 @@ exports.getPositionRules = function (horizontalRule, verticalRule) { return new 
     [types_1.Direction.Up, verticalRule]
 ]); };
 var positionRules = exports.getPositionRules(horizontalRule, verticalRule);
-var isUppercase = function (currentCharacter) { return /[A-Z]/.test(currentCharacter); };
+exports.isUppercase = function (currentCharacter) { return /[A-Z]/.test(currentCharacter); };
 exports.collectLettersAndFollowPath = function (map, startPosition) {
     // initialization of output fields
     var letterLocations = new Map();
@@ -40,7 +40,7 @@ exports.collectLettersAndFollowPath = function (map, startPosition) {
         if (currentCharacter === " ") {
             throw new Error("Invalid map: Broken path");
         }
-        if (isUppercase(currentCharacter)) {
+        if (exports.isUppercase(currentCharacter)) {
             // collect letter but don't repeat from same location
             if (updateLetterLocation(letterLocations, currentCharacter, position)) {
                 collectedLetters.push(currentCharacter);

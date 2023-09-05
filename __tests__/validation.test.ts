@@ -7,7 +7,7 @@ import {
 } from "../src/map/validate";
 import {collectLettersAndFollowPath} from "../src/path/collector";
 
-describe('collectLettersAndFollowPath function', () => {
+describe('validateMapAndFindStartingPosition function', () => {
     test('should throw error if map has multiple start, missing start or missinig end character', () => {
 
         const map = maps.multipleStartA;
@@ -17,7 +17,7 @@ describe('collectLettersAndFollowPath function', () => {
     })
 });
 
-describe('collectLettersAndFollowPath function', () => {
+describe('validateMapAndFindStartingPosition function', () => {
     test('should validate map and return the starting position of @ character', () => {
 
         const map = maps.basicExample;

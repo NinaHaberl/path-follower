@@ -1,7 +1,7 @@
 import * as maps from "../src/map/examples";
 import {Direction} from "../src/types";
 import {getCurrentCellValue, getSurroundingCells, setNextCellValue} from "../src/path/direction";
-import {getNextCell, getPositionRules} from "../src/path/collector";
+import {getNextCell, getPositionRules, isUppercase} from "../src/path/collector";
 
 describe('checkSurroundingCells function', () => {
     test('check surrounding cells and return the value of each cell: ' +
@@ -61,5 +61,20 @@ describe('getPositionRules', () => {
         expect(positionRules.get(Direction.Left)).toBe(horizontalRule);
         expect(positionRules.get(Direction.Down)).toBe(verticalRule);
         expect(positionRules.get(Direction.Up)).toBe(verticalRule);
+    });
+});
+
+describe('isUppercase function', () => {
+    it('should return true for uppercase characters', () => {
+        expect(isUppercase('A')).toBe(true);
+        expect(isUppercase('D')).toBe(true);
+        expect(isUppercase('Z')).toBe(true);
+    });
+
+    it('should return false for lowercase characters and non-alphabet characters', () => {
+        expect(isUppercase('x')).toBe(false);
+        expect(isUppercase('+')).toBe(false);
+        expect(isUppercase('|')).toBe(false);
+        expect(isUppercase('-')).toBe(false);
     });
 });

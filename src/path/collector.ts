@@ -24,7 +24,7 @@ export const getPositionRules = (horizontalRule: RegExp, verticalRule: RegExp) =
 ]);
 const positionRules: Map<Direction, RegExp> = getPositionRules(horizontalRule, verticalRule);
 
-const isUppercase = (currentCharacter: string) => /[A-Z]/.test(currentCharacter);
+export const isUppercase = (currentCharacter: string) => /[A-Z]/.test(currentCharacter);
 
 export const collectLettersAndFollowPath = (map: string[][], startPosition: Position): {
     letters: string;
