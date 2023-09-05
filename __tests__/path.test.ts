@@ -64,17 +64,3 @@ describe('getPositionRules', () => {
     });
 });
 
-describe('isUppercase function', () => {
-    it('should return true for uppercase characters', () => {
-        expect(isUppercase('A')).toBe(true);
-        expect(isUppercase('D')).toBe(true);
-        expect(isUppercase('Z')).toBe(true);
-    });
-
-    it('should return false for lowercase characters and non-alphabet characters', () => {
-        expect(isUppercase('x')).toBe(false);
-        expect(isUppercase('+')).toBe(false);
-        expect(isUppercase('|')).toBe(false);
-        expect(isUppercase('-')).toBe(false);
-    });
-});

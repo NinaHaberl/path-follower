@@ -1,11 +1,15 @@
 import * as maps from '../src/map/examples';
 import {
+    validateMapAndFindStartingPosition,
     isValidMapCharacter,
     isVerticalDirectionCharacterValid,
     isHorizontalDirectionCharacterValid,
-    validateMapAndFindStartingPosition
+
 } from "../src/map/validate";
-import {collectLettersAndFollowPath} from "../src/path/collector";
+import {
+    collectLettersAndFollowPath,
+    isUppercase,
+} from "../src/path/collector";
 
 describe('validateMapAndFindStartingPosition function', () => {
     test('should throw error if map has multiple start, missing start or missinig end character', () => {
@@ -86,4 +90,19 @@ describe('isHorizontalDirectionCharacterValid function', () => {
             expect(isHorizontalDirectionCharacterValid(character)).toBeTruthy();
         })
     })
+});
+
+describe('isUppercase function', () => {
+    it('should return true for uppercase characters', () => {
+        expect(isUppercase('A')).toBe(true);
+        expect(isUppercase('D')).toBe(true);
+        expect(isUppercase('Z')).toBe(true);
+    });
+
+    it('should return false for lowercase characters and non-alphabet characters', () => {
+        expect(isUppercase('x')).toBe(false);
+        expect(isUppercase('+')).toBe(false);
+        expect(isUppercase('|')).toBe(false);
+        expect(isUppercase('-')).toBe(false);
+    });
 });
