@@ -1,17 +1,21 @@
 import * as maps from "../src/map/examples";
 import {Direction, Position} from "../src/types";
-import {
-    collectLettersAndFollowPath,
-    getNextCell,
-    getPositionRules,
-} from "../src/path/collector";
+import {collectLettersAndFollowPath, getNextCell, getPositionRules,} from "../src/path/collector";
 
 import {
-    getCurrentCellValue, getNewPosition,
+    checkLShapedFork,
+    checkTShapedFork,
+    getCurrentCellValue,
+    getNewPosition,
     getSurroundingCells,
+    makeTurn,
     setNextCellValue,
 } from "../src/path/direction";
+
 import {validateMapAndFindStartingPosition} from "../src/map/validate";
+
+const verticalRule: RegExp = /[A-Z]|\||\+|x/;
+const horizontalRule: RegExp = /[A-Z]|-|\+|x/;
 
 describe('collectLettersAndFollowPath function', () => {
     test('should follow the path and return collected letters and path characters', () => {
@@ -28,8 +32,6 @@ describe('collectLettersAndFollowPath function', () => {
         });
     })
 });
-
-
 
 describe('getSurroundingCells function', () => {
     test('check surrounding cells and return the value of each cell: ' +
@@ -124,3 +126,126 @@ describe('getPositionRules', () => {
     });
 });
 
+describe('checkLShapedFork function', () => {
+
+    it('should throw an error for an L-shaped fork in the right direction', () => {
+
+        const right = '-';
+        const down = '|';
+        const left = '-';
+        const up = ' ';
+
+        expect(() => {
+            checkLShapedFork(Direction.Right, verticalRule, horizontalRule, right, down, left, up);
+        }).toThrowError('Invalid map: Fork in path - L shaped fork');
+    });
+
+    it('should throw an error for an L-shaped fork in the left direction', () => {
+
+        const right = '-';
+        const down = ' ';
+        const left = '-';
+        const up = '|';
+
+        expect(() => {
+            checkLShapedFork(Direction.Left, verticalRule, horizontalRule, right, down, left, up);
+        }).toThrowError('Invalid map: Fork in path - L shaped fork');
+    });
+
+    it('should throw an error for an L-shaped fork in the down direction', () => {
+
+        const right = ' ';
+        const down = 'B';
+        const left = '-';
+        const up = '|';
+
+        expect(() => {
+            checkLShapedFork(Direction.Down, verticalRule, horizontalRule, right, down, left, up);
+        }).toThrowError('Invalid map: Fork in path - L shaped fork');
+    });
+
+    it('should throw an error for an L-shaped fork in the up direction', () => {
+
+        const right = '-';
+        const down = '@';
+        const left = ' ';
+        const up = 'C';
+
+        expect(() => {
+            checkLShapedFork(Direction.Up, verticalRule, horizontalRule, right, down, left, up);
+        }).toThrowError('Invalid map: Fork in path - L shaped fork');
+    });
+});
+
+describe('checkTShapedFork function', () => {
+    it('should throw an error for a T-shaped fork in the right direction', () => {
+
+        const right = ' ';
+        const down = '|';
+        const left = '-';
+        const up = 'A';
+
+        expect(() => {
+            checkTShapedFork(Direction.Right, verticalRule, horizontalRule, right, down, left, up);
+        }).toThrowError('Invalid map: Fork in path - T shaped fork');
+    });
+
+    it('should throw an error for a T-shaped fork in the left direction', () => {
+
+        const right = ' ';
+        const down = '|';
+        const left = '-';
+        const up = 'A';
+
+        expect(() => {
+            checkTShapedFork(Direction.Left, verticalRule, horizontalRule, right, down, left, up);
+        }).toThrowError('Invalid map: Fork in path - T shaped fork');
+    });
+
+    it('should throw an error for a T-shaped fork in the down direction', () => {
+
+        const right = 'A';
+        const down = ' ';
+        const left = '-';
+        const up = 'A';
+
+        expect(() => {
+            checkTShapedFork(Direction.Down, verticalRule, horizontalRule, right, down, left, up);
+        }).toThrowError('Invalid map: Fork in path - T shaped fork');
+    });
+
+    it('should throw an error for a T-shaped fork in the up direction', () => {
+
+        const right = '+';
+        const down = '|';
+        const left = '-';
+        const up = ' ';
+
+        expect(() => {
+            checkTShapedFork(Direction.Up, verticalRule, horizontalRule, right, down, left, up);
+        }).toThrowError('Invalid map: Fork in path - T shaped fork');
+    });
+});
+
+describe('makeTurn function', () => {
+    it('should make down turn when direction is right and top cell is undefined or empty', () => {
+        const result = makeTurn(undefined, 'B', '-', undefined, Direction.Right, verticalRule, horizontalRule);
+        expect(result).toBe(Direction.Down);
+    });
+
+    it('should make down turn when direction is left and top cell is undefined or empty', () => {
+        const result = makeTurn('B', 'B', '-', undefined, Direction.Left, verticalRule, horizontalRule);
+        expect(result).toBe(Direction.Down);
+    });
+
+    it('should make left turn when direction is up and right cell is undefined or empty', () => {
+        const result = makeTurn(' ', '|', '-', undefined, Direction.Up, verticalRule, horizontalRule);
+        expect(result).toBe(Direction.Left);
+    });
+
+    it('should throw an error for broken path after horizontal turn', () => {
+        expect(() => {
+            makeTurn(' ', '|', ' ', undefined, Direction.Up, verticalRule, /_/);
+        }).toThrowError('Invalid map - Broken path after horizontal turn');
+    });
+});
