@@ -1,6 +1,8 @@
 import {Direction, Position} from "../types";
 import {
-    getSurroundingCells, checkLShapedFork, checkTShapedFork,
+    getSurroundingCells,
+    checkLShapedFork,
+    checkTShapedFork,
     getCurrentCellValue,
     makeTurn,
     getNewPosition,

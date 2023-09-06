@@ -1,9 +1,37 @@
 import * as maps from "../src/map/examples";
-import {Direction} from "../src/types";
-import {getCurrentCellValue, getSurroundingCells, setNextCellValue} from "../src/path/direction";
-import {getNextCell, getPositionRules, isUppercase} from "../src/path/collector";
+import {Direction, Position} from "../src/types";
+import {
+    collectLettersAndFollowPath,
+    getNextCell,
+    getPositionRules,
+} from "../src/path/collector";
 
-describe('checkSurroundingCells function', () => {
+import {
+    getCurrentCellValue, getNewPosition,
+    getSurroundingCells,
+    setNextCellValue,
+} from "../src/path/direction";
+import {validateMapAndFindStartingPosition} from "../src/map/validate";
+
+describe('collectLettersAndFollowPath function', () => {
+    test('should follow the path and return collected letters and path characters', () => {
+
+        const map = maps.basicExample;
+        const startPosition = validateMapAndFindStartingPosition(map);
+        const result = collectLettersAndFollowPath(map, startPosition);
+
+        expect(() => {
+            expect(result).toHaveProperty("letters");
+            expect(result).toHaveProperty("path");
+            expect(typeof result.letters).toBe("string");
+            expect(typeof result.path).toBe("string");
+        });
+    })
+});
+
+
+
+describe('getSurroundingCells function', () => {
     test('check surrounding cells and return the value of each cell: ' +
         'out of boundaries cells are undefined', () => {
 
@@ -15,6 +43,38 @@ describe('checkSurroundingCells function', () => {
         ];
 
         expect(result).toEqual(expectedValues);
+    });
+});
+
+describe('getNewPosition function', () => {
+
+    const position: Position = {
+        row: 2,
+        column: 5
+    };
+
+    it('should move right', () => {
+        const newPosition = getNewPosition(Direction.Right, position);
+        expect(newPosition.row).toEqual(2);
+        expect(newPosition.column).toEqual(6);
+    });
+
+    it('should move down', () => {
+        const newPosition = getNewPosition(Direction.Down, position);
+        expect(newPosition.row).toEqual(3);
+        expect(newPosition.column).toEqual(5);
+    });
+
+    it('should move left', () => {
+        const newPosition = getNewPosition(Direction.Left, position);
+        expect(newPosition.row).toEqual(2);
+        expect(newPosition.column).toEqual(4);
+    });
+
+    it('should move up', () => {
+        const newPosition = getNewPosition(Direction.Up, position);
+        expect(newPosition.row).toEqual(1);
+        expect(newPosition.column).toEqual(5);
     });
 });
 

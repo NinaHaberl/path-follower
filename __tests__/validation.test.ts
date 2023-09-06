@@ -6,10 +6,7 @@ import {
     isHorizontalDirectionCharacterValid,
 
 } from "../src/map/validate";
-import {
-    collectLettersAndFollowPath,
-    isUppercase,
-} from "../src/path/collector";
+import { isUppercase } from "../src/path/collector";
 
 describe('validateMapAndFindStartingPosition function', () => {
     test('should throw error if map has multiple start, missing start or missinig end character', () => {
@@ -28,22 +25,6 @@ describe('validateMapAndFindStartingPosition function', () => {
         const result = validateMapAndFindStartingPosition(map);
         expect(result?.row).toBeGreaterThanOrEqual(0);
         expect(result?.column).toBeGreaterThanOrEqual(0);
-    })
-});
-
-describe('collectLettersAndFollowPath function', () => {
-    test('should follow the path and return collected letters and path characters', () => {
-
-        const map = maps.basicExample;
-        const startPosition = validateMapAndFindStartingPosition(map);
-        const result = collectLettersAndFollowPath(map, startPosition);
-
-        expect(() => {
-            expect(result).toHaveProperty("letters");
-            expect(result).toHaveProperty("path");
-            expect(typeof result.letters).toBe("string");
-            expect(typeof result.path).toBe("string");
-        });
     })
 });
 
